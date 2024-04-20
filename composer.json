@@ -1,0 +1,23 @@
+{
+    "name": "njpanderson/braid",
+    "description": "A pattern library package for Laravel and Livewire",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Njpanderson\\Braid\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Neil Anderson",
+            "email": "njp.anderson@icloud.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.4",
+        "illuminate/filesystem": "^11.4"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
