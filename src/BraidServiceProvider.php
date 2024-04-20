@@ -1,6 +1,6 @@
 <?php
 
-namespace njpanderson\Braid\Providers;
+namespace njpanderson\Braid;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Filesystem\Filesystem;

@@ -4,7 +4,7 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Njpanderson\\Braid\\": "src/"
+            "njpanderson\\Braid\\": "src/"
         }
     },
     "authors": [
@@ -15,8 +15,15 @@
     ],
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^11.4",
-        "illuminate/filesystem": "^11.4"
+        "illuminate/support": "^11.0",
+        "illuminate/filesystem": "^11.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "njpanderson\\Braid\\BraidServiceProvider"
+            ]
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
