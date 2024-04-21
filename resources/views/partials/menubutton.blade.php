@@ -1,8 +1,8 @@
 <button
     type="button"
-    class="py-1 hover:underline flex gap-1 items-center w-full"
+    class="px-1 py-0.5 rounded-md hover:bg-amber-200 flex gap-1 items-center w-full"
     :class="{
-        'underline': activePattern.id == '{{ $patternId }}'
+        'bg-amber-300': activePattern.id == '{{ $patternId }}'
     }"
     @click="switchPattern('{{ $patternId }}')"
 >
