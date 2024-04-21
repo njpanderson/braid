@@ -65,7 +65,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         if (item.id) _this2.patterns[item.id] = _objectSpread({}, item);
         if (item.contexts) {
           item.contexts.forEach(function (context) {
-            _this2.patterns[context.id] = context;
+            _this2.patterns[context.id] = _objectSpread(_objectSpread({}, context), {}, {
+              label: item.label,
+              context: context.label
+            });
             delete _this2.patterns[item.id].contexts;
           });
         }

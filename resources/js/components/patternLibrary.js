@@ -25,7 +25,12 @@ export default () => ({
 
             if (item.contexts) {
                 item.contexts.forEach((context) => {
-                    this.patterns[context.id] = context;
+                    this.patterns[context.id] = {
+                        ...context,
+                        label: item.label,
+                        context: context.label
+                    };
+
                     delete this.patterns[item.id].contexts;
                 });
             }
