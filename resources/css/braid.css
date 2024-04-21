@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .pl-prose {
+        @apply prose prose-slate p-2;
+    }
+}

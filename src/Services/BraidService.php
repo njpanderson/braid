@@ -16,22 +16,18 @@ use njpanderson\Braid\Contracts\PatternDefinition;
 
 class BraidService
 {
-    public string $componentsNamespace;
     public string $patternsNamespace;
-    private string $templatesPath;
     private string $patternsPath;
     private ?Closure $authorizeCallback;
 
     public function __construct(
         private Filesystem $files
     ) {
-        $this->componentsNamespace = Config::get('braid.components_namespace');
-        $this->patternsNamespace = 'Tests\Patterns';
-        $this->templatesPath = resource_path('views');
+        $this->patternsNamespace = Config::get('braid.patterns_namespace');
         $this->patternsPath = $this->namespaceToPath($this->patternsNamespace);
     }
 
-    public function getPatternClass(string $patternRouteId)
+    public function getPatternClass(string $patternRouteId): string
     {
         $classPath = collect(explode(':', $patternRouteId))
                 ->map(fn($part) => ucFirst($part))
@@ -41,14 +37,6 @@ class BraidService
 
         return class_exists($classPath) ? $classPath : null;
     }
-
-    // public function getComponentClassFromID(string $routeClass)
-    // {
-    //     return $this->componentsNamespace . '\\' .
-    //         collect(explode(':', $routeClass))
-    //             ->map(fn($part) => ucFirst($part))
-    //             ->join('\\');
-    // }
 
     public function getComponentView(string $componentClass): stdClass
     {
@@ -62,7 +50,6 @@ class BraidService
         }
 
         if (!$view) {
-            dump('getComponentView', $componentClass);
             $view = $this->getViewFromComponentName($componentClass);
         }
 
@@ -137,6 +124,12 @@ class BraidService
     ) {
         $root = $root ?? $this->patternsPath;
 
+        if (!$this->files->exists($root))
+            return [
+                'level' => $level,
+                'items' => []
+            ];
+
         $result = [
             'level' => $level,
             'type' => 'dir',
@@ -199,12 +192,7 @@ class BraidService
 
     private function getViewFromComponentName(string $componentClass)
     {
-        dump('getViewFromComponentName');
-        dump($this->componentsNamespace);
-        dump($componentClass);
-        $view = str_replace($this->componentsNamespace, '', $componentClass);
-        dump($view);
-        $view = Str::trim(Str::lower($view), '\\');
+        $view = Str::trim(Str::lower($componentClass), '\\');
         $view = str_replace('\\', '.', $view);
 
         return $view;

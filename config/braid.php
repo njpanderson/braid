@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'components_namespace' => 'App\\Vmiew',
+    // The namespace under which patterns are stored
+    'patterns_namespace' => 'Tests\\Patterns'
 ];

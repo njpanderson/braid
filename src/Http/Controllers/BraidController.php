@@ -25,6 +25,11 @@ class BraidController
         ]);
     }
 
+    public function welcome()
+    {
+        return view('braid::welcome');
+    }
+
     public function pattern(Request $request, $pattern, $context = '')
     {
         $patternClass = $this->service->getPatternClass($pattern);

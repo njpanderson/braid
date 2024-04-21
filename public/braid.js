@@ -46,7 +46,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
   return {
     get activePattern() {
       return this._active ? this.patterns[this._active] : {
-        url: 'about:blank'
+        url: '/braid/welcome'
       };
     },
     init: function init() {

@@ -3,7 +3,7 @@ import axios from 'axios';
 export default () => ({
     get activePattern() {
         return this._active ? this.patterns[this._active] : {
-            url: 'about:blank'
+            url: '/braid/welcome'
         };
     },
 

@@ -43,11 +43,9 @@ abstract class Pattern implements Contract
             static::class
         );
 
-        return
-            $this->service->componentsNamespace .
-            collect(explode('\\', $class))
-                ->map(fn($part) => ucFirst($part))
-                ->join('\\');
+        return collect(explode('\\', $class))
+            ->map(fn($part) => ucFirst($part))
+            ->join('\\');
     }
 
     public function getContexts(): array
