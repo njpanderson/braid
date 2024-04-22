@@ -1,11 +1,12 @@
 @if ($dir['items'])
-    <ul @class([
-        'ml-2' => $dir['level'],
-        'pl-1' => $dir['level'],
-        'p-2' => !$dir['level'],
-        'border-l-4 border-amber-300' => $dir['level'],
-        'bg-slate-50'
-    ])>
+    <ul
+        @class([
+            'ml-2' => $dir['level'],
+            'pl-1' => $dir['level'],
+            'min-w-[calc(250px - 4px)] p-2' => !$dir['level'],
+            'border-l-4 border-amber-300' => $dir['level']
+        ])
+    >
         @foreach ($dir['items'] as $item)
             <li @class([
                 'my-1 pl-2' => $dir['level']

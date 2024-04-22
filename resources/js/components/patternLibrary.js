@@ -12,6 +12,10 @@ export default () => ({
     },
 
     init() {
+        this.uiState = {
+            menuOpen: true
+        };
+
         this._active = null;
         this._loaded = null;
         this.patterns = {};
