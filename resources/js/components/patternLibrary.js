@@ -7,8 +7,13 @@ export default () => ({
         };
     },
 
+    get loadedPattern() {
+        return this._loaded ? this.patterns[this._loaded] : null
+    },
+
     init() {
         this._active = null;
+        this._loaded = null;
         this.patterns = {};
 
         // Get and store menu data
@@ -16,6 +21,10 @@ export default () => ({
             .then((response) => {
                 this.createPatternMap(response.data);
             });
+    },
+
+    onPatternLoaded(event) {
+        this._loaded = event.detail.patternMapId;
     },
 
     createPatternMap(data) {
@@ -41,6 +50,8 @@ export default () => ({
     },
 
     switchPattern(id) {
+        this._loaded = null;
+
         if (this.patterns[id])
             this._active = id;
     }

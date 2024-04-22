@@ -30,9 +30,12 @@ class BraidController
         return view('braid::welcome');
     }
 
-    public function pattern(Request $request, $pattern, $context = '')
-    {
-        $patternClass = $this->service->getPatternClass($pattern);
+    public function pattern(
+        Request $request,
+        $patternId,
+        $contextId = ''
+    ) {
+        $patternClass = $this->service->getPatternClass($patternId);
 
         if (!$patternClass)
             abort(404);
@@ -41,18 +44,20 @@ class BraidController
         /** @var \njpanderson\Braid\Contracts\PatternDefinition */
         $pattern = new $patternClass();
 
-        $context = $this->service->getContext($pattern, $context);
+        $context = $this->service->getContext($pattern, $contextId);
 
         if ($context instanceof View) {
             // Context is already a view, just return it
             return view('braid::pattern', [
-                'pattern' => $context->render()
+                'pattern' => $context->render(),
+                'patternMapId' => $this->service->getJsPatternMapId($patternId, $contextId)
             ]);
         }
 
         $componentView = $pattern->getView();
 
         return view('braid::pattern', [
+            'patternMapId' => $this->service->getJsPatternMapId($patternId, $contextId),
             'patternClass' => $patternClass,
             'attributes' => $context['attributes'],
             'componentView' => $componentView,

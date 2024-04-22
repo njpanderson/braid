@@ -49,15 +49,22 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         url: '/braid/welcome'
       };
     },
+    get loadedPattern() {
+      return this._loaded ? this.patterns[this._loaded] : null;
+    },
     init: function init() {
       var _this = this;
       this._active = null;
+      this._loaded = null;
       this.patterns = {};
 
       // Get and store menu data
       axios__WEBPACK_IMPORTED_MODULE_0__["default"].get('/braid/menu').then(function (response) {
         _this.createPatternMap(response.data);
       });
+    },
+    onPatternLoaded: function onPatternLoaded(event) {
+      this._loaded = event.detail.patternMapId;
     },
     createPatternMap: function createPatternMap(data) {
       var _this2 = this;
@@ -76,6 +83,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       });
     },
     switchPattern: function switchPattern(id) {
+      this._loaded = null;
       if (this.patterns[id]) this._active = id;
     }
   };

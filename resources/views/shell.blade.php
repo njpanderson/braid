@@ -17,4 +17,10 @@
             @endif
         @endif
     </div>
+
+    <script>
+        const event = new Event('braidpatternloaded');
+        event.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
+        window.parent.dispatchEvent(event)
+    </script>
 @endsection

@@ -96,11 +96,16 @@ class BraidService
         return $id;
     }
 
+    public function getJsPatternMapId(string $id, ?string $context = '')
+    {
+        return $id . (!empty($context) ? '.' . $context : '');
+    }
+
     public function getRouteFromID(string $id, ?string $context = '')
     {
         return route('braid.pattern', [
-            'pattern' => $id,
-            'context' => $context
+            'patternId' => $id,
+            'contextId' => $context
         ]);
     }
 
