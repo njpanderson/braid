@@ -26,7 +26,10 @@ mix.options({
     .js('resources/js/braid.js', 'public')
     .postCss('resources/css/braid.css', 'public', [
         require('postcss-custom-properties')
-    ])
+    ]).options({
+        processCssUrls: false
+    })
+    .sourceMaps()
     .version()
     .webpackConfig({
         resolve: {

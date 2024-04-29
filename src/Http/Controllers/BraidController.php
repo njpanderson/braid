@@ -7,7 +7,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\ComponentSlot;
-
+use njpanderson\Braid\Contracts\PatternDefinition;
+use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 use njpanderson\Braid\Services\BraidService;
 
 class BraidController
@@ -21,6 +22,7 @@ class BraidController
         $patternFiles = $this->service->collectPatterns();
 
         return view('braid::index', [
+            // 'braid' => $this->service,
             'patternFiles' => $patternFiles
         ]);
     }
@@ -30,15 +32,34 @@ class BraidController
         return view('braid::welcome');
     }
 
+    public function patternTools(
+        Request $request,
+        string $patternId,
+        ?string $contextId = '')
+    {
+        try {
+            $patternClass = $this->service->getPatternClass($patternId);
+        } catch (UnknownPatternClassException $error) {
+            abort(404, $error->getMessage());
+        };
+
+        return view('braid::patterntools.index', [
+            // 'braid' => $this->service,
+            'pattern' => new $patternClass(),
+            'contextId' => $contextId
+        ]);
+    }
+
     public function pattern(
         Request $request,
-        $patternId,
-        $contextId = ''
+        string $patternId,
+        ?string $contextId = ''
     ) {
-        $patternClass = $this->service->getPatternClass($patternId);
-
-        if (!$patternClass)
-            abort(404);
+        try {
+            $patternClass = $this->service->getPatternClass($patternId);
+        } catch (UnknownPatternClassException $error) {
+            abort(404, $error->getMessage());
+        }
 
         // Pattern exists for this component — fetch context data based on query
         /** @var \njpanderson\Braid\Contracts\PatternDefinition */

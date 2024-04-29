@@ -2,12 +2,14 @@
 
 namespace njpanderson\Braid\Base;
 
+use stdClass;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
 use Illuminate\View\ComponentAttributeBag;
+use Illuminate\Support\Str;
+
 use njpanderson\Braid\Contracts\PatternDefinition as Contract;
 use njpanderson\Braid\Services\BraidService;
-use stdClass;
 
 abstract class Pattern implements Contract
 {
@@ -84,7 +86,12 @@ abstract class Pattern implements Contract
 
     public function getLabel(): string
     {
-        return $this->label;
+        if (!empty($this->label))
+            return $this->label;
+
+        $reflect = new \ReflectionClass($this);
+
+        return Str::ucFirst($reflect->getShortName());
     }
 
     public function getView(): stdClass|null

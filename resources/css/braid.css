@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './themes.css';
+@import './fonts.css';
+
 @layer components {
     .pl-prose {
         @apply prose prose-slate p-2;

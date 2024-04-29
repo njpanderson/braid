@@ -19,8 +19,16 @@
     </div>
 
     <script>
-        const event = new Event('braidpatternloaded');
-        event.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
-        window.parent.dispatchEvent(event)
+        const patternloaded = new Event('braidpatternloaded');
+        patternloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
+
+        window.parent.dispatchEvent(patternloaded);
+
+        const patternunloaded = new Event('braidpatternunloaded');
+        patternunloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
+
+        window.addEventListener('unload', function() {
+            window.parent.dispatchEvent(patternunloaded);
+        });
     </script>
 @endsection

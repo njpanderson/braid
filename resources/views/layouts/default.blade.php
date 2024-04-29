@@ -8,8 +8,8 @@
 
     <link href="{{ asset(mix('braid.css', 'vendor/braid')) }}" rel="stylesheet" type="text/css">
 </head>
-<body>
-    <main>
+<body class="min-h-[100vh] theme-{{ config('braid.theme.colour') }} font-lato">
+    <main class="min-h-[100vh]">
         @yield('main')
     </main>
 

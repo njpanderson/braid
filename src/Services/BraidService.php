@@ -13,18 +13,31 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 use njpanderson\Braid\Contracts\PatternDefinition;
+use njpanderson\Braid\Contracts\PatternTool;
+use njpanderson\Braid\Enums\ColourMode;
+use njpanderson\Braid\Enums\ColourTheme;
+use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 
 class BraidService
 {
     public string $patternsNamespace;
+
     private string $patternsPath;
+
     private ?Closure $authorizeCallback;
+
+    private array $patternTools = [];
+
+    private string $resourcesPath;
+
+    private array|null $themeColors = null;
 
     public function __construct(
         private Filesystem $files
     ) {
         $this->patternsNamespace = Config::get('braid.patterns_namespace');
         $this->patternsPath = $this->namespaceToPath($this->patternsNamespace);
+        $this->resourcesPath = realpath(__DIR__ . '/../../resources');
     }
 
     public function getPatternClass(string $patternRouteId): string
@@ -35,7 +48,10 @@ class BraidService
 
         $classPath = $this->patternsNamespace . '\\' . $classPath;
 
-        return class_exists($classPath) ? $classPath : null;
+        if (!class_exists($classPath))
+            throw new UnknownPatternClassException($classPath);
+
+        return $classPath;
     }
 
     public function getComponentView(string $componentClass): stdClass
@@ -101,9 +117,12 @@ class BraidService
         return $id . (!empty($context) ? '.' . $context : '');
     }
 
-    public function getRouteFromID(string $id, ?string $context = '')
-    {
-        return route('braid.pattern', [
+    public function getRoute(
+        string $id,
+        ?string $context = '',
+        string $route = 'braid.pattern'
+    ) {
+        return route($route, [
             'patternId' => $id,
             'contextId' => $context
         ]);
@@ -121,6 +140,18 @@ class BraidService
             return $pattern->getContextData($context);
 
         return $default;
+    }
+
+    public function getPatternTools()
+    {
+        return collect($this->patternTools);
+    }
+
+    public function registerPatternTool(PatternTool ...$tools): BraidService
+    {
+        $this->patternTools = array_merge($this->patternTools, $tools);
+
+        return $this;
     }
 
     public function collectPatterns(
@@ -146,20 +177,24 @@ class BraidService
                 $id = $this->getIDFromPath($file->getRealPath());
                 $contexts = [];
 
-                $patternClass = $this->getPatternClass($id);
+                try {
+                    $patternClass = $this->getPatternClass($id);
+                } catch (\Exception $error) { return; }
 
                 /** @var \njpanderson\Braid\Contracts\PatternDefinition */
                 $patternClass = new $patternClass();
 
                 if ($patternClass)
                     $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
-                        'url' => $this->getRouteFromID($id, $context),
+                        'url' => $this->getRoute($id, $context),
+                        'contextId' => $context,
+                        'patternId' => $id,
                         'id' => $id . '.' . $context,
                         'default' => ($context === 'default'),
                         'label' => Str::ucfirst($context)
                     ]));
 
-                $patternLabel = $patternClass->getLabel() ?: $file->getBasename('.php');
+                $patternLabel = $patternClass->getLabel();
 
                 return [
                     'type' => 'file',
@@ -167,7 +202,7 @@ class BraidService
                     'path' => $file->getRealPath(),
                     'id' => $id,
                     'contexts' => $contexts,
-                    'url' => $this->getRouteFromID($id)
+                    'url' => $this->getRoute($id)
                 ];
             })->toArray()
         ];
@@ -182,9 +217,11 @@ class BraidService
         return $result;
     }
 
-    public function authorizeWith(Closure $callback)
+    public function authorizeWith(Closure $callback): BraidService
     {
         $this->authorizeCallback = $callback;
+
+        return $this;
     }
 
     public function authorized()
@@ -193,6 +230,16 @@ class BraidService
             return false;
 
         return call_user_func($this->authorizeCallback);
+    }
+
+    private function getThemeColours($theme = 'orange') {
+        if (!$this->themeColors)
+            $this->themeColors = require_once($this->resourcesPath . '/themes.php');
+
+        if (isset($this->themeColors[$theme]))
+            return $this->themeColors[$theme];
+
+        return null;
     }
 
     private function getViewFromComponentName(string $componentClass)
