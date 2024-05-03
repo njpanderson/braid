@@ -54,6 +54,11 @@
                 <div
                     x-ref="patternCanvas"
                     class="grid overflow-hidden"
+                    data-draggable-direction="vertical"
+                    data-draggable-template="1fr minmax(0px, <value>)"
+                    data-draggable-initial="200"
+                    data-draggable-min="40"
+                    data-draggable-max="400"
                 >
                     <iframe
                         :src="activePattern.url"
@@ -61,10 +66,7 @@
                         x-ref="patternCanvasFrame"
                     ></iframe>
 
-                    <div
-                        class="bg-neutral-50 dark:bg-neutral-400 border-t-2 border-neutral-300 dark:border-neutral-500"
-                        x-show="loadedPattern"
-                    >
+                    <div x-show="loadedPattern">
                         @include('braid::patterntools.index')
                     </div>
                 </div>

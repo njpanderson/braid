@@ -40,7 +40,17 @@ class PatternToolsController
         PatternDefinition $braidPattern,
         ?string $contextId = ''
     ) {
-        // TODO: Move this to the tool itself?
-        return $braidTool->render($braidPattern, $contextId);
+        $output = $braidTool->render(
+            $braidPattern,
+            $contextId,
+        );
+
+        if ($request->has('test') && app()->hasDebugModeEnabled()) {
+            return view('braid::pattern', [
+                'pattern' => $output
+            ]);
+        }
+
+        return $output;
     }
 }

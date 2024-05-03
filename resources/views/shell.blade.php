@@ -18,17 +18,19 @@
         @endif
     </div>
 
-    <script>
-        const patternloaded = new Event('braidpatternloaded');
-        patternloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
+    @if (isset($patternMapId))
+        <script>
+            const patternloaded = new Event('braidpatternloaded');
+            patternloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
 
-        window.parent.dispatchEvent(patternloaded);
+            window.parent.dispatchEvent(patternloaded);
 
-        const patternunloaded = new Event('braidpatternunloaded');
-        patternunloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
+            const patternunloaded = new Event('braidpatternunloaded');
+            patternunloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
 
-        window.addEventListener('unload', function() {
-            window.parent.dispatchEvent(patternunloaded);
-        });
-    </script>
+            window.addEventListener('unload', function() {
+                window.parent.dispatchEvent(patternunloaded);
+            });
+        </script>
+    @endif
 @endsection

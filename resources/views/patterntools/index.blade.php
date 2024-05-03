@@ -3,7 +3,7 @@
     x-show="loadedPattern"
     @patternloaded.window="onPatternLoaded"
     @patternunloaded.window="onPatternUnLoaded"
-    class="h-full"
+    class="h-full bg-neutral-50 dark:bg-neutral-800 border-t-2 border-neutral-300 dark:border-neutral-500"
 >
     <menu class="h-[40px] border-b border-neutral-50 dark:border-neutral-400 bg-neutral-200 dark:bg-neutral-700">
         <ul
@@ -11,24 +11,30 @@
             class="flex items-stretch gap-1 h-full"
         >
             <template x-for="tool in tools" :key="tool.id">
-                <li class="flex align-bottom">
+                <li class="flex align-bottom font-semibold">
                     <a
                         :href="`#tab-${tool.id}`"
-                        class="block px-3 py-2 text-sm border-b-4 hover:border-accent-400 dark:hover:border-accent-300"
+                        class="flex items-center px-3 py-2 text-sm border-b-4 hover:border-accent-400 dark:hover:border-accent-300"
                         :class="{
                             'text-accent-400 dark:text-accent-300 border-accent-400 dark:border-accent-300': isActiveTool(tool.id),
                             'border-transparent': !isActiveTool(tool.id)
                         }"
-                        x-text="tool.label"
                         @click.prevent="loadTool(tool.id)"
-                    ></a>
+                    >
+                        <span x-text="tool.label"></span>
+                        <x-heroicon-o-arrow-path
+                            class="w-4 h-4 ml-1 animate-spin"
+                            x-show="tool.loading"
+                        />
+                    </a>
                 </li>
             </template>
 
             <li class="flex items-stretch ml-auto">
                 <button
-                    data-dragbar
+                    data-draggable-grid-trigger
                     class="flex items-center px-2 hover:bg-neutral-50 dark:hover:bg-neutral-600 cursor-ns-resize"
+                    title="Resize tools (click to toggle size)"
                 >
                     @svg('heroicon-o-bars-2', 'w-6 h-6')
                 </button>
@@ -36,14 +42,23 @@
         </ul>
     </menu>
 
-    <div x-ref="tabs">
+    <div x-ref="tabs" class="h-full">
         <template x-for="tool in tools" :key="tool.id">
             <div
-                class="p-2 h-full basis-full z-0 bg-neutral-100 dark:bg-neutral-500"
+                class="h-full basis-full z-0 overflow-auto"
                 role="tab"
                 x-show="isActiveTool(tool.id)"
-                x-html="tool.content"
-            ></div>
+
+            >
+                <template x-if="tool.error">
+                    <div class="text-red-600">
+                        <h2 class="font-semibold">Error</h2>
+                        <p x-text="tool.error.message"></p>
+                        <p class="text-sm">(More information may be available in the console)</p>
+                    </div>
+                </template>
+                <div x-html="tool.content"></div>
+            </div>
         </template>
     </div>
 </div>

@@ -56,8 +56,8 @@ export default () => ({
 
         this._activeTool = tool;
 
-        if (tool.content)
-            // Tool already fetched in this load
+        if (tool.content || tool.loading)
+            // Tool already fetched in this load, or currently loading
             return;
 
         const url = `/braid/patterntools/tool/${
@@ -68,6 +68,10 @@ export default () => ({
             (this.loadedPattern.contextId ? `/${this.loadedPattern.contextId}` : '')
         }`;
 
+        tool.loadingTimer = setTimeout(() => {
+            tool.loading = true;
+        }, 1000);
+
         axios.get(url)
             .then((response) => {
                 // Loaded — set tool content
@@ -75,6 +79,13 @@ export default () => ({
 
                 // Refresh (run) any scripts in the tool
                 this.$nextTick(this.refreshScripts.bind(this));
+            })
+            .catch((error) => {
+                tool.error = error;
+            })
+            .finally(() => {
+                clearTimeout(tool.loadingTimer);
+                tool.loading = false;
             });
     },
 
