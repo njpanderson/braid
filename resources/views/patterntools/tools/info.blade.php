@@ -1,22 +1,16 @@
-<div class="px-2 text-sm">
-    <table>
-        <tbody class="divide-y-2 divide-neutral-600">
-            <tr>
-                <th class="text-left py-1 pr-4">Pattern</th>
-                <td class="font-mono py-1">{{ $pattern->getLabel() }}</td>
-            </tr>
-
-            @if ($contextId)
-                <tr>
-                    <th class="text-left py-1 pr-4">Context</th>
-                    <td class="font-mono py-1">{{ $contextId }}</td>
-                <tr>
-            @endif
-
-            <tr>
-                <th class="text-left py-1 pr-4">Component</th>
-                <td class="font-mono py-1">{{ $pattern->getComponentClass() }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<x-braid-elements.definitionlist
+    :items="[[
+        'label' => 'Patern',
+        'icon' => 'document',
+        'value' => $pattern->getLabel()
+    ], [
+        'label' => 'Context',
+        'icon' => 'adjustments-vertical',
+        'value' => $contextId ? $contextId : null
+    ], [
+        'label' => 'Component',
+        'icon' => 'code-bracket-square',
+        'value' => $pattern->getComponentClass()
+    ]]"
+    item-classes="px-2"
+/>

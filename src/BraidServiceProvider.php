@@ -11,9 +11,9 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Foundation\Application;
 
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
-use njpanderson\Braid\PatternTools\Info;
 use njpanderson\Braid\Services\BraidService;
 use njpanderson\Braid\View\Components\ToolButton;
+use njpanderson\Braid\View\Components\Elements\DefinitionList;
 
 final class BraidServiceProvider extends ServiceProvider
 {
@@ -56,6 +56,7 @@ final class BraidServiceProvider extends ServiceProvider
         });
 
         Blade::component('braid-toolbutton', ToolButton::class);
+        Blade::component('braid-elements.definitionlist', DefinitionList::class);
 
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'braid');

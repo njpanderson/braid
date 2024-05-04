@@ -3,9 +3,14 @@
     x-show="loadedPattern"
     @patternloaded.window="onPatternLoaded"
     @patternunloaded.window="onPatternUnLoaded"
-    class="h-full bg-neutral-50 dark:bg-neutral-800 border-t-2 border-neutral-300 dark:border-neutral-500"
+    class="h-full flex flex-col bg-neutral-50 dark:bg-neutral-800 border-t-2 border-neutral-300 dark:border-neutral-500"
 >
-    <menu class="h-[40px] border-b border-neutral-50 dark:border-neutral-400 bg-neutral-200 dark:bg-neutral-700">
+    <button
+        data-draggable-grid-trigger
+        class="absolute top-0 left-0 right-0 h-[2px] hover:bg-neutral-50 dark:hover:bg-neutral-600 cursor-ns-resize"
+        title="Resize tools (click to toggle size)"
+    ></button>
+    <menu class="h-[40px] w-full border-b border-neutral-50 dark:border-neutral-400 bg-neutral-200 dark:bg-neutral-700">
         <ul
             role="tablist"
             class="flex items-stretch gap-1 h-full"
@@ -42,13 +47,12 @@
         </ul>
     </menu>
 
-    <div x-ref="tabs" class="h-full">
+    <div x-ref="tabs" class="w-full overflow-auto">
         <template x-for="tool in tools" :key="tool.id">
             <div
-                class="h-full basis-full z-0 overflow-auto"
+                class="z-0"
                 role="tab"
                 x-show="isActiveTool(tool.id)"
-
             >
                 <template x-if="tool.error">
                     <div class="text-red-600">

@@ -1,13 +1,13 @@
 <table
     @class([
         'text-sm w-full dark:text-white',
-        'border-l-4 border-l-accent-400 dark:border-l-accent-600' => $level > 0
+        'border-l-2 border-l-accent-400 dark:border-l-accent-600' => $level > 0
     ])
 >
     <tbody>
         @foreach ($context as $key => $value)
-        <tr class="even:bg-slate-100 dark:even:bg-neutral-700">
-            <th class="text-left px-2 py-1 align-top border-r-2 border-r-slate-100 dark:border-r-slate-600">
+        <tr class="even:bg-neutral-200 dark:even:bg-neutral-700 odd:bg-white dark:odd:bg-neutral-800">
+            <th class="text-left px-2 py-1 align-top border-r-2 border-r-slate-100 dark:border-r-slate-600 break-words max-w-[20ch]">
                 @if (is_numeric($key))
                     <span class="block bg-accent-400 dark:bg-accent-600 px-1 py-0.5 leading-none text-white rounded-md text-xs mt-0.5 text-center">
                         {{ $key }}

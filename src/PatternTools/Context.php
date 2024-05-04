@@ -17,7 +17,8 @@ class Context extends PatternTool
         // TODO: Test this
         return view('braid::patterntools.tools.context', [
             'pattern' => $pattern,
-            'contextId' => $contextId
+            'contextId' => $contextId,
+            'contextData' => $pattern->getContextData($contextId)
         ]);
     }
 }
