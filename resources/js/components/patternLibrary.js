@@ -39,6 +39,9 @@ export default () => ({
         };
 
         this.$watch('loadedPattern', (loadedPattern) => {
+            if (loadedPattern === null)
+                return this.draggables.patternCanvas.sizeContainer(0, false);
+
             // Set the pattern canvas/toolbar size to previously dragged size (if any)
             this.draggables.patternCanvas.sizeContainer();
         });
