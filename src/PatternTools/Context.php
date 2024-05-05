@@ -5,6 +5,7 @@ namespace njpanderson\Braid\PatternTools;
 use Illuminate\Contracts\View\View;
 use njpanderson\Braid\Base\PatternTool;
 use njpanderson\Braid\Contracts\PatternDefinition;
+use njpanderson\Braid\Exceptions\PatternContextViewNotFound;
 
 class Context extends PatternTool
 {
@@ -14,11 +15,22 @@ class Context extends PatternTool
         PatternDefinition $pattern,
         ?string $contextId = ''
     ): View {
-        // TODO: Test this
+        /** @var \Illuminate\View\View|array */
+        $contextData = $pattern->getContextData($contextId);
+
+        if ($contextData instanceof View) {
+            $path = $contextData->getPath();
+
+            if (!file_exists($path))
+                throw new PatternContextViewNotFound($path);
+
+            $contextData = file_get_contents($path);
+        }
+
         return view('braid::patterntools.tools.context', [
             'pattern' => $pattern,
             'contextId' => $contextId,
-            'contextData' => $pattern->getContextData($contextId)
+            'contextData' => $contextData
         ]);
     }
 }

@@ -3,11 +3,11 @@
     x-show="loadedPattern"
     @patternloaded.window="onPatternLoaded"
     @patternunloaded.window="onPatternUnLoaded"
-    class="h-full flex flex-col bg-neutral-50 dark:bg-neutral-800 border-t-2 border-neutral-300 dark:border-neutral-500"
+    class="relative h-full flex flex-col bg-neutral-50 dark:bg-neutral-800 border-t-2 border-neutral-300 dark:border-neutral-500"
 >
     <button
         data-draggable-grid-trigger
-        class="absolute top-0 left-0 right-0 h-[2px] hover:bg-neutral-50 dark:hover:bg-neutral-600 cursor-ns-resize"
+        class="absolute top-0 left-0 right-0 h-[4px] hover:bg-neutral-50 dark:hover:bg-neutral-600 cursor-ns-resize"
         title="Resize tools (click to toggle size)"
     ></button>
     <menu class="h-[40px] w-full border-b border-neutral-50 dark:border-neutral-400 bg-neutral-200 dark:bg-neutral-700">
@@ -47,10 +47,10 @@
         </ul>
     </menu>
 
-    <div x-ref="tabs" class="w-full overflow-auto">
+    <div x-ref="tabs" class="w-full h-full overflow-auto">
         <template x-for="tool in tools" :key="tool.id">
             <div
-                class="z-0"
+                class="h-full w-full flex justify-stretch"
                 role="tab"
                 x-show="isActiveTool(tool.id)"
             >
@@ -61,7 +61,10 @@
                         <p class="text-sm">(More information may be available in the console)</p>
                     </div>
                 </template>
-                <div x-html="tool.content"></div>
+
+                <template x-if="!tool.error">
+                    <div x-html="tool.content" class="w-full"></div>
+                </template>
             </div>
         </template>
     </div>

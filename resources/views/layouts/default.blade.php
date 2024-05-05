@@ -6,13 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Braid Pattern Library</title>
 
-    <link href="{{ asset(mix('braid.css', 'vendor/braid')) }}" rel="stylesheet" type="text/css">
+    {{
+        Vite::useHotFile(public_path() . '/vendor/braid/hot')
+            ->useBuildDirectory('vendor/braid/build')
+    }}
+
+    @vite('resources/css/braid.css')
+    {{-- <link href="{{ asset(mix('braid.css', 'vendor/braid')) }}" rel="stylesheet" type="text/css"> --}}
 </head>
 <body class="min-h-[100vh] theme-{{ config('braid.theme.colour') }} font-lato">
     <main class="min-h-[100vh]">
         @yield('main')
     </main>
 
-    <script src="{{ asset(mix('braid.js', 'vendor/braid')) }}"></script>
+    @vite('resources/js/braid.js')
+    {{-- <script src="{{ asset(mix('braid.js', 'vendor/braid')) }}"></script> --}}
 </body>
 </html>

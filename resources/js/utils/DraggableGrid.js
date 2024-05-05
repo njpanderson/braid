@@ -1,4 +1,4 @@
-import events from './Events';
+import events from '@lib/events';
 
 export default class DraggableGrid {
     constructor(gridContainer, options = {}) {

@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import highlightCode from '@lib/highlighting';
+
 /**
  * Child of paternLibrary
  */
@@ -77,8 +79,13 @@ export default () => ({
                 // Loaded — set tool content
                 tool.content = response.data;
 
-                // Refresh (run) any scripts in the tool
-                this.$nextTick(this.refreshScripts.bind(this));
+                this.$nextTick(() => {
+                    // Refresh (run) any scripts in the tool
+                    this.refreshScripts(tool);
+
+                    // Highlight any code blocks
+                    this.highlightCode(tool);
+                });
             })
             .catch((error) => {
                 tool.error = error;
@@ -105,9 +112,9 @@ export default () => ({
      */
     refreshScripts() {
         [
-            ...this.$refs.tabs.querySelectorAll("script:not([data-braid-parsed])")
+            ...this.$refs.tabs.querySelectorAll('script:not([data-braid-parsed])')
         ].forEach(scriptElement => {
-            const script = document.createElement("script");
+            const script = document.createElement('script');
 
             [...scriptElement.attributes].forEach(attr => {
                 script.setAttribute(attr.name, attr.value);
@@ -119,6 +126,17 @@ export default () => ({
             );
 
             scriptElement.parentNode.replaceChild(script, scriptElement);
+        });
+    },
+
+    highlightCode() {
+        [
+            ...this.$refs.tabs.querySelectorAll('[data-highlight]')
+        ].forEach(highlightable => {
+            highlightCode(highlightable.innerText)
+                .then((html) => {
+                    highlightable.innerHTML = html;
+                });
         });
     },
 

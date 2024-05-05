@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Alpine from 'alpinejs';
 
-import patternLibrary from './components/patternLibrary';
-import patternTools from './components/patternTools';
+import patternLibrary from '@components/patternLibrary';
+import patternTools from '@components/patternTools';
 
 window.Alpine = Alpine;
 

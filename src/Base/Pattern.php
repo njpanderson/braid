@@ -55,9 +55,12 @@ abstract class Pattern implements Contract
         return $this->contexts;
     }
 
-    public final function getContextData(string $context): array|View
+    public final function getContextData(string $context): View|array
     {
         $data = $this->contextData($context);
+
+        if ($data instanceof View)
+            return $data;
 
         if (!isset($data['attributes']))
             $data['attributes'] = [];
@@ -67,6 +70,13 @@ abstract class Pattern implements Contract
         return $data;
     }
 
+    /**
+     * Default contextData function in the case that the inheriting Pattern
+     * class does not provide one.
+     *
+     * @param string $context
+     * @return array|View
+     */
     public function contextData(string $context): array|View
     {
         return [

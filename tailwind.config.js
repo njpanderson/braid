@@ -4,6 +4,7 @@ export default {
     "./resources/views/**/*.blade.php",
     "./resources/js/**/*.js"
   ],
+  safelist: ['shiki'],
   theme: {
     extend: {
       colors: {

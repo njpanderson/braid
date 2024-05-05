@@ -45,6 +45,10 @@ export default () => ({
     },
 
     onPatternLoaded(event) {
+        if (!event.detail.patternMapId)
+            // Bail if there's no pattern ID
+            return;
+
         this._loaded = event.detail.patternMapId;
 
         this.$dispatch('patternloaded', {
