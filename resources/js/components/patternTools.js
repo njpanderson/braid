@@ -24,11 +24,11 @@ export default () => ({
         // Clear out current tools
         this.tools = [];
 
+        // Return cached tools if they exist
         if (this.tools.length)
             return this.loadTool(this.tools[0].id);
 
         // Load tools
-        // TODO: Cache this (and any tool requests made for the pattern)!
         axios.get(`/braid/patterntools`)
             .then((response) => {
                 this.tools = response.data;
@@ -62,19 +62,12 @@ export default () => ({
             // Tool already fetched in this load, or currently loading
             return;
 
-        const url = `/braid/patterntools/tool/${
-            encodeURIComponent(tool.className)
-        }/${
-            this.loadedPattern.patternId ?? this.loadedPattern.id
-        }${
-            (this.loadedPattern.contextId ? `/${this.loadedPattern.contextId}` : '')
-        }`;
-
         tool.loadingTimer = setTimeout(() => {
             tool.loading = true;
         }, 1000);
 
-        axios.get(url)
+        // Load tool content from tool class
+        axios.get(this.getToolUrl(tool, this.loadedPattern))
             .then((response) => {
                 // Loaded — set tool content
                 tool.content = response.data;
@@ -107,6 +100,16 @@ export default () => ({
         }) ?? null;
     },
 
+    getToolUrl(tool, pattern) {
+        return `/braid/patterntools/tool/${
+            encodeURIComponent(tool.className)
+        }/${
+            pattern.patternId ?? pattern.id
+        }${
+            (pattern.contextId ? `/${pattern.contextId}` : '')
+        }`;
+    },
+
     /**
      * Refresh any scripts not yet refreshed.
      */
@@ -133,6 +136,7 @@ export default () => ({
         [
             ...this.$refs.tabs.querySelectorAll('[data-highlight]')
         ].forEach(highlightable => {
+            // TODO: get language hint from current pattern context?
             highlightCode(highlightable.innerText)
                 .then((html) => {
                     highlightable.innerHTML = html;

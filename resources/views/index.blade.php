@@ -23,7 +23,7 @@
             >
                 <header class="flex items-center">
                     <h1
-                        class="px-2 text-2xl font-bold whitespace-nowrap text-primary-800 dark:text-primary-200"
+                        class="px-2 text-2xl font-bold whitespace-nowrap text-primary-900 dark:text-primary-200"
                     >Pattern Library</h1>
 
                     <button
@@ -48,7 +48,7 @@
                 </menu>
             </div>
 
-            <div class="grid grid-rows-[50px_1fr] rounded-l-[15px] shadow-frame overflow-hidden">
+            <div class="grid grid-rows-[50px_1fr] rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800">
                 @include('braid::partials.toolbar')
 
                 <div
@@ -56,7 +56,7 @@
                     class="grid overflow-hidden"
                     data-draggable-direction="vertical"
                     data-draggable-template="1fr minmax(0px, <value>)"
-                    data-draggable-initial="200"
+                    data-draggable-initial="240"
                     data-draggable-min="40"
                     data-draggable-max="400"
                 >

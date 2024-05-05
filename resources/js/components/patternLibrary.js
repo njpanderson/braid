@@ -95,4 +95,11 @@ export default () => ({
         if (this.patterns[id])
             this._active = id;
     },
+
+    openPatternInNewWindow(event) {
+        if (!this.activePattern)
+            return false;
+
+        window.open(this.activePattern.url, '_blank');
+    }
 });

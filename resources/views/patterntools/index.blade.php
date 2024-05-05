@@ -3,17 +3,17 @@
     x-show="loadedPattern"
     @patternloaded.window="onPatternLoaded"
     @patternunloaded.window="onPatternUnLoaded"
-    class="relative h-full flex flex-col bg-neutral-50 dark:bg-neutral-800 border-t-2 border-neutral-300 dark:border-neutral-500"
+    class="relative h-full flex flex-col bg-neutral-50 dark:bg-neutral-800"
 >
     <button
         data-draggable-grid-trigger
-        class="absolute top-0 left-0 right-0 h-[4px] hover:bg-neutral-50 dark:hover:bg-neutral-600 cursor-ns-resize"
+        class="absolute top-0 left-0 right-0 h-[6px] bg-neutral-300 dark:bg-neutral-500 cursor-ns-resize flex items-center justify-center hover:bg-accent-300 dark:hover:bg-accent-600"
         title="Resize tools (click to toggle size)"
-    ></button>
+    ><span class="w-[20px] bg-neutral-600 dark:bg-neutral-100 h-[1px]"></span></button>
     <menu class="h-[40px] w-full border-b border-neutral-50 dark:border-neutral-400 bg-neutral-200 dark:bg-neutral-700">
         <ul
             role="tablist"
-            class="flex items-stretch gap-1 h-full"
+            class="flex pt-[6px] items-stretch gap-1 h-full"
         >
             <template x-for="tool in tools" :key="tool.id">
                 <li class="flex align-bottom font-semibold">
@@ -35,7 +35,7 @@
                 </li>
             </template>
 
-            <li class="flex items-stretch ml-auto">
+            {{-- <li class="flex items-stretch ml-auto">
                 <button
                     data-draggable-grid-trigger
                     class="flex items-center px-2 hover:bg-neutral-50 dark:hover:bg-neutral-600 cursor-ns-resize"
@@ -43,7 +43,7 @@
                 >
                     @svg('heroicon-o-bars-2', 'w-6 h-6')
                 </button>
-            </li>
+            </li> --}}
         </ul>
     </menu>
 
@@ -63,7 +63,7 @@
                 </template>
 
                 <template x-if="!tool.error">
-                    <div x-html="tool.content" class="w-full"></div>
+                    <div x-html="tool.content" class="w-full h-full"></div>
                 </template>
             </div>
         </template>

@@ -19,18 +19,22 @@ class Context extends PatternTool
         $contextData = $pattern->getContextData($contextId);
 
         if ($contextData instanceof View) {
-            $path = $contextData->getPath();
+            $contextDataPath = $contextData->getPath();
 
-            if (!file_exists($path))
-                throw new PatternContextViewNotFound($path);
+            if (!file_exists($contextDataPath))
+                throw new PatternContextViewNotFound($contextDataPath);
 
-            $contextData = file_get_contents($path);
+            $contextData = file_get_contents($contextDataPath);
         }
 
         return view('braid::patterntools.tools.context', [
             'pattern' => $pattern,
             'contextId' => $contextId,
-            'contextData' => $contextData
+            'contextData' => $contextData,
+            'contextDataPath' => (
+                isset($contextDataPath) ?
+                str_replace(base_path(), '', $contextDataPath) : ''
+            )
         ]);
     }
 }

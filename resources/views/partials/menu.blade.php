@@ -31,10 +31,9 @@
                         <ul class="pl-1 text-sm">
                             @foreach ($item['contexts']  as $context)
                                 @if (!$context['default'])
-                                    <li class="my-1">
+                                    <li class="my-1 pl-4">
                                         <span class="flex gap-1 items-center">
                                             @include('braid::partials.menubutton', [
-                                                'icon' => 'chevron-right',
                                                 'patternId' => $context['id'],
                                                 'label' => $context['label']
                                             ])
