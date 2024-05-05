@@ -7,12 +7,11 @@
     <title>Braid Pattern Library</title>
 
     {{
-        Vite::useHotFile(public_path() . '/vendor/braid/hot')
-            ->useBuildDirectory('vendor/braid/build')
+        Vite::useHotFile(public_path() . '/' . config('braid.vendor_path') . '/hot')
+            ->useBuildDirectory(config('braid.vendor_path') . '/build')
     }}
 
     @vite('resources/css/braid.css')
-    {{-- <link href="{{ asset(mix('braid.css', 'vendor/braid')) }}" rel="stylesheet" type="text/css"> --}}
 </head>
 <body class="min-h-[100vh] theme-{{ config('braid.theme.colour') }} font-lato">
     <main class="min-h-[100vh]">
@@ -20,6 +19,5 @@
     </main>
 
     @vite('resources/js/braid.js')
-    {{-- <script src="{{ asset(mix('braid.js', 'vendor/braid')) }}"></script> --}}
 </body>
 </html>
