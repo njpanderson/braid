@@ -19,6 +19,11 @@ class PatternContext implements Contract
         return new ComponentAttributeBag($this->attributes);
     }
 
+    public function getAttributesArray(): array
+    {
+        return $this->attributes;
+    }
+
     public function getSlot(): string
     {
         return $this->slot ?? '';

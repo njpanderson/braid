@@ -64,28 +64,23 @@ class BraidController
         $pattern = new $patternClassName();
 
         $context = $this->service->getContext($pattern, $contextId);
+        $patternMapId = $this->service->getJsPatternMapId($patternId, $contextId);
 
         if ($context instanceof View) {
             // Context is already a view, just return it
             return view('braid::pattern', [
                 'view' => $context->render(),
-                'patternMapId' => $this->service->getJsPatternMapId($patternId, $contextId)
+                'patternMapId' => $patternMapId
             ]);
         }
 
         $componentView = $pattern->getView();
 
         return view('braid::pattern', [
-            'patternMapId' => $this->service->getJsPatternMapId($patternId, $contextId),
+            'patternMapId' => $patternMapId,
             'patternClassName' => $patternClassName,
             'componentView' => $componentView,
-            // TODO: Merge into just $context
             'context' => $context
-            // 'attributes' => $context['attributes'],
-            // 'scopedSlots' => [
-            //     'prefix' => 'Yay it <i>worked</i>'
-            // ],
-            // 'slotContent' => $context['slot'] ?? ''
         ]);
     }
 

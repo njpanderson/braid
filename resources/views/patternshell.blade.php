@@ -5,7 +5,7 @@
         @if (isset($view))
             {!! $view !!}
         @elseif (isset($componentView))
-            @if (in_array($componentView->type, ['component', 'livewire']))
+            @if ($componentView->type == 'component')
                 <x-dynamic-component
                     :component="$componentView->name"
                     :attributes="$context->getAttributes()"
@@ -16,6 +16,11 @@
 
                     {!! $context->getSlot() !!}
                 </x-dynamic-component>
+            @elseif ($componentView->type == 'livewire')
+                @livewire(
+                    $componentView->name,
+                    $context->getAttributesArray()
+                )
             @else
                 @include($componentView->name, $attributes)
             @endif
