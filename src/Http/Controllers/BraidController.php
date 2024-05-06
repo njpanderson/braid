@@ -54,21 +54,21 @@ class BraidController
         ?string $contextId = ''
     ) {
         try {
-            $patternClass = $this->service->getPatternClass($patternId);
+            $patternClassName = $this->service->getPatternClass($patternId);
         } catch (UnknownPatternClassException $error) {
             abort(404, $error->getMessage());
         }
 
         // Pattern exists for this component — fetch context data based on query
         /** @var \njpanderson\Braid\Contracts\PatternDefinition */
-        $pattern = new $patternClass();
+        $pattern = new $patternClassName();
 
         $context = $this->service->getContext($pattern, $contextId);
 
         if ($context instanceof View) {
             // Context is already a view, just return it
             return view('braid::pattern', [
-                'pattern' => $context->render(),
+                'view' => $context->render(),
                 'patternMapId' => $this->service->getJsPatternMapId($patternId, $contextId)
             ]);
         }
@@ -77,10 +77,15 @@ class BraidController
 
         return view('braid::pattern', [
             'patternMapId' => $this->service->getJsPatternMapId($patternId, $contextId),
-            'patternClass' => $patternClass,
-            'attributes' => $context['attributes'],
+            'patternClassName' => $patternClassName,
             'componentView' => $componentView,
-            'slotContent' => $context['slot'] ?? ''
+            // TODO: Merge into just $context
+            'context' => $context
+            // 'attributes' => $context['attributes'],
+            // 'scopedSlots' => [
+            //     'prefix' => 'Yay it <i>worked</i>'
+            // ],
+            // 'slotContent' => $context['slot'] ?? ''
         ]);
     }
 

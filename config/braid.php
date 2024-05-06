@@ -9,6 +9,7 @@ return [
 
     'theme' => [
         // Possible values are: wheat, forest, river, plum
+        // TODO: Some colours are too bright/pale in certain contexts, check each theme
         'colour' => 'wheat'
     ],
 

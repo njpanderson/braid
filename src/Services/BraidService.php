@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
+use njpanderson\Braid\Contracts\PatternContext;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Contracts\PatternTool;
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
@@ -128,7 +129,7 @@ class BraidService
         PatternDefinition $pattern,
         string $context = '',
         ?array $default = []
-    ): array|View {
+    ): PatternContext|View {
         if (empty($context))
             $context = 'default';
 

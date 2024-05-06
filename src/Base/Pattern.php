@@ -9,6 +9,8 @@ use Illuminate\View\ComponentAttributeBag;
 use Illuminate\Support\Str;
 
 use njpanderson\Braid\Contracts\PatternDefinition as Contract;
+use njpanderson\Braid\Contracts\PatternContext as PatternContextContract;
+use njpanderson\Braid\Dictionaries\PatternContext;
 use njpanderson\Braid\Services\BraidService;
 
 abstract class Pattern implements Contract
@@ -16,7 +18,7 @@ abstract class Pattern implements Contract
     private BraidService $service;
 
     /** @var array */
-    protected $contexts = ['default'];
+    protected $contexts = [];
 
     /**
      * Pattern label as used in the menu.
@@ -35,6 +37,8 @@ abstract class Pattern implements Contract
     public function __construct(
     ) {
         $this->service = App::make(BraidService::class);
+
+        $this->prepareContexts();
     }
 
     public final function getComponentClass()
@@ -55,17 +59,17 @@ abstract class Pattern implements Contract
         return $this->contexts;
     }
 
-    public final function getContextData(string $context): View|array
+    public final function getContextData(string $context): PatternContextContract|View
     {
         $data = $this->contextData($context);
 
         if ($data instanceof View)
             return $data;
 
-        if (!isset($data['attributes']))
-            $data['attributes'] = [];
+        // if (!isset($data['attributes']))
+        //     $data['attributes'] = [];
 
-        $data['attributes'] = $this->formatAttributes($data['attributes']);
+        // $data['attributes'] = $this->formatAttributes($data['attributes']);
 
         return $data;
     }
@@ -77,17 +81,27 @@ abstract class Pattern implements Contract
      * @param string $context
      * @return array|View
      */
-    public function contextData(string $context): array|View
+    public function contextData(string $context): PatternContextContract|View
     {
-        return [
-            'attributes' => []
-        ];
+        return new PatternContext();
     }
 
-    public function formatAttributes(array $attributes)
-    {
-        return new ComponentAttributeBag($attributes);
+    public function makeContext(
+        array $attributes = [],
+        string|null $slot = null,
+        array $scopedSlots = []
+    ) {
+        return new PatternContext(
+            attributes: $attributes,
+            slot: $slot,
+            scopedSlots: $scopedSlots
+        );
     }
+
+    // public function formatAttributes(array $attributes)
+    // {
+    //     return new ComponentAttributeBag($attributes);
+    // }
 
     public function hasContext(string $context): bool
     {
@@ -111,5 +125,11 @@ abstract class Pattern implements Contract
 
         $componentView = $this->service->getComponentView($this->getComponentClass());
         return $componentView ?? null;
+    }
+
+    private function prepareContexts()
+    {
+        if (!in_array('default', $this->contexts))
+            array_unshift($this->contexts, 'default');
     }
 }

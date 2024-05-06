@@ -1,17 +1,16 @@
-@if (isset($pattern))
-    @include('braid::shell', [
-        'pattern' => $pattern
+@if (isset($view))
+    @include('braid::patternshell', [
+        'view' => $view
     ])
 @elseif (isset($componentView))
     @if(View::exists($componentView->fullName))
-        @include('braid::shell', [
+        @include('braid::patternshell', [
             'componentView' => $componentView,
-            'attributes' => $attributes,
-            'slotContent' => $slotContent
+            'context' => $context
         ])
     @else
         @include('braid::error', [
-            'patternClass' => $patternClass,
+            'patternClassName' => $patternClassName,
             'error' => new njpanderson\Braid\Exceptions\MissingViewException(
                 $componentView->name
             )

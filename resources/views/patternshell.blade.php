@@ -2,15 +2,19 @@
 
 @section('pattern')
     <div class="p-2">
-        @if (isset($pattern))
-            {!! $pattern !!}
+        @if (isset($view))
+            {!! $view !!}
         @elseif (isset($componentView))
             @if (in_array($componentView->type, ['component', 'livewire']))
                 <x-dynamic-component
                     :component="$componentView->name"
-                    :attributes="$attributes"
+                    :attributes="$context->getAttributes()"
                 >
-                    {!! $slotContent !!}
+                    @foreach($context->getScopedSlots() as $slotName => $slotValue)
+                        <x-slot :name="$slotName">{!! $slotValue !!}</x-slot>
+                    @endforeach
+
+                    {!! $context->getSlot() !!}
                 </x-dynamic-component>
             @else
                 @include($componentView->name, $attributes)

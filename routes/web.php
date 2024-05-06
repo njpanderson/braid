@@ -15,6 +15,7 @@ use njpanderson\Braid\Http\Controllers\PatternToolsController;
 use njpanderson\Braid\Livewire\Pattern as LivewirePattern;
 
 Route::prefix('braid')->middleware([
+    // TODO: This needs to be cusomisable
     EncryptCookies::class,
     AddQueuedCookiesToResponse::class,
     StartSession::class,

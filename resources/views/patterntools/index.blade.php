@@ -19,9 +19,9 @@
                 <li class="flex align-bottom font-semibold">
                     <a
                         :href="`#tab-${tool.id}`"
-                        class="flex items-center px-3 py-2 text-sm border-b-4 hover:border-accent-400 dark:hover:border-accent-300"
+                        class="flex items-center px-3 py-2 text-sm border-b-4 hover:border-accent-500 dark:hover:border-accent-300"
                         :class="{
-                            'text-accent-400 dark:text-accent-300 border-accent-400 dark:border-accent-300': isActiveTool(tool.id),
+                            'text-accent-500 dark:text-accent-300 border-accent-500 dark:border-accent-300': isActiveTool(tool.id),
                             'border-transparent': !isActiveTool(tool.id)
                         }"
                         @click.prevent="loadTool(tool.id)"

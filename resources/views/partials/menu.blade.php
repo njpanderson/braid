@@ -40,7 +40,7 @@
 
                             @foreach (['down', 'right'] as $direction)
                             <span x-show="{{ $direction === 'down' ? 'open' : '!open' }}" class="ml-auto">
-                                @svg('heroicon-o-chevron-' . $direction, 'h-5 ring rounded ring-2 ring-transparent group-hover:ring-primary-400')
+                                @svg('heroicon-o-chevron-' . $direction, 'h-5 ring rounded ring-2 ring-transparent group-hover:ring-accent-400')
                             </span>
                             @endforeach
                         </span>
