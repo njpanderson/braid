@@ -5,7 +5,7 @@
         x-data="patternLibrary"
         x-on:braidpatternloaded.window="onPatternLoaded"
         x-on:braidpatternunloaded.window="onPatternUnLoaded"
-        class="h-[100vh] bg-gradient-to-b from-primary-300 to-primary-400 dark:bg-primary-600 dark:text-white"
+        class="h-[100vh] bg-gradient-to-b from-primary-300 to-primary-400 dark:from-primary-600 dark:to-primary-700 dark:text-white"
     >
         <section class="grid h-full transition-all"
              :class="{
