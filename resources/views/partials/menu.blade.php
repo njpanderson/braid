@@ -20,7 +20,11 @@
                 ])
             >
                 @if ($item['type'] === 'dir')
-                    <button class="w-full px-1 rounded-md group" @click="toggle">
+                    <button
+                        class="w-full px-1 rounded-md group"
+                        @click="toggle"
+                        title="{{ __('Open/close folder (hold alt/opt to close all descendents)') }}"
+                    >
                         <span class="flex items-center gap-1 text-neutral-700 dark:text-neutral-100 py-1">
                             @if (!$dir['level'])
                                 @svg('heroicon-o-folder', 'h-6')

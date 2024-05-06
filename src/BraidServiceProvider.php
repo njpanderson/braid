@@ -30,13 +30,13 @@ final class BraidServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/braid'),
-        ], ['braid-assets']);
+        ], ['laravel-assets']);
 
         // TODO: Test, etc
-        // $this->publishes([
-        //     __DIR__.'/../resources/views/layouts/pattern.blade.php' => resource_path('views/vendor/braid/layouts'),
+        $this->publishes([
+            __DIR__.'/../resources/views/layouts/pattern.blade.php' => resource_path('views/vendor/braid/layouts'),
         //     __DIR__.'/../resources/views/welcome.blade.php' => resource_path('views/vendor/braid'),
-        // ], ['braid-templates']);
+        ], ['laravel-templates']);
 
         Route::bind('braidTool', function (string $toolClass) {
             if (!class_exists($toolClass))

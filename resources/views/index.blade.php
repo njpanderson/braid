@@ -5,8 +5,7 @@
         x-data="patternLibrary"
         x-on:braidpatternloaded.window="onPatternLoaded"
         x-on:braidpatternunloaded.window="onPatternUnLoaded"
-        {{-- class="h-[100vh] p-2 {{ $braid->getColours('primary', 'bg') }}" --}}
-        class="h-[100vh] bg-primary-300 dark:bg-primary-600 dark:text-white"
+        class="h-[100vh] bg-gradient-to-b from-primary-300 to-primary-400 dark:bg-primary-600 dark:text-white"
     >
         <section class="grid h-full transition-all"
              :class="{
@@ -24,7 +23,7 @@
                 <header class="flex items-center">
                     <h1
                         class="px-2 text-2xl font-bold whitespace-nowrap text-primary-900 dark:text-primary-200"
-                    >Pattern Library</h1>
+                    >{{ config('braid.title') }}</h1>
 
                     <button
                         class="ml-auto mr-2 p-1 hover:bg-slate-200/50 rounded"

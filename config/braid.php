@@ -1,6 +1,9 @@
 <?php
 
 return [
+    // Will show above the pattern list
+    'title' => 'Braid',
+
     // The namespace under which patterns are stored
     'patterns_namespace' => 'Tests\\Patterns',
 

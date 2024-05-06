@@ -12,6 +12,10 @@ export default (id) => ({
         this.open = menuStore.open ?? true;
     },
 
+    /**
+     * Toggle the menu folder.
+     * @param {Event} event
+     */
     toggle(event) {
         this.setOpen(!this.open);
 
@@ -23,8 +27,11 @@ export default (id) => ({
         }
     },
 
+    /**
+     * Set whether the menu folder is open.
+     * @param {boolean} opened
+     */
     setOpen(opened) {
-        console.log(id, opened);
         this.open = opened;
 
         store.set(id, {
