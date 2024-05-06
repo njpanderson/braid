@@ -4,18 +4,14 @@ namespace njpanderson\Braid\Services;
 
 use Closure;
 use stdClass;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Contracts\PatternTool;
-use njpanderson\Braid\Enums\ColourMode;
-use njpanderson\Braid\Enums\ColourTheme;
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 
 class BraidService
@@ -166,55 +162,58 @@ class BraidService
                 'items' => []
             ];
 
-        $result = [
-            'level' => $level,
-            'type' => 'dir',
-            'path' => $root,
-            'label' => $this->files->basename($root),
-            'items' => collect(
-                $this->files->files($root)
-            )->map(function($file) {
-                $id = $this->getIDFromPath($file->getRealPath());
-                $contexts = [];
+        return Cache::remember('braid-pattern-menu-' . $root, 5, function() use ($root, $level) {
+            $result = [
+                'level' => $level,
+                'type' => 'dir',
+                'id' => $this->getDirectoryHash($root, $level),
+                'path' => $root,
+                'label' => $this->files->basename($root),
+                'items' => collect(
+                    $this->files->files($root)
+                )->map(function($file) {
+                    $id = $this->getIDFromPath($file->getRealPath());
+                    $contexts = [];
 
-                try {
-                    $patternClass = $this->getPatternClass($id);
-                } catch (\Exception $error) { return; }
+                    try {
+                        $patternClass = $this->getPatternClass($id);
+                    } catch (\Exception $error) { return; }
 
-                /** @var \njpanderson\Braid\Contracts\PatternDefinition */
-                $patternClass = new $patternClass();
+                    /** @var \njpanderson\Braid\Contracts\PatternDefinition */
+                    $patternClass = new $patternClass();
 
-                if ($patternClass)
-                    $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
-                        'url' => $this->getRoute($id, $context),
-                        'contextId' => $context,
-                        'patternId' => $id,
-                        'id' => $id . '.' . $context,
-                        'default' => ($context === 'default'),
-                        'label' => Str::ucfirst($context)
-                    ]));
+                    if ($patternClass)
+                        $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
+                            'url' => $this->getRoute($id, $context),
+                            'contextId' => $context,
+                            'patternId' => $id,
+                            'id' => $id . '.' . $context,
+                            'default' => ($context === 'default'),
+                            'label' => Str::ucfirst($context)
+                        ]));
 
-                $patternLabel = $patternClass->getLabel();
+                    $patternLabel = $patternClass->getLabel();
 
-                return [
-                    'type' => 'file',
-                    'label' => $patternLabel,
-                    'path' => $file->getRealPath(),
-                    'id' => $id,
-                    'contexts' => $contexts,
-                    'url' => $this->getRoute($id)
-                ];
-            })->toArray()
-        ];
+                    return [
+                        'type' => 'file',
+                        'label' => $patternLabel,
+                        'path' => $file->getRealPath(),
+                        'id' => $id,
+                        'contexts' => $contexts,
+                        'url' => $this->getRoute($id)
+                    ];
+                })->toArray()
+            ];
 
-        $result['items'] = array_merge(
-            $result['items'],
-            collect($this->files->directories($root))->map(
-                fn($dir) => $this->collectPatterns($dir, $level + 1)
-            )->toArray()
-        );
+            $result['items'] = array_merge(
+                $result['items'],
+                collect($this->files->directories($root))->map(
+                    fn($dir) => $this->collectPatterns($dir, $level + 1)
+                )->toArray()
+            );
 
-        return $result;
+            return $result;
+        });
     }
 
     public function authorizeWith(Closure $callback): BraidService
@@ -254,5 +253,10 @@ class BraidService
     {
         $prefix = $prefix ?? base_path() . '/';
         return $prefix . str_replace('\\', '/', $namespace);
+    }
+
+    private function getDirectoryHash(string $path, int $level = 0): string
+    {
+        return 'braid-dir-' . sha1($level . $path);
     }
 }

@@ -4,13 +4,13 @@ import DraggableGrid from '../utils/DraggableGrid';
 
 export default () => ({
     get activePattern() {
-        return this._active ? this.patterns[this._active] : {
+        return this._active ? this.patternMap[this._active] : {
             url: '/braid/welcome'
         };
     },
 
     get loadedPattern() {
-        return this._loaded ? this.patterns[this._loaded] : null
+        return this._loaded ? this.patternMap[this._loaded] : null
     },
 
     init() {
@@ -21,11 +21,13 @@ export default () => ({
         this._active = null;
         this._loaded = null;
         this.patterns = {};
+        this.patternMap = {};
 
         // Get and store menu data
         axios.get('/braid/menu')
             .then((response) => {
-                this.createPatternMap(response.data);
+                this.patterns = response.data;
+                this.createPatternMap(this.patterns);
             });
 
         this.draggables = {
@@ -70,17 +72,16 @@ export default () => ({
     createPatternMap(data) {
         data.items.forEach((item) => {
             if (item.id)
-                this.patterns[item.id] = {...item};
+                this.patternMap[item.id] = item;
 
             if (item.contexts) {
                 item.contexts.forEach((context) => {
-                    this.patterns[context.id] = {
-                        ...context,
-                        label: item.label,
-                        contextLabel: context.label
-                    };
+                    context.label = item.label;
+                    context.contextLabel = context.label;
 
-                    delete this.patterns[item.id].contexts;
+                    this.patternMap[context.id] = context;
+
+                    delete this.patternMap[item.id].contexts;
                 });
             }
 
@@ -95,7 +96,7 @@ export default () => ({
 
         this._loaded = null;
 
-        if (this.patterns[id])
+        if (this.patternMap[id])
             this._active = id;
     },
 
@@ -104,5 +105,9 @@ export default () => ({
             return false;
 
         window.open(this.activePattern.url, '_blank');
+    },
+
+    toggleMenuItem(event) {
+        console.log(event.target, this.$data);
     }
 });

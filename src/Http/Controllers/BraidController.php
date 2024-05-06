@@ -22,7 +22,6 @@ class BraidController
         $patternFiles = $this->service->collectPatterns();
 
         return view('braid::index', [
-            // 'braid' => $this->service,
             'patternFiles' => $patternFiles
         ]);
     }
@@ -44,7 +43,6 @@ class BraidController
         };
 
         return view('braid::patterntools.index', [
-            // 'braid' => $this->service,
             'pattern' => new $patternClass(),
             'contextId' => $contextId
         ]);

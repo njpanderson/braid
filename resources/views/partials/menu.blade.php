@@ -1,19 +1,46 @@
 @if ($dir['items'])
     <ul
         @class([
-            'pl-1 ml-2 border-l-4 border-primary-400' => $dir['level'],
+            'text-md',
+            'pl-1 ml-3 border-l-4 border-primary-400' => $dir['level'],
             'p-2' => !$dir['level']
         ])
+        @if ($dir['level'])
+            x-show="open"
+        @endif
     >
         @foreach ($dir['items'] as $item)
-            <li @class([
-                'my-1 pl-2' => $dir['level']
-            ])>
+            <li
                 @if ($item['type'] === 'dir')
-                    <span class="flex items-center gap-1 text-neutral-700 dark:text-neutral-100 py-1">
-                        @svg('heroicon-o-folder', 'w-6 h-6')
-                        <b class="text-lg font-semibold">{{ $item['label'] }}</b>
-                    </span>
+                    x-data="menuFolder('{{ $item['id'] }}')"
+                    x-ref="root"
+                @endif
+                @class([
+                    'my-1' => $dir['level'],
+                ])
+            >
+                @if ($item['type'] === 'dir')
+                    <button class="w-full px-1 rounded-md group" @click="toggle">
+                        <span class="flex items-center gap-1 text-neutral-700 dark:text-neutral-100 py-1">
+                            @if (!$dir['level'])
+                                @svg('heroicon-o-folder', 'h-6')
+                            @else
+                                @svg('heroicon-o-folder', 'h-5')
+                            @endif
+                            <b
+                                @class([
+                                    'font-semibold',
+                                    'text-lg' => !$dir['level']
+                                ])
+                            >{{ $item['label'] }}</b>
+
+                            @foreach (['down', 'right'] as $direction)
+                            <span x-show="{{ $direction === 'down' ? 'open' : '!open' }}" class="ml-auto">
+                                @svg('heroicon-o-chevron-' . $direction, 'h-5 ring rounded ring-2 ring-transparent group-hover:ring-primary-400')
+                            </span>
+                            @endforeach
+                        </span>
+                    </button>
 
                     @include('braid::partials.menu', [
                         'dir' => $item
@@ -31,7 +58,7 @@
                         <ul class="pl-1 text-sm">
                             @foreach ($item['contexts']  as $context)
                                 @if (!$context['default'])
-                                    <li class="my-1 pl-4">
+                                    <li class="my-1 pl-6">
                                         <span class="flex gap-1 items-center">
                                             @include('braid::partials.menubutton', [
                                                 'patternId' => $context['id'],

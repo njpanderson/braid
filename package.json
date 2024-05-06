@@ -8,14 +8,11 @@
     },
     "devDependencies": {
         "@tailwindcss/typography": "^0.5.12",
-        "alpinejs": "^3.13.8",
         "autoprefixer": "^10.4.19",
-        "axios": "^1.6.8",
         "laravel-vite-plugin": "^1.0.2",
         "npm-watch": "^0.12.0",
         "postcss": "^8.4.38",
         "postcss-custom-properties": "^13.3.7",
-        "shiki": "^1.4.0",
         "tailwindcss": "^3.4.3",
         "vite": "^5.2.11"
     },
@@ -32,5 +29,11 @@
             "quiet": false,
             "silent": true
         }
+    },
+    "dependencies": {
+        "alpinejs": "^3.13.8",
+        "axios": "^1.6.8",
+        "shiki": "^1.4.0",
+        "store2": "^2.14.3"
     }
 }
