@@ -24,13 +24,28 @@ class PatternContext implements Contract
         return $this->attributes;
     }
 
+    public function hasAttributes(): bool
+    {
+        return !empty($this->attributes);
+    }
+
     public function getSlot(): string
     {
         return $this->slot ?? '';
     }
 
+    public function hasSlot(): bool
+    {
+        return !empty($this->slot);
+    }
+
     public function getScopedSlots(): array
     {
         return $this->scopedSlots;
+    }
+
+    public function hasScopedSlots(): bool
+    {
+        return !empty($this->scopedSlots);
     }
 }

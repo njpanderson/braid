@@ -22,7 +22,7 @@
                     $context->getAttributesArray()
                 )
             @else
-                @include($componentView->name, $attributes)
+                @include($componentView->name, $context->getAttributesArray())
             @endif
         @endif
     </div>

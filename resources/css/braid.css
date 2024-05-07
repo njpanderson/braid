@@ -11,7 +11,7 @@
     }
 
     .shiki {
-        @apply p-2 w-full whitespace-pre-wrap overflow-auto;
+        @apply px-2 py-1 w-full whitespace-pre-wrap overflow-auto;
     }
 }
 

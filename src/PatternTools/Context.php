@@ -30,8 +30,8 @@ class Context extends PatternTool
         return view('braid::patterntools.tools.context', [
             'pattern' => $pattern,
             'contextId' => $contextId,
-            'contextData' => $contextData,
-            'contextDataPath' => (
+            'context' => $contextData,
+            'contextPath' => (
                 isset($contextDataPath) ?
                 str_replace(base_path(), '', $contextDataPath) : ''
             )
