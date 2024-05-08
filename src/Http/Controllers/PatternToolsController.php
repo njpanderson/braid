@@ -3,13 +3,8 @@
 namespace njpanderson\Braid\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
-use Illuminate\View\ComponentAttributeBag;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\View\ComponentSlot;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Contracts\PatternTool;
-use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 use njpanderson\Braid\Services\BraidService;
 
 class PatternToolsController

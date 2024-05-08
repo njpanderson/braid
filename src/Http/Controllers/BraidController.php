@@ -4,11 +4,7 @@ namespace njpanderson\Braid\Http\Controllers;
 
 use Illuminate\Support\Facades\Request;
 use Illuminate\Contracts\View\View;
-use Illuminate\View\ComponentAttributeBag;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\View\ComponentSlot;
 use njpanderson\Braid\Contracts\PatternDefinition;
-use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 use njpanderson\Braid\Services\BraidService;
 
 class BraidController
