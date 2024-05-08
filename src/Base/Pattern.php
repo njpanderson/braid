@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use njpanderson\Braid\Contracts\PatternDefinition as Contract;
 use njpanderson\Braid\Contracts\PatternContext as PatternContextContract;
 use njpanderson\Braid\Dictionaries\PatternContext;
+use njpanderson\Braid\Dictionaries\ScopedSlot;
 use njpanderson\Braid\Services\BraidService;
 
 abstract class Pattern implements Contract
@@ -66,11 +67,6 @@ abstract class Pattern implements Contract
         if ($data instanceof View)
             return $data;
 
-        // if (!isset($data['attributes']))
-        //     $data['attributes'] = [];
-
-        // $data['attributes'] = $this->formatAttributes($data['attributes']);
-
         return $data;
     }
 
@@ -95,6 +91,16 @@ abstract class Pattern implements Contract
             attributes: $attributes,
             slot: $slot,
             scopedSlots: $scopedSlots
+        );
+    }
+
+    public function makeScopedSlot(
+        string|null $slot = null,
+        array $attributes = []
+    ) {
+        return new ScopedSlot(
+            slot: $slot,
+            attributes: $attributes
         );
     }
 

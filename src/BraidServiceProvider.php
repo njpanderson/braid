@@ -55,6 +55,8 @@ final class BraidServiceProvider extends ServiceProvider
             return new $patternClass;
         });
 
+        // TODO: Replace with conventional autoloader?
+        // https://laravel.com/docs/11.x/packages#autoloading-package-components
         Blade::component('braid-toolbutton', ToolButton::class);
         Blade::component('braid-elements.definitionlist', DefinitionList::class);
 

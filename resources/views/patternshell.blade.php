@@ -10,8 +10,11 @@
                     :component="$componentView->name"
                     :attributes="$context->getAttributes()"
                 >
-                    @foreach($context->getScopedSlots() as $slotName => $slotValue)
-                        <x-slot :name="$slotName">{!! $slotValue !!}</x-slot>
+                    @foreach($context->getScopedSlots() as $slotName => $slot)
+                        {{-- TODO: This works! But it needs to use the slot's attributes, not the whole Pattern context --}}
+                        @slot($slotName, null, $slot->getAttributesArray())
+                            {!! $slot->getSlot() !!}
+                        @endslot
                     @endforeach
 
                     {!! $context->getSlot() !!}
