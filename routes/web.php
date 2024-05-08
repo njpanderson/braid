@@ -36,6 +36,6 @@ Route::prefix('braid')->middleware([
     ])
         ->name('braid.patterntools');
 
-    Route::get('/pattern/{patternId}/{contextId?}', [BraidController::class, 'pattern'])
+    Route::get('/pattern/{braidPattern}/{contextId?}', [BraidController::class, 'pattern'])
         ->name('braid.pattern');
 });

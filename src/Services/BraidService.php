@@ -9,6 +9,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Route;
 
 use njpanderson\Braid\Contracts\PatternContext;
 use njpanderson\Braid\Contracts\PatternDefinition;
@@ -98,31 +99,27 @@ class BraidService
         ];
     }
 
-    public function getIDFromPath(string $path)
-    {
-        $path = str_replace($this->patternsPath, '', $path);
-        $path = preg_replace('/\.php$/', '', $path);
-        $path = trim($path, '/');
-        $path = str_replace('/', ':', $path);
-        $id = Str::lower($path);
-
-        return $id;
-    }
-
-    public function getJsPatternMapId(string $id, ?string $context = '')
-    {
-        return $id . (!empty($context) ? '.' . $context : '');
-    }
-
     public function getRoute(
         string $id,
         ?string $context = '',
         string $route = 'braid.pattern'
     ) {
         return route($route, [
-            'patternId' => $id,
+            'braidPattern' => $id,
             'contextId' => $context
         ]);
+    }
+
+    public function getPatternClassFromRoute(): string
+    {
+        $route = Route::current();
+
+        if (!$route->hasParameter('braidPattern'))
+            return '';
+
+        $pattern = $route->parameter('braidPattern');
+
+        return get_class($pattern);
     }
 
     public function getContext(
@@ -173,15 +170,12 @@ class BraidService
                 'items' => collect(
                     $this->files->files($root)
                 )->map(function($file) {
-                    $id = $this->getIDFromPath($file->getRealPath());
                     $contexts = [];
-
-                    try {
-                        $patternClass = $this->getPatternClass($id);
-                    } catch (\Exception $error) { return; }
+                    $patternClass = $this->pathToNamespace($file->getRealPath());
 
                     /** @var \njpanderson\Braid\Contracts\PatternDefinition */
                     $patternClass = new $patternClass();
+                    $id = $patternClass->getId();
 
                     if ($patternClass)
                         $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
@@ -232,6 +226,11 @@ class BraidService
         return call_user_func($this->authorizeCallback);
     }
 
+    public function getPatternsPath()
+    {
+        return $this->patternsPath;
+    }
+
     private function getThemeColours($theme = 'orange') {
         if (!$this->themeColors)
             $this->themeColors = require_once($this->resourcesPath . '/themes.php');
@@ -254,6 +253,16 @@ class BraidService
     {
         $prefix = $prefix ?? base_path() . '/';
         return $prefix . str_replace('\\', '/', $namespace);
+    }
+
+    private function pathToNamespace(string $path)
+    {
+        $path = str_replace(base_path(), '', $path);
+        $path = preg_replace('/\.php$/', '', $path);
+        $path = trim($path, '/');
+        $path = str_replace('/', '\\', $path);
+
+        return $path;
     }
 
     private function getDirectoryHash(string $path, int $level = 0): string

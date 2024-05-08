@@ -22,6 +22,12 @@
             <div class="flex items-center gap-x-2 ml-auto">
                 <x-braid-toolbutton
                     icon="arrow-top-right-on-square"
+                    title="{{ __('Reload pattern') }}"
+                    @click="reloadPattern"
+                />
+
+                <x-braid-toolbutton
+                    icon="arrow-top-right-on-square"
                     title="{{ __('Open in new window or tab') }}"
                     @click="openPatternInNewWindow"
                 />

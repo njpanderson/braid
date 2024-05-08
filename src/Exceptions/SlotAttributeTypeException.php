@@ -2,10 +2,9 @@
 
 namespace njpanderson\Braid\Exceptions;
 
-// use njpanderson\Braid\Base\BraidException;
-use \Exception;
+use njpanderson\Braid\Base\BraidException;
 
-class SlotAttributeTypeException extends Exception
+class SlotAttributeTypeException extends BraidException
 {
     public function __construct(
         public string $attrName,

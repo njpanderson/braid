@@ -10,7 +10,6 @@
         ])
     @else
         @include('braid::error', [
-            'patternClassName' => $patternClassName,
             'error' => new njpanderson\Braid\Exceptions\MissingViewException(
                 $componentView->name
             )

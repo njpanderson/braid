@@ -2,9 +2,9 @@
 
 namespace njpanderson\Braid\Exceptions;
 
-use \Exception;
+use njpanderson\Braid\Base\BraidException;
 
-class MissingViewException extends Exception
+class MissingViewException extends BraidException
 {
     public function __construct(
         public string $viewName

@@ -18,6 +18,8 @@ abstract class Pattern implements Contract
 {
     private BraidService $service;
 
+    protected string $id = '';
+
     /** @var array */
     protected $contexts = [];
 
@@ -39,6 +41,7 @@ abstract class Pattern implements Contract
     ) {
         $this->service = App::make(BraidService::class);
 
+        $this->id = $this->setId();
         $this->prepareContexts();
     }
 
@@ -132,5 +135,27 @@ abstract class Pattern implements Contract
     {
         if (!in_array('default', $this->contexts))
             array_unshift($this->contexts, 'default');
+    }
+
+    public function setId(): string
+    {
+        $id = static::class;
+        $id = str_replace($this->service->patternsNamespace, '', $id);
+        $id = trim($id, '\\');
+        $id = str_replace('\\', ':', $id);
+        $id = Str::lower($id);
+
+        return $id;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    // TODO: This needs to be on the pattern ($id comes from function above!)
+    public function getJsMapId(?string $context = ''): string
+    {
+        return $this->id . (!empty($context) ? '.' . $context : '');
     }
 }

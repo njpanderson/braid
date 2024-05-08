@@ -2,9 +2,9 @@
 
 namespace njpanderson\Braid\Exceptions;
 
-use \Exception;
+use njpanderson\Braid\Base\BraidException;
 
-class PatternContextViewNotFoundException extends Exception
+class PatternContextViewNotFoundException extends BraidException
 {
     public function __construct(
         public string $path

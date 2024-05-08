@@ -2,9 +2,9 @@
 
 namespace njpanderson\Braid\Exceptions;
 
-use \Exception;
+use njpanderson\Braid\Base\BraidException;
 
-class UnknownPatternClassException extends Exception
+class UnknownPatternClassException extends BraidException
 {
     public function __construct(
         public string $className
