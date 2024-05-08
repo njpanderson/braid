@@ -2,7 +2,11 @@
 
 namespace njpanderson\Braid\Traits;
 
+use Exception;
+use Illuminate\Support\Collection;
+
 use Illuminate\View\ComponentAttributeBag;
+use njpanderson\Braid\Exceptions\SlotAttributeTypeException;
 
 trait HasAttributes {
     protected array $attributes = [];
@@ -12,8 +16,22 @@ trait HasAttributes {
         return new ComponentAttributeBag($this->attributes);
     }
 
-    public function setAttributes(array $attributes = [])
-    {
+    public function setAttributes(
+        array $attributes = [],
+        $enforceScalars = false
+    ) {
+        if ($enforceScalars) {
+            (new Collection($attributes))->each(function($attr, $name) {
+                if (!is_scalar($attr)) {
+                    throw new SlotAttributeTypeException(
+                        $name,
+                        $attr,
+                        'string'
+                    );
+                }
+            });
+        }
+
         $this->attributes = $attributes;
     }
 

@@ -9,6 +9,8 @@ class UnknownPatternClassException extends Exception
     public function __construct(
         public string $className
     ) {
-        parent::__construct();
+        parent::__construct(
+            "Pattern class {$className} could not be found."
+        );
     }
 }

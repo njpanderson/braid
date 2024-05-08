@@ -5,7 +5,7 @@ namespace njpanderson\Braid\PatternTools;
 use Illuminate\Contracts\View\View;
 use njpanderson\Braid\Base\PatternTool;
 use njpanderson\Braid\Contracts\PatternDefinition;
-use njpanderson\Braid\Exceptions\PatternContextViewNotFound;
+use njpanderson\Braid\Exceptions\PatternContextViewNotFoundException;
 
 class Context extends PatternTool
 {
@@ -22,7 +22,7 @@ class Context extends PatternTool
             $contextDataPath = $contextData->getPath();
 
             if (!file_exists($contextDataPath))
-                throw new PatternContextViewNotFound($contextDataPath);
+                throw new PatternContextViewNotFoundException($contextDataPath);
 
             $contextData = file_get_contents($contextDataPath);
         }

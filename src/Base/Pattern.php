@@ -104,11 +104,6 @@ abstract class Pattern implements Contract
         );
     }
 
-    // public function formatAttributes(array $attributes)
-    // {
-    //     return new ComponentAttributeBag($attributes);
-    // }
-
     public function hasContext(string $context): bool
     {
         return in_array($context, $this->contexts);

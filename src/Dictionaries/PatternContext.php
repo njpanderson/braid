@@ -2,8 +2,6 @@
 
 namespace njpanderson\Braid\Dictionaries;
 
-// use Illuminate\View\Compilers\BladeCompiler;
-
 use njpanderson\Braid\Contracts\PatternContext as Contract;
 use njpanderson\Braid\Traits\HasAttributes;
 use njpanderson\Braid\Traits\HasSlot;
@@ -20,8 +18,6 @@ class PatternContext implements Contract
         string|null $slot = null,
         array $scopedSlots = []
     ) {
-        // TODO: Investigate if this is needed/useful on attrs
-        // BladeCompiler::sanitizeComponentAttribute()
         $this->setAttributes($attributes);
         $this->setSlot($slot);
         $this->setScopedSlots($scopedSlots);

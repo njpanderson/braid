@@ -9,6 +9,8 @@ class MissingViewException extends Exception
     public function __construct(
         public string $viewName
     ) {
-        parent::__construct();
+        parent::__construct(
+            "The view {$viewName} could not be found."
+        );
     }
 }
