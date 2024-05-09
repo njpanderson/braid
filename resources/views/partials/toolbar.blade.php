@@ -21,7 +21,7 @@
 
             <div class="flex items-center gap-x-2 ml-auto">
                 <x-braid-toolbutton
-                    icon="arrow-top-right-on-square"
+                    icon="arrow-path-rounded-square"
                     title="{{ __('Reload pattern') }}"
                     @click="reloadPattern"
                 />

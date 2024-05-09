@@ -56,12 +56,16 @@ export default () => ({
 
         this._loaded = event.detail.patternMapId;
 
+        console.debug('Pattern loaded', this._loaded);
+
         this.$dispatch('patternloaded', {
             loadedPattern: this.loadedPattern
         });
     },
 
     onPatternUnLoaded(event) {
+        console.debug('Pattern unloaded', this._loaded);
+
         this._loaded = null;
 
         this.$dispatch('patternunloaded', {
@@ -98,6 +102,18 @@ export default () => ({
 
         if (this.patternMap[id])
             this._active = id;
+    },
+
+    reloadPattern() {
+        const src = this.$refs.patternCanvasFrame.src;
+
+        const onloaded = () => {
+            this.$refs.patternCanvasFrame.src = src;
+            this.$refs.patternCanvasFrame.removeEventListener('load', onloaded);
+        };
+
+        this.$refs.patternCanvasFrame.addEventListener('load', onloaded);
+        this.$refs.patternCanvasFrame.src = 'about:blank';
     },
 
     openPatternInNewWindow(event) {
