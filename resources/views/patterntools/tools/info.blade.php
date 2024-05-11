@@ -2,15 +2,18 @@
     :items="[[
         'label' => 'Patern',
         'icon' => 'document',
-        'value' => $pattern->getLabel()
+        'value' => $pattern->getLabel(),
+        'clip' => true
     ], [
         'label' => 'Context',
         'icon' => 'adjustments-vertical',
-        'value' => $contextId ? $contextId : null
+        'value' => $contextId ? $contextId : null,
+        'clip' => true
     ], [
         'label' => 'Component',
         'icon' => 'code-bracket-square',
-        'value' => $pattern->getComponentClass()
+        'value' => $pattern->getComponentClass(),
+        'clip' => true
     ]]"
     item-classes="px-2"
 />

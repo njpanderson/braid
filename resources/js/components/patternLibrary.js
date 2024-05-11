@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as clipboard from "clipboard-polyfill";
 
 import events from '../lib/events';
 import DraggableGrid from '../utils/DraggableGrid';
@@ -64,6 +65,8 @@ export default () => ({
             this.draggables.patternCanvas.sizeContainer();
         });
 
+        events.on(document.body, 'click', '[data-clip]', this.onClip.bind(this));
+
         this.storeCanvasWidth();
     },
 
@@ -100,6 +103,19 @@ export default () => ({
         }, 2000);
 
         this.storeCanvasWidth();
+    },
+
+    onClip(event, element) {
+        const clipData = element.dataset.clip ?? '';
+
+        if (clipData) {
+            clipboard.writeText(clipData);
+            element.classList.add('ring-primary-600');
+
+            window.setTimeout(() => {
+                element.classList.remove('ring-primary-600');
+            }, 700);
+        }
     },
 
     createPatternMap(data) {

@@ -15,12 +15,21 @@
             @endif
             {{ $item['label'] }}
         </dt>
+
         <dd
             @class([
-                'font-mono py-1',
+                'flex items-center font-mono py-1',
                 'bg-neutral-200 dark:bg-neutral-700' => $loop->even,
                 $itemClasses
             ])
-        >{{ $item['value'] }}</dd>
+        >
+            @if ($item['clip'])
+                <x-braid-elements.clipboard
+                    class="mr-1"
+                    clip="{{ $item['clip'] === true ? $item['value'] : $item['clip'] }}"
+                />
+            @endif
+            {{ $item['value'] }}
+        </dd>
     @endforeach
 </dl>
