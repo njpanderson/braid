@@ -231,6 +231,32 @@ class BraidService
         return $this->patternsPath;
     }
 
+    public function getResponseSizes()
+    {
+        if (!config('braid.response_sizes.enabled'))
+            return [];
+
+        $sizes = collect();
+
+        // Convert to a numeric indexed array
+        foreach(config('braid.response_sizes.sizes') as $label => $size) {
+            $sizes->push(['label' => $label, 'size' => $size]);
+        }
+
+        // Add ranges for applicable points
+        $sizes = $sizes->map(function($size, $index) use ($sizes) {
+            return (object) [
+                'range' => ($index < count($sizes) - 1 ? [
+                    $size['size'] + 1,
+                    ($sizes->get($index + 1)['size'] - 1)
+                ] : null),
+                ...$size
+            ];
+        });
+
+        return $sizes;
+    }
+
     private function getThemeColours($theme = 'orange') {
         if (!$this->themeColors)
             $this->themeColors = require_once($this->resourcesPath . '/themes.php');

@@ -10,9 +10,6 @@
             ->useBuildDirectory(config('braid.vendor_path') . '/build')
     }}
 
-    @section('head')
-    @show
-
     @vite('resources/css/braid.css')
 </head>
 <body class="min-h-[100vh] theme-{{ config('braid.theme.colour') }} font-lato">
@@ -20,6 +17,17 @@
         @yield('main')
     </main>
 
-    @vite('resources/js/braid.js')
+    <script>
+        const events = [
+            'braidcanvasresize'
+        ].map((eventName) => {
+            const event = new Event(eventName);
+            return event;
+        });
+
+        window.addEventListener('resize', () => {
+            window.parent.dispatchEvent(events[0]);
+        });
+    </script>
 </body>
 </html>

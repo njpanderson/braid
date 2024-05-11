@@ -1,4 +1,4 @@
-@extends('braid::layouts.default')
+@extends('braid::layouts.pages.standard')
 
 @section('main')
     <div class="flex min-h-[100vh] items-center justify-center dark:bg-neutral-800">

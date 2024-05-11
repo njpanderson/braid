@@ -13,6 +13,16 @@ return [
         'colour' => 'wheat'
     ],
 
+    'response_sizes' => [
+        'enabled' => true,
+        'sizes' => [
+            'sm' => 640,
+            'md' => 768,
+            'lg' => 1024,
+            'xl' => 1280
+        ]
+    ],
+
     // Public path to the Braid vendor folder, change this only if you need to.
     'vendor_path' => 'vendor/braid',
 

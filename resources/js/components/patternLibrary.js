@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import events from '../lib/events';
 import DraggableGrid from '../utils/DraggableGrid';
 
 export default () => ({
@@ -15,13 +16,23 @@ export default () => ({
 
     init() {
         this.uiState = {
-            menuOpen: true
+            menuOpen: true,
+            canvas: {
+                resizing: false,
+                width: 0
+            }
         };
 
         this._active = null;
         this._loaded = null;
         this.patterns = {};
         this.patternMap = {};
+
+        // Obtain config from index file js payload
+        this.config = Object.assign({
+            theme: { color: 'wheat' },
+            response_sizes: { enabled: false, sizes: [] },
+        }, BRAID.config ?? {});
 
         // Get and store menu data
         axios.get('/braid/menu')
@@ -33,9 +44,14 @@ export default () => ({
         this.draggables = {
             patternCanvas: new DraggableGrid(document.querySelector('[x-ref="patternCanvas"]'))
                 .onStart(() => {
+                    // Prevent pointer from slipping into the pattern frame
                     this.$refs.patternCanvasFrame.style.pointerEvents = 'none';
+
+                    // Clear the pattern canvas height to avoid it preventing sizing of the panel
+                    this.$refs.patternCanvasOuter.style.height = null;
                 }, this)
                 .onEnd(() => {
+                    // Restore iframe pointer abilities
                     this.$refs.patternCanvasFrame.style.pointerEvents = 'auto';
                 }, this)
         };
@@ -47,6 +63,8 @@ export default () => ({
             // Set the pattern canvas/toolbar size to previously dragged size (if any)
             this.draggables.patternCanvas.sizeContainer();
         });
+
+        this.storeCanvasWidth();
     },
 
     onPatternLoaded(event) {
@@ -64,13 +82,24 @@ export default () => ({
     },
 
     onPatternUnLoaded(event) {
-        console.debug('Pattern unloaded', this._loaded);
+        console.debug('Pattern unloaded', event.detail.patternMapId);
 
         this._loaded = null;
 
         this.$dispatch('patternunloaded', {
             unLoadedPattern: event.detail.patternMapId
         });
+    },
+
+    onCanvasResize() {
+        if (this.uiState.canvas.resizing)
+            window.clearTimeout(this.uiState.canvas.resizing);
+
+        this.uiState.canvas.resizing = window.setTimeout(() => {
+            this.uiState.canvas.resizing = null;
+        }, 2000);
+
+        this.storeCanvasWidth();
     },
 
     createPatternMap(data) {
@@ -121,6 +150,31 @@ export default () => ({
             return false;
 
         window.open(this.activePattern.url, '_blank');
+    },
+
+    setCanvasWidth(size = null) {
+        if (size === null || size === this.$refs.patternCanvasOuter.offsetWidth) {
+            this.$refs.patternCanvasOuter.style.width = null;
+            return;
+        }
+
+        this.$refs.patternCanvasOuter.style.width = size + 'px';
+
+        this.storeCanvasWidth();
+    },
+
+    storeCanvasWidth() {
+        this.uiState.canvas.width = this.$refs.patternCanvasOuter.offsetWidth;
+    },
+
+    getCanvasRangeClasses(min, max = null, inClasses = '', outClasses = '') {
+        if (max === null)
+            max = min;
+
+        return (
+            this.uiState.canvas.width >= min &&
+            this.uiState.canvas.width <= max
+        ) ? inClasses : outClasses;
     },
 
     toggleMenuItem(event) {

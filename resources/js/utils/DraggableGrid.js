@@ -99,16 +99,21 @@ export default class DraggableGrid {
 
         this.fireCallbacks('end', event);
 
+        // Shorten vars for reuse
         const min = this.options.minSize;
         const max = this.options.maxSize;
 
+        // Determine amount of movement between start and end
         if (Math.abs(this.state.currentSize - this.state.startSize) < 5) {
             // Toggle the canvas size if click was without (much) movement
-            if (this.state.startSize == min) {
+            if (max && this.state.startSize == min) {
+                // Max height exists and element is at minimum
                 this.sizeContainer(max);
-            } else if (this.state.startSize == max) {
+            } else if (min && this.state.startSize == max) {
+                // Max height exists and element is at maximum
                 this.sizeContainer(min);
             } else {
+                // Element is somewhere in between
                 this.sizeContainer(
                     this.state.startSize >= (max / 2) ?
                         max : min
@@ -116,7 +121,7 @@ export default class DraggableGrid {
             }
         } else {
             // Otherwise, snap within x pixels
-            if (this.state.currentSize >= (max - (max * 0.10))) {
+            if (max && this.state.currentSize >= (max - (max * 0.10))) {
                 this.sizeContainer(max);
             } else if (this.state.currentSize <= (min + (min * 0.50))) {
                 this.sizeContainer(min);
@@ -155,7 +160,9 @@ export default class DraggableGrid {
 
         if (
             constraints &&
-            (size < this.options.minSize || size > this.options.maxSize)
+            (size < this.options.minSize || (
+                this.options.maxSize && size > this.options.maxSize
+            ))
         ) {
             return;
         }

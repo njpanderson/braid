@@ -32,16 +32,24 @@
 
     @if (isset($patternMapId))
         <script>
-            const patternloaded = new Event('braidpatternloaded');
-            patternloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
+            const events = [
+                'braidpatternloaded',
+                'braidpatternunloaded',
+                'braidcanvasresize'
+            ].map((eventName) => {
+                const event = new Event(eventName);
+                event.detail = { patternMapId: '{{ $patternMapId ?? '' }}' };
+                return event;
+            });
 
-            window.parent.dispatchEvent(patternloaded);
+            window.parent.dispatchEvent(events[0]);
 
-            const patternunloaded = new Event('braidpatternunloaded');
-            patternunloaded.detail = { patternMapId: '{{ $patternMapId ?? '' }}' }
+            window.addEventListener('unload', () => {
+                window.parent.dispatchEvent(events[1]);
+            });
 
-            window.addEventListener('unload', function() {
-                window.parent.dispatchEvent(patternunloaded);
+            window.addEventListener('resize', () => {
+                window.parent.dispatchEvent(events[2]);
             });
         </script>
     @endif

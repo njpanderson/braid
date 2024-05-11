@@ -1,10 +1,23 @@
 @extends('braid::layouts.default')
 
+@section('head')
+    {{-- This is a configuration payload from the braid Laravel config --}}
+    <script>
+        const BRAID = {
+            config: {
+                'theme': { colour: '{{ config('braid.theme.colour') }}' },
+                'response_sizes': {!! collect(config('braid.response_sizes'))->toJson() !!}
+            }
+        }
+    </script>
+@endsection
+
 @section('main')
     <div
         x-data="patternLibrary"
         x-on:braidpatternloaded.window="onPatternLoaded"
         x-on:braidpatternunloaded.window="onPatternUnLoaded"
+        x-on:braidcanvasresize.window.throttle.50ms="onCanvasResize"
         class="h-[100vh] bg-gradient-to-b from-primary-300 to-primary-400 dark:from-primary-600 dark:to-primary-700 dark:text-white"
     >
         <section class="grid h-full transition-all"
@@ -14,7 +27,8 @@
             }"
         >
             <div
-                class="grid grid-rows-[50px_1fr] overflow-hidden relative transition-opacity"
+                id="braid-menu"
+                class="grid grid-rows-[50px_1fr] overflow-hidden relative transition-opacity select-none"
                 :class="{
                     'opacity-0': !uiState.menuOpen,
                     'opacity-100': uiState.menuOpen,
@@ -47,23 +61,30 @@
                 </menu>
             </div>
 
-            <div class="grid grid-rows-[50px_1fr] rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800">
+            <div id="braid-content" class="grid grid-rows-[50px_1fr] rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800">
                 @include('braid::partials.toolbar')
 
                 <div
                     x-ref="patternCanvas"
-                    class="grid overflow-hidden"
+                    class="grid overflow-hidden bg-primary-100"
                     data-draggable-direction="vertical"
                     data-draggable-template="1fr minmax(0px, <value>)"
                     data-draggable-initial="240"
                     data-draggable-min="40"
-                    data-draggable-max="400"
                 >
-                    <iframe
-                        :src="activePattern.url"
-                        class="w-full h-full overflow-auto bg-white"
-                        x-ref="patternCanvasFrame"
-                    ></iframe>
+                    <div class="w-full h-full overflow-x-auto">
+                        <div
+                            x-ref="patternCanvasOuter"
+                            class="w-full h-full resize-x border-[3px] border-accent-100 hover:border-accent-200 overflow-hidden"
+                        >
+                            <iframe
+                                src="about:blank"
+                                :src="activePattern.url"
+                                class="w-full h-full overflow-auto bg-white"
+                                x-ref="patternCanvasFrame"
+                            ></iframe>
+                        </div>
+                    </div>
 
                     <div x-show="loadedPattern">
                         @include('braid::patterntools.index')
