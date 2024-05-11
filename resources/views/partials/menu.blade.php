@@ -57,7 +57,7 @@
                 @else
                     <span class="flex font-medium">
                         @include('braid::partials.menubutton', [
-                            'icon' => 'document',
+                            'icon' => $item['icon'],
                             'patternId' => $item['id'],
                             'label' => $item['label']
                         ])

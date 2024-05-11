@@ -45,7 +45,7 @@
                 </ul>
 
                 <span
-                    class="ml-2 min-w-[7ch] rounded text-white py-1 text-sm text-center"
+                    class="transition-colors duration-300 ml-2 min-w-[7ch] rounded text-white py-1 text-sm text-center"
                     :class="{
                         'bg-neutral-500': !uiState.canvas.resizing,
                         'bg-accent-700': uiState.canvas.resizing

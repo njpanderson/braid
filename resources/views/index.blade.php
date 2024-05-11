@@ -66,7 +66,7 @@
 
                 <div
                     x-ref="patternCanvas"
-                    class="grid overflow-hidden bg-primary-100"
+                    class="grid overflow-hidden bg-primary-100 dark:bg-neutral-700"
                     data-draggable-direction="vertical"
                     data-draggable-template="1fr minmax(0px, <value>)"
                     data-draggable-initial="240"
@@ -75,7 +75,10 @@
                     <div class="w-full h-full overflow-x-auto">
                         <div
                             x-ref="patternCanvasOuter"
-                            class="w-full h-full resize-x border-[3px] border-accent-100 hover:border-accent-200 overflow-hidden"
+                            class="w-full h-full resize-x border-[3px] border-accent-100 dark:border-accent-400 hover:border-accent-200 dark:hover:border-accent-300 overflow-hidden"
+                            :class="{
+                                'rounded-bl-[15px]': !loadedPattern
+                            }"
                         >
                             <iframe
                                 src="about:blank"

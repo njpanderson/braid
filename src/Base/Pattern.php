@@ -37,6 +37,17 @@ abstract class Pattern implements Contract
      */
     protected string $viewName = '';
 
+    /**
+     * The icon of the pattern.
+     *
+     * The "outline" group from heroicons should be referenced when defining
+     * an icon.
+     *
+     * @var string
+     * @see https://heroicons.com/
+     */
+    protected string $icon = 'document';
+
     public function __construct(
     ) {
         $this->service = App::make(BraidService::class);
@@ -151,6 +162,11 @@ abstract class Pattern implements Contract
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon ?? 'document';
     }
 
     // TODO: This needs to be on the pattern ($id comes from function above!)

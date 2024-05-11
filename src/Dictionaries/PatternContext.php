@@ -22,4 +22,12 @@ class PatternContext implements Contract
         $this->setSlot($slot);
         $this->setScopedSlots($scopedSlots);
     }
+
+    public function hasContextData() {
+        return (
+            (isset($this->attributes) && !empty($this->attributes)) ||
+            (isset($this->slot) && !empty($this->slot)) ||
+            (isset($this->scopedSlots) && !empty($this->scopedSlots))
+        );
+    }
 }

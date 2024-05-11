@@ -192,6 +192,7 @@ class BraidService
                     return [
                         'type' => 'file',
                         'label' => $patternLabel,
+                        'icon' => $patternClass->getIcon(),
                         'path' => $file->getRealPath(),
                         'id' => $id,
                         'contexts' => $contexts,

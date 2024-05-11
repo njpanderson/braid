@@ -1,4 +1,4 @@
-@if ($context instanceof \njpanderson\Braid\Dictionaries\PatternContext)
+@if ($context instanceof \njpanderson\Braid\Dictionaries\PatternContext && $context->hasContextData())
     {{-- Show as object data --}}
     <div class="grid grid-cols-[max-content_1fr]">
         <x-braid::tools.context.header>
