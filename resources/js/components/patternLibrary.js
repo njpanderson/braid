@@ -20,7 +20,9 @@ export default () => ({
             menuOpen: true,
             canvas: {
                 resizing: false,
-                width: 0
+                width: 0,
+                widthOffset: this.$refs.patternCanvasOuter.offsetWidth -
+                    this.$refs.patternCanvasOuter.clientWidth
             }
         };
 
@@ -169,18 +171,18 @@ export default () => ({
     },
 
     setCanvasWidth(size = null) {
-        if (size === null || size === this.$refs.patternCanvasOuter.offsetWidth) {
+        if (size === null || size === this.$refs.patternCanvasOuter.clientWidth) {
             this.$refs.patternCanvasOuter.style.width = null;
             return;
         }
 
-        this.$refs.patternCanvasOuter.style.width = size + 'px';
+        this.$refs.patternCanvasOuter.style.width = (size + this.uiState.canvas.widthOffset) + 'px';
 
         this.storeCanvasWidth();
     },
 
     storeCanvasWidth() {
-        this.uiState.canvas.width = this.$refs.patternCanvasOuter.offsetWidth;
+        this.uiState.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
     },
 
     getCanvasRangeClasses(min, max = null, inClasses = '', outClasses = '') {
