@@ -29,8 +29,8 @@
                                 id="braid-toolbar-response-size-{{ $index }}"
                                 class="px-2 py-1 border border-neutral-400 rounded-md hover:bg-accent-300"
                                 :class="getCanvasRangeClasses({{ $size->size }}, null, 'bg-accent-500 text-white border-accent-600')"
-                                @click="setCanvasWidth({{ $size->size }})"
-                                title="{{ __('Switch canvas size to') . ' ' . $size->size . 'px' }}"
+                                x-on:click="setCanvasWidth({{ $size->size }})"
+                                data-tooltip="{{ __('Switch canvas size to') . ' ' . $size->size . 'px' }}"
                             >{{ $size->label }}</button>
                         </li>
                         @if(!$loop->last)
@@ -58,13 +58,13 @@
             <div class="flex items-center ml-auto gap-x-2">
                 <x-braid-toolbutton
                     icon="arrow-path-rounded-square"
-                    title="{{ __('Reload pattern') }}"
+                    data-tooltip="{{ __('Reload pattern') }}"
                     @click="reloadPattern"
                 />
 
                 <x-braid-toolbutton
                     icon="arrow-top-right-on-square"
-                    title="{{ __('Open in new window or tab') }}"
+                    data-tooltip="{{ __('Open in new window or tab') }}"
                     @click="openPatternInNewWindow"
                 />
             </div>

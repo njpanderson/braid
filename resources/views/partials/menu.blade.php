@@ -23,7 +23,12 @@
                     <button
                         class="w-full px-1 rounded-md group"
                         @click="toggle"
-                        title="{{ __('Open/close folder (hold alt/opt to close all descendents)') }}"
+                        data-tooltip="{{
+                            __('Open/close folder ') .
+                            '<i class="block text-xs">' .
+                            __('hold alt/opt to close all descendents') .
+                            '</i>'
+                        }}"
                     >
                         <span class="flex items-center gap-1 text-neutral-700 dark:text-neutral-100 py-1">
                             @if (!$dir['level'])

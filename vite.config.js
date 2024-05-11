@@ -8,7 +8,7 @@ export default defineConfig({
         // Laravel vite plugin allows for referenccing in
         // resources/views/layouts/default.blade.php
         laravel([
-            'resources/css/braid.css',
+            'resources/css/braid.scss',
             'resources/js/braid.js',
         ]),
     ],

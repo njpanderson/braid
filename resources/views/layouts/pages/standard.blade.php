@@ -10,7 +10,7 @@
             ->useBuildDirectory(config('braid.vendor_path') . '/build')
     }}
 
-    @vite('resources/css/braid.css')
+    @vite('resources/css/braid.scss')
 </head>
 <body class="min-h-[100vh] theme-{{ config('braid.theme.colour') }} font-lato">
     <main class="min-h-[100vh]">
