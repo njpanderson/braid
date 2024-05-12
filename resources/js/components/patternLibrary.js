@@ -78,7 +78,9 @@ export default () => ({
 
         eventBus
             .bind('toolbar:button:reload-pattern', this.reloadPattern.bind(this))
-            .bind('toolbar:button:open-new-window', this.openPatternInNewWindow.bind(this));
+            .bind('toolbar:button:open-new-window', this.openPatternInNewWindow.bind(this))
+            .bind('toolbar:button:set-canvas-width', this.onSetCanvasWidth.bind(this))
+            .bind('toolbar:submit-canvas-width', this.onSubmitCanvasWidth.bind(this));
 
         events.on(document.body, 'click', '[data-clip]', this.onClip.bind(this));
     },
@@ -131,6 +133,15 @@ export default () => ({
                 element.classList.add('ring-transparent');
             }, 700);
         }
+    },
+
+    onSetCanvasWidth(event) {
+        this.setCanvasWidth(event.detail);
+    },
+
+    onSubmitCanvasWidth(event) {
+        this.setCanvasWidth(event.originalEvent.target.value, false);
+        event.originalEvent.target.select();
     },
 
     createPatternMap(data) {

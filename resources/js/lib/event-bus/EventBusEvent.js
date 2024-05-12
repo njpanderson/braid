@@ -1,11 +1,14 @@
 export default class EventBusEvent extends Event {
-    constructor(type, detail) {
+    constructor(type, detail, originalEvent = undefined) {
         super(type, {
             bubbles: false,
             cancelable: false,
             composed: false
         });
 
-        this.detail = detail;
+        if (detail)
+            this.detail = detail;
+
+        this.originalEvent = originalEvent;
     }
 }

@@ -32,7 +32,7 @@
                                 id="braid-toolbar-response-size-{{ $index }}"
                                 class="px-2 py-1 border border-neutral-400 rounded-md hover:bg-accent-300"
                                 :class="getCanvasRangeClasses({{ $size->size }}, null, 'bg-accent-500 text-white border-accent-600')"
-                                x-on:click="setCanvasWidth({{ $size->size }})"
+                                @click="fire('button:set-canvas-width', '{{ $size->size }}')"
                                 data-tooltip="{{ __('Switch canvas size to') . ' ' . $size->size . 'px' }}"
                             >{{ $size->label }}</button>
                         </li>
@@ -57,7 +57,8 @@
                     <input
                         :size="getCanvasResizeInputSize()"
                         x-model="store.canvas.resizeInputValue"
-                        @keyup.enter="setCanvasWidth($event.target.value, false)"
+                        @keyup.enter="fire('submit-canvas-width', null, $event)"
+                        @keyup.esc="$event.target.blur()"
                         @focus="$event.target.select()"
                         class="bg-transparent outline-none text-center"
                         maxlength="4"

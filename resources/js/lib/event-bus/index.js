@@ -88,14 +88,15 @@ class EventBus {
      * Fire an event by name, optionally sending data arguments
      * @param {string} event - Event name
      * @param {*} - Extra data to add to the EventBusevent.detail property
+     * @param {Event} originalEvent - Original DOM event name, if set
      * @returns EventBus
      */
-    fire(event, detail) {
+    fire(event, detail = null, originalEvent = undefined) {
         debug.groupCollapsed(`🚌 EventBus - ${event} (firing ${
             (this.listeners[event] ? this.listeners[event].handlers.length : 0)
         } handler(s))`);
 
-        debug.log(detail);
+        if (detail) debug.log(detail);
         debug.groupEnd();
 
         if (!(this.listeners[event]))
@@ -108,7 +109,8 @@ class EventBus {
             // as well as the handler arguments
             handler(new EventBusEvent(
                 event,
-                detail
+                detail,
+                originalEvent
             ));
         });
 
