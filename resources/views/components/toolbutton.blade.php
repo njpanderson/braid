@@ -1,5 +1,8 @@
 <button
     class="flex items-center p-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 rounded"
+    @if ($toggleState)
+        :class="{ 'ring-2 ring-accent-400 dark:ring-accent-200': {{ $toggleState }} }"
+    @endif
     {{ $attributes }}
 >
     @svg('heroicon-o-' . ($icon ?? ''), $iconClass)

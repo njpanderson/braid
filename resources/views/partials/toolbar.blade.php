@@ -67,6 +67,7 @@
                 <x-braid::toolbutton
                     icon="bars-3-center-left"
                     icon-class="-rotate-90"
+                    toggle-state="uiState.ruler"
                     data-tooltip="{{ __('Toggle ruler') }}"
                     @click="toggleRuler"
                 />

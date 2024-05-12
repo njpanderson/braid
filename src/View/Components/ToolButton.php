@@ -15,7 +15,8 @@ class ToolButton extends Component {
     public function __construct(
         public string $icon = '',
         public bool $labelHidden = false,
-        string $iconClass = ''
+        public string $toggleState = '',
+        string $iconClass = '',
     ) {
         $this->iconClass = 'w-6 h-6' .
             ($iconClass ? ' ' . $iconClass : '');
