@@ -67,8 +67,8 @@
                 id="braid-content"
                 class="relative grid rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800"
                 :class="{
-                    'grid-rows-[50px_20px_1fr]': activePattern && uiState.ruler,
-                    'grid-rows-[50px_1fr]': !activePattern || !uiState.ruler
+                    'grid-rows-[50px_20px_1fr]': activePattern.id && uiState.ruler,
+                    'grid-rows-[50px_1fr]': !activePattern.id || !uiState.ruler
                 }"
             >
                 @include('braid::partials.toolbar')

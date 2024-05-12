@@ -2,7 +2,7 @@
 {{-- TODO: Add mark lines --}}
 <div
     class="w-full overflow-hidden bg-neutral-200"
-    x-show="activePattern && uiState.ruler"
+    x-show="activePattern.id && uiState.ruler"
 >
     <ul class="ruler-bg flex min-h-[23px] ml-[2px]">
         @for($a = 0; $a <= 2500; $a += 100)
