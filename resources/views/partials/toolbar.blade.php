@@ -1,10 +1,10 @@
 <div class="bg-neutral-200 dark:bg-neutral-600 dark:text-white flex items-center px-2 gap-x-2 border-b-2 border-neutral-300 dark:border-neutral-400">
-    <x-braid-toolbutton
+    <x-braid::toolbutton
         icon="arrow-right-start-on-rectangle"
         x-show="!uiState.menuOpen"
         @click="uiState.menuOpen = !uiState.menuOpen"
         label-hidden
-    >Open menu</x-braid-toolbutton>
+    >Open menu</x-braid::toolbutton>
 
     <template x-if="activePattern.id">
         <div class="flex w-full justify-between items-center gap-x-2">
@@ -64,20 +64,20 @@
             </div>
 
             <div class="flex items-center ml-auto gap-x-2">
-                <x-braid-toolbutton
+                <x-braid::toolbutton
                     icon="bars-3-center-left"
                     icon-class="-rotate-90"
                     data-tooltip="{{ __('Toggle ruler') }}"
                     @click="toggleRuler"
                 />
 
-                <x-braid-toolbutton
+                <x-braid::toolbutton
                     icon="arrow-path-rounded-square"
                     data-tooltip="{{ __('Reload pattern') }}"
                     @click="reloadPattern"
                 />
 
-                <x-braid-toolbutton
+                <x-braid::toolbutton
                     icon="arrow-top-right-on-square"
                     data-tooltip="{{ __('Open in new window or tab') }}"
                     @click="openPatternInNewWindow"

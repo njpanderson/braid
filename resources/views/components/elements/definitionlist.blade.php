@@ -24,7 +24,7 @@
             ])
         >
             @if ($item['clip'])
-                <x-braid-elements.clipboard
+                <x-braid::elements.clipboard
                     class="mr-1"
                     clip="{{ $item['clip'] === true ? $item['value'] : $item['clip'] }}"
                 />

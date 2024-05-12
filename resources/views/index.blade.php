@@ -38,7 +38,12 @@
                     <h1
                         class="px-2 text-2xl font-bold whitespace-nowrap text-primary-900 dark:text-primary-200"
                     >
-                        <button @click="switchPattern('__braid.welcome')">{{ config('braid.title') }}</button>
+                        <button
+                            @click="switchPattern('__braid.welcome')"
+                            class="hover:underline underline-offset-2"
+                        >
+                            {{ config('braid.title') }}
+                        </button>
                     </h1>
 
                     <button
@@ -73,7 +78,7 @@
             >
                 @include('braid::partials.toolbar')
 
-                <x-braid-elements.ruler/>
+                <x-braid::elements.ruler/>
 
                 <div
                     x-ref="patternCanvas"

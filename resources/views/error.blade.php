@@ -18,13 +18,18 @@
 
             @if ($error instanceof njpanderson\Braid\Exceptions\MissingViewException)
                 <p>The view <code>{{ $error->viewName }}</code> for this pattern could not be found.</p>
-                <p><b>Note:</b> if the pattern’s view is in a non-standard location, you can customise it with the following code in your pattern class:</p>
-                <pre class="">/**
+
+                <x-braid::elements.note>
+                    <div>
+                        <p><b>Note:</b> if the pattern’s view is in a non-standard location, you can customise it with the following code in your pattern class:</p>
+                        <pre class="">/**
  * Name of the view, overrides view resolution.
  *
  * @var string
  */
 protected string $viewName = 'name.of.view';</pre>
+                    </div>
+                </x-braid::elements.note>
             @else
                 <p class="my-2">{{ $error->getMessage() }}</p>
             @endif

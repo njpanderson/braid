@@ -1,4 +1,4 @@
-<x-braid-elements.definitionlist
+<x-braid::elements.definitionlist
     :items="[[
         'label' => 'Patern',
         'icon' => 'document',
