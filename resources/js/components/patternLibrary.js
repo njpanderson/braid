@@ -118,10 +118,12 @@ export default () => ({
 
         if (clipData) {
             clipboard.writeText(clipData);
+            element.classList.remove('ring-transparent');
             element.classList.add('ring-primary-600');
 
             window.setTimeout(() => {
                 element.classList.remove('ring-primary-600');
+                element.classList.add('ring-transparent');
             }, 700);
         }
     },
