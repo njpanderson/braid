@@ -46,13 +46,18 @@
 
                 {{-- TODO: Let's make this directly editable --}}
                 <span
-                    class="transition-colors duration-300 ml-2 min-w-[7ch] rounded text-white py-1 text-sm text-center"
+                    class="transition-colors duration-300 ml-2 min-w-[7ch] rounded text-white py-1 px-1 text-sm text-center hover:bg-accent-700 has-[:focus]:bg-accent-700"
                     :class="{
                         'bg-neutral-500': !uiState.canvas.resizing,
                         'bg-accent-700': uiState.canvas.resizing
                     }"
                 >
-                    <span x-text="uiState.canvas.width"></span>px
+                    <input
+                        :value="uiState.canvas.width"
+                        :size="getCanvasResizeInputSize()"
+                        @keyup.enter="setCanvasWidth($event.target.value, false)"
+                        class="bg-transparent outline-none text-center"
+                    />px
                 </span>
             </div>
 

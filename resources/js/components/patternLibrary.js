@@ -172,8 +172,22 @@ export default () => ({
         window.open(this.activePattern.url, '_blank');
     },
 
-    setCanvasWidth(size = null) {
-        if (size === null || size === this.$refs.patternCanvasOuter.clientWidth) {
+    /**
+     * Sets the canvas width, in pixels
+     * @param {number} size - Size, in pixels to set the canvas width.
+     * @param {boolean} allowReset - Allow the canvas to be reset if the width
+     * number matches the number currently stored (allows for a toggle).
+     */
+    setCanvasWidth(
+        size = null,
+        allowReset = true
+    ) {
+        size = parseInt(size, 10);
+
+        if (
+            allowReset &&
+            (size === null || size === this.$refs.patternCanvasOuter.clientWidth)
+        ) {
             this.$refs.patternCanvasOuter.style.width = null;
             return;
         }
@@ -184,7 +198,7 @@ export default () => ({
     },
 
     storeCanvasWidth() {
-        this.uiState.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
+            this.uiState.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
     },
 
     getCanvasRangeClasses(min, max = null, inClasses = '', outClasses = '') {
@@ -195,6 +209,15 @@ export default () => ({
             this.uiState.canvas.width >= min &&
             this.uiState.canvas.width <= max
         ) ? inClasses : outClasses;
+    },
+
+    getCanvasResizeInputSize() {
+        const length = this.uiState.canvas.width.toString().length;
+
+        if (length <= 1)
+            return 1;
+
+        return length - 1;
     },
 
     toggleMenuItem(event) {
