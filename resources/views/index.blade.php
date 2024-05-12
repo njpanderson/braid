@@ -37,7 +37,9 @@
                 <header class="flex items-center">
                     <h1
                         class="px-2 text-2xl font-bold whitespace-nowrap text-primary-900 dark:text-primary-200"
-                    >{{ config('braid.title') }}</h1>
+                    >
+                        <a href="{{ route('braid.index') }}">{{ config('braid.title') }}</a>
+                    </h1>
 
                     <button
                         class="ml-auto mr-2 p-1 hover:bg-slate-200/50 rounded"
@@ -61,8 +63,17 @@
                 </menu>
             </div>
 
-            <div id="braid-content" class="grid grid-rows-[50px_1fr] rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800">
+            <div
+                id="braid-content"
+                class="relative grid rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800"
+                :class="{
+                    'grid-rows-[50px_20px_1fr]': activePattern && uiState.ruler,
+                    'grid-rows-[50px_1fr]': !activePattern || !uiState.ruler
+                }"
+            >
                 @include('braid::partials.toolbar')
+
+                <x-braid-elements.ruler/>
 
                 <div
                     x-ref="patternCanvas"

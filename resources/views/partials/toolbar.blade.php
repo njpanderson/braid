@@ -44,6 +44,7 @@
                     @endforeach
                 </ul>
 
+                {{-- TODO: Let's make this directly editable --}}
                 <span
                     class="transition-colors duration-300 ml-2 min-w-[7ch] rounded text-white py-1 text-sm text-center"
                     :class="{
@@ -56,6 +57,13 @@
             </div>
 
             <div class="flex items-center ml-auto gap-x-2">
+                <x-braid-toolbutton
+                    icon="bars-3-center-left"
+                    icon-class="-rotate-90"
+                    data-tooltip="{{ __('Toggle ruler') }}"
+                    @click="toggleRuler"
+                />
+
                 <x-braid-toolbutton
                     icon="arrow-path-rounded-square"
                     data-tooltip="{{ __('Reload pattern') }}"

@@ -7,13 +7,19 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class ToolButton extends Component {
+    public string $iconClass = '';
+
     /**
      * Create a new component instance.
      */
     public function __construct(
         public string $icon = '',
-        public bool $labelHidden = false
-    ) { }
+        public bool $labelHidden = false,
+        string $iconClass = ''
+    ) {
+        $this->iconClass = 'w-6 h-6' .
+            ($iconClass ? ' ' . $iconClass : '');
+    }
 
     /**
      * Get the view / contents that represent the component.

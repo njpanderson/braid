@@ -15,6 +15,7 @@ use njpanderson\Braid\Services\BraidService;
 use njpanderson\Braid\View\Components\ToolButton;
 use njpanderson\Braid\View\Components\Elements\DefinitionList;
 use njpanderson\Braid\View\Components\Elements\Clipboard;
+use njpanderson\Braid\View\Components\Elements\Ruler;
 
 final class BraidServiceProvider extends ServiceProvider
 {
@@ -61,6 +62,7 @@ final class BraidServiceProvider extends ServiceProvider
         Blade::component('braid-toolbutton', ToolButton::class);
         Blade::component('braid-elements.definitionlist', DefinitionList::class);
         Blade::component('braid-elements.clipboard', Clipboard::class);
+        Blade::component('braid-elements.ruler', Ruler::class);
 
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'braid');

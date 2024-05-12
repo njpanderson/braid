@@ -18,6 +18,8 @@ export default () => ({
     init() {
         this.uiState = {
             menuOpen: true,
+            // TODO: Save this value in storage?
+            ruler: true,
             canvas: {
                 resizing: false,
                 width: 0,
@@ -197,5 +199,9 @@ export default () => ({
 
     toggleMenuItem(event) {
         console.log(event.target, this.$data);
+    },
+
+    toggleRuler() {
+        this.uiState.ruler = !this.uiState.ruler;
     }
 });

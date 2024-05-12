@@ -2,7 +2,7 @@
     class="flex items-center p-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 rounded"
     {{ $attributes }}
 >
-    @svg('heroicon-o-' . ($icon ?? ''), 'w-6 h-6')
+    @svg('heroicon-o-' . ($icon ?? ''), $iconClass)
     @if ($slot->hasActualContent())
         <span
             @class([
