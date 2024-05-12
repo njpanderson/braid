@@ -6,9 +6,8 @@ import DraggableGrid from '../utils/DraggableGrid';
 
 export default () => ({
     get activePattern() {
-        return this._active ? this.patternMap[this._active] : {
-            url: '/braid/welcome'
-        };
+        return this._active ? this.patternMap[this._active] :
+            this.patternMap['__braid.welcome'];
     },
 
     get loadedPattern() {
@@ -19,19 +18,24 @@ export default () => ({
         this.uiState = {
             menuOpen: true,
             // TODO: Save this value in storage?
-            ruler: true,
+            ruler: false,
             canvas: {
                 resizing: false,
                 width: 0,
                 widthOffset: this.$refs.patternCanvasOuter.offsetWidth -
-                    this.$refs.patternCanvasOuter.clientWidth
+                    this.$refs.patternCanvasOuter.clientWidth,
+                resizeInputValue: 0
             }
         };
 
         this._active = null;
         this._loaded = null;
         this.patterns = {};
-        this.patternMap = {};
+        this.patternMap = {
+            '__braid.welcome': {
+                url: '/braid/welcome'
+            }
+        };
 
         // Obtain config from index file js payload
         this.config = Object.assign({
@@ -198,7 +202,8 @@ export default () => ({
     },
 
     storeCanvasWidth() {
-            this.uiState.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
+        this.uiState.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
+        this.uiState.canvas.resizeInputValue = this.uiState.canvas.width;
     },
 
     getCanvasRangeClasses(min, max = null, inClasses = '', outClasses = '') {
@@ -212,7 +217,7 @@ export default () => ({
     },
 
     getCanvasResizeInputSize() {
-        const length = this.uiState.canvas.width.toString().length;
+        const length = this.uiState.canvas.resizeInputValue.toString().length;
 
         if (length <= 1)
             return 1;

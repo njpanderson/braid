@@ -38,7 +38,7 @@
                     <h1
                         class="px-2 text-2xl font-bold whitespace-nowrap text-primary-900 dark:text-primary-200"
                     >
-                        <a href="{{ route('braid.index') }}">{{ config('braid.title') }}</a>
+                        <button @click="switchPattern('__braid.welcome')">{{ config('braid.title') }}</button>
                     </h1>
 
                     <button

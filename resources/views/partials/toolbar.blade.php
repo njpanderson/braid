@@ -53,10 +53,12 @@
                     }"
                 >
                     <input
-                        :value="uiState.canvas.width"
                         :size="getCanvasResizeInputSize()"
+                        x-model="uiState.canvas.resizeInputValue"
                         @keyup.enter="setCanvasWidth($event.target.value, false)"
+                        @focus="$event.target.select()"
                         class="bg-transparent outline-none text-center"
+                        maxlength="4"
                     />px
                 </span>
             </div>
