@@ -1,14 +1,16 @@
 @if ($context instanceof \njpanderson\Braid\Dictionaries\PatternContext && $context->hasContextData())
     {{-- Show as object data --}}
     <div class="grid grid-cols-[max-content_1fr]">
-        <x-braid::tools.context.header>
-            Attributes
-        </x-braid::tools.context.header>
+        @if ($context->hasAttributes())
+            <x-braid::tools.context.header>
+                Attributes
+            </x-braid::tools.context.header>
 
-        @include('braid::patterntools.tools.partials.contexttable', [
-            'context' => $context->getAttributes(),
-            'level' => 0
-        ])
+            @include('braid::patterntools.tools.partials.contexttable', [
+                'context' => $context->getAttributes(),
+                'level' => 0
+            ])
+        @endif
 
         @if ($context->hasSlot())
             <x-braid::tools.context.header>
