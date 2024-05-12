@@ -1,6 +1,7 @@
 import axios from 'axios';
-import * as clipboard from "clipboard-polyfill";
+import * as clipboard from 'clipboard-polyfill';
 
+import eventBus from '@/lib/event-bus';
 import events from '../lib/events';
 import DraggableGrid from '../utils/DraggableGrid';
 
@@ -11,23 +12,12 @@ export default () => ({
     },
 
     get loadedPattern() {
-        return this._loaded ? this.patternMap[this._loaded] : null
+        return this._loaded ? this.patternMap[this._loaded] : null;
     },
 
-    init() {
-        this.uiState = {
-            menuOpen: true,
-            // TODO: Save this value in storage?
-            ruler: false,
-            canvas: {
-                resizing: false,
-                width: 0,
-                widthOffset: this.$refs.patternCanvasOuter.offsetWidth -
-                    this.$refs.patternCanvasOuter.clientWidth,
-                resizeInputValue: 0
-            }
-        };
+    store: Alpine.store('braid'),
 
+    init() {
         this._active = null;
         this._loaded = null;
         this.patterns = {};
@@ -42,6 +32,8 @@ export default () => ({
             theme: { color: 'wheat' },
             response_sizes: { enabled: false, sizes: [] },
         }, BRAID.config ?? {});
+
+        this.initStore();
 
         // Get and store menu data
         axios.get('/braid/menu')
@@ -65,6 +57,17 @@ export default () => ({
                 }, this)
         };
 
+        this.initBinds();
+
+        this.storeCanvasWidth();
+    },
+
+    initStore() {
+        this.store.canvas.widthOffset = this.$refs.patternCanvasOuter.offsetWidth -
+            this.$refs.patternCanvasOuter.clientWidth;
+    },
+
+    initBinds() {
         this.$watch('loadedPattern', (loadedPattern) => {
             if (loadedPattern === null)
                 return this.draggables.patternCanvas.sizeContainer(0, false);
@@ -73,9 +76,11 @@ export default () => ({
             this.draggables.patternCanvas.sizeContainer();
         });
 
-        events.on(document.body, 'click', '[data-clip]', this.onClip.bind(this));
+        eventBus
+            .bind('toolbar:button:reload-pattern', this.reloadPattern.bind(this))
+            .bind('toolbar:button:open-new-window', this.openPatternInNewWindow.bind(this));
 
-        this.storeCanvasWidth();
+        events.on(document.body, 'click', '[data-clip]', this.onClip.bind(this));
     },
 
     onPatternLoaded(event) {
@@ -103,11 +108,11 @@ export default () => ({
     },
 
     onCanvasResize() {
-        if (this.uiState.canvas.resizing)
-            window.clearTimeout(this.uiState.canvas.resizing);
+        if (this.store.canvas.resizing)
+            window.clearTimeout(this.store.canvas.resizing);
 
-        this.uiState.canvas.resizing = window.setTimeout(() => {
-            this.uiState.canvas.resizing = null;
+        this.store.canvas.resizing = window.setTimeout(() => {
+            this.store.canvas.resizing = null;
         }, 2000);
 
         this.storeCanvasWidth();
@@ -171,7 +176,7 @@ export default () => ({
         this.$refs.patternCanvasFrame.src = 'about:blank';
     },
 
-    openPatternInNewWindow(event) {
+    openPatternInNewWindow() {
         if (!this.activePattern)
             return false;
 
@@ -198,14 +203,14 @@ export default () => ({
             return;
         }
 
-        this.$refs.patternCanvasOuter.style.width = (size + this.uiState.canvas.widthOffset) + 'px';
+        this.$refs.patternCanvasOuter.style.width = (size + this.store.canvas.widthOffset) + 'px';
 
         this.storeCanvasWidth();
     },
 
     storeCanvasWidth() {
-        this.uiState.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
-        this.uiState.canvas.resizeInputValue = this.uiState.canvas.width;
+        this.store.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
+        this.store.canvas.resizeInputValue = this.store.canvas.width;
     },
 
     getCanvasRangeClasses(min, max = null, inClasses = '', outClasses = '') {
@@ -213,13 +218,13 @@ export default () => ({
             max = min;
 
         return (
-            this.uiState.canvas.width >= min &&
-            this.uiState.canvas.width <= max
+            this.store.canvas.width >= min &&
+            this.store.canvas.width <= max
         ) ? inClasses : outClasses;
     },
 
     getCanvasResizeInputSize() {
-        const length = this.uiState.canvas.resizeInputValue.toString().length;
+        const length = this.store.canvas.resizeInputValue.toString().length;
 
         if (length <= 1)
             return 1;
@@ -232,6 +237,6 @@ export default () => ({
     },
 
     toggleRuler() {
-        this.uiState.ruler = !this.uiState.ruler;
+        this.store.ruler.open = !this.store.ruler.open;
     }
 });

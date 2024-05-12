@@ -13,6 +13,7 @@ class ToolButton extends Component {
      * Create a new component instance.
      */
     public function __construct(
+        public string $id = '',
         public string $icon = '',
         public bool $labelHidden = false,
         public string $toggleState = '',

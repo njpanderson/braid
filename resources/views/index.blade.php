@@ -22,16 +22,16 @@
     >
         <section class="grid h-full transition-all"
              :class="{
-                'grid-cols-[250px_minmax(900px,_1fr)]': uiState.menuOpen,
-                'grid-cols-[10px_minmax(900px,_1fr)]': !uiState.menuOpen,
+                'grid-cols-[250px_minmax(900px,_1fr)]': store.menuOpen,
+                'grid-cols-[10px_minmax(900px,_1fr)]': !store.menuOpen,
             }"
         >
             <div
                 id="braid-menu"
                 class="grid grid-rows-[50px_1fr] overflow-hidden relative transition-opacity select-none"
                 :class="{
-                    'opacity-0': !uiState.menuOpen,
-                    'opacity-100': uiState.menuOpen,
+                    'opacity-0': !store.menuOpen,
+                    'opacity-100': store.menuOpen,
                 }"
             >
                 <header class="flex items-center">
@@ -48,7 +48,7 @@
 
                     <button
                         class="ml-auto mr-2 p-1 hover:bg-slate-200/50 rounded"
-                        @click="uiState.menuOpen = !uiState.menuOpen"
+                        @click="store.menuOpen = !store.menuOpen"
                     >
                         @svg('heroicon-o-arrow-left-start-on-rectangle', 'w-6 h-6')
                         <span class="sr-only">Close menu</span>
@@ -58,8 +58,8 @@
                 <menu
                     class="h-full"
                     :class="{
-                        'overflow-y-auto': uiState.menuOpen,
-                        'overflow-hidden': !uiState.menuOpen,
+                        'overflow-y-auto': store.menuOpen,
+                        'overflow-hidden': !store.menuOpen,
                     }"
                 >
                     @include('braid::partials.menu', [
@@ -72,8 +72,8 @@
                 id="braid-content"
                 class="relative grid rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800"
                 :class="{
-                    'grid-rows-[50px_20px_1fr]': activePattern.id && uiState.ruler,
-                    'grid-rows-[50px_1fr]': !activePattern.id || !uiState.ruler
+                    'grid-rows-[50px_20px_1fr]': activePattern.id && store.ruler.open,
+                    'grid-rows-[50px_1fr]': !activePattern.id || !store.ruler.open
                 }"
             >
                 @include('braid::partials.toolbar')

@@ -1,14 +1,17 @@
-<div class="bg-neutral-200 dark:bg-neutral-600 dark:text-white flex items-center px-2 gap-x-2 border-b-2 border-neutral-300 dark:border-neutral-400">
+<div
+    x-data="toolbar"
+    class="bg-neutral-200 dark:bg-neutral-600 dark:text-white flex items-center px-2 gap-x-2 border-b-2 border-neutral-300 dark:border-neutral-400"
+>
     <x-braid::toolbutton
         icon="arrow-right-start-on-rectangle"
-        x-show="!uiState.menuOpen"
-        @click="uiState.menuOpen = !uiState.menuOpen"
+        x-show="!store.menuOpen"
+        @click="store.menuOpen = !store.menuOpen"
         label-hidden
     >Open menu</x-braid::toolbutton>
 
     <template x-if="activePattern.id">
         <div class="flex w-full justify-between items-center gap-x-2">
-            <span class="block w-[2px] bg-neutral-50 dark:bg-neutral-500 self-stretch rounded" x-show="!uiState.menuOpen"></span>
+            <span class="block w-[2px] bg-neutral-50 dark:bg-neutral-500 self-stretch rounded" x-show="!store.menuOpen"></span>
 
             <h1 class="flex gap-1 mr-auto">
                 @svg('heroicon-o-document', 'w-6 h-6')
@@ -44,17 +47,16 @@
                     @endforeach
                 </ul>
 
-                {{-- TODO: Let's make this directly editable --}}
                 <span
                     class="transition-colors duration-300 ml-2 min-w-[7ch] rounded text-white py-1 px-1 text-sm text-center hover:bg-accent-700 has-[:focus]:bg-accent-700"
                     :class="{
-                        'bg-neutral-500': !uiState.canvas.resizing,
-                        'bg-accent-700': uiState.canvas.resizing
+                        'bg-neutral-500': !store.canvas.resizing,
+                        'bg-accent-700': store.canvas.resizing
                     }"
                 >
                     <input
                         :size="getCanvasResizeInputSize()"
-                        x-model="uiState.canvas.resizeInputValue"
+                        x-model="store.canvas.resizeInputValue"
                         @keyup.enter="setCanvasWidth($event.target.value, false)"
                         @focus="$event.target.select()"
                         class="bg-transparent outline-none text-center"
@@ -65,23 +67,26 @@
 
             <div class="flex items-center ml-auto gap-x-2">
                 <x-braid::toolbutton
+                    id="toggle-ruler"
                     icon="bars-3-center-left"
                     icon-class="-rotate-90"
-                    toggle-state="uiState.ruler"
+                    toggle-state="store.ruler.open"
                     data-tooltip="{{ __('Toggle ruler') }}"
-                    @click="toggleRuler"
+                    {{-- @click="toggleRuler" --}}
                 />
 
                 <x-braid::toolbutton
+                    id="reload-pattern"
                     icon="arrow-path-rounded-square"
                     data-tooltip="{{ __('Reload pattern') }}"
-                    @click="reloadPattern"
+                    {{-- @click="reloadPattern" --}}
                 />
 
                 <x-braid::toolbutton
+                    id="open-new-window"
                     icon="arrow-top-right-on-square"
                     data-tooltip="{{ __('Open in new window or tab') }}"
-                    @click="openPatternInNewWindow"
+                    {{-- @click="openPatternInNewWindow" --}}
                 />
             </div>
         </div>

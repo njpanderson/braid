@@ -20,7 +20,7 @@ export default () => ({
      * New pattern has loaded, regenerate tools.
      * @param {Event} event
      */
-    onPatternLoaded(event) {
+    onPatternLoaded() {
         // Clear out current tools
         this.tools = [];
 
@@ -29,7 +29,7 @@ export default () => ({
             return this.loadTool(this.tools[0].id);
 
         // Load tools
-        axios.get(`/braid/patterntools`)
+        axios.get('/braid/patterntools')
             .then((response) => {
                 this.tools = response.data;
 
@@ -42,7 +42,7 @@ export default () => ({
      * Pattern has unloaded — clean up.
      * @param {Event} event
      */
-    onPatternUnLoaded(event) {
+    onPatternUnLoaded() {
         // Clear out current tools
         this._tools = {};
 
@@ -101,6 +101,9 @@ export default () => ({
     },
 
     getToolUrl(tool, pattern) {
+        if (!pattern)
+            return '';
+
         return `/braid/patterntools/tool/${
             encodeURIComponent(tool.className)
         }/${

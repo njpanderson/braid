@@ -21,5 +21,13 @@
     </main>
 
     @vite('resources/js/braid.js')
+
+    <input
+        type="hidden"
+        x-title="stores"
+        x-data="{
+            braid: $store.braid
+        }"
+    />
 </body>
 </html>

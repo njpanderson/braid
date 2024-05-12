@@ -23,7 +23,7 @@ export default (id) => ({
             // Open/close all descendents
             this.$refs.root.querySelectorAll('[x-data^="menuFolder"]').forEach((child) => {
                 Alpine.$data(child).setOpen(this.open);
-            })
+            });
         }
     },
 

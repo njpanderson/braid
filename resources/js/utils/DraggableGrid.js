@@ -182,6 +182,6 @@ export default class DraggableGrid {
 
         this.callbacks[type].forEach((callback) => {
             callback.fn.apply(callback.context ?? this, args);
-        })
+        });
     }
 }

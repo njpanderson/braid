@@ -1,17 +1,21 @@
 {{-- TODO: Make this adjustable? --}}
 {{-- TODO: Add mark lines --}}
 <div
+    x-data="ruler"
     class="w-full overflow-hidden bg-neutral-200"
-    x-show="activePattern.id && uiState.ruler"
+    x-show="activePattern.id && store.ruler.open"
 >
-    <ul class="ruler-bg flex min-h-[23px] ml-[2px]">
+    <ul
+        class="ruler-bg flex min-h-[23px] ml-[2px] cursor-copy"
+        @click="alert('click to create mark')"
+    >
         @for($a = 0; $a <= 2500; $a += 100)
             <li class="ruler-number">{{ $a }}</li>
         @endfor
     </ul>
 
     {{-- TODO: Come back to this and allow marks to be added by clicking on the ruler --}}
-    {{-- <div class="ruler-mark absolute w-[1px] top-[50px] bottom-0 left-[102px] has-[:hover]:bg-red-500 pointer-events-none">
+    <div class="ruler-mark absolute w-[1px] top-[50px] bottom-0 left-[102px] has-[:hover]:bg-red-500 pointer-events-none">
         <button
             class="group absolute w-[30px] h-[20px] top-0 left-[-14px] cursor-ew-resize pointer-events-auto"
             @click="alert('click on mark')"
@@ -22,5 +26,5 @@
                 <span><span x-text="100"></span>px</span>
             </span>
         </button>
-    </div> --}}
+    </div>
 </div>
