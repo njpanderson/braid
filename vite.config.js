@@ -20,7 +20,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@lib': '/resources/js/lib',
-            '@utils': '/resources/js/lib/utils',
+            '@utils': '/resources/js/utils',
             '@components': '/resources/js/components',
             '@': '/resources/js',
         }
