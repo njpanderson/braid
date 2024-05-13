@@ -1,4 +1,6 @@
 export default {
+    loadedPattern: null,
+    activePattern: null,
     menuOpen: true,
     ruler: {
         open: false

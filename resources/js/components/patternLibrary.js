@@ -2,24 +2,22 @@ import axios from 'axios';
 import * as clipboard from 'clipboard-polyfill';
 
 import eventBus from '@/lib/event-bus';
-import events from '../lib/events';
-import DraggableGrid from '../utils/DraggableGrid';
+import events from '@lib/events';
+import DraggableGrid from '@utils/DraggableGrid';
 
 export default () => ({
+    store: Alpine.store('braid'),
+
     get activePattern() {
-        return this._active ? this.patternMap[this._active] :
+        return this.store.activePattern ? this.patternMap[this.store.activePattern] :
             this.patternMap['__braid.welcome'];
     },
 
     get loadedPattern() {
-        return this._loaded ? this.patternMap[this._loaded] : null;
+        return this.store.loadedPattern ? this.patternMap[this.store.loadedPattern] : null;
     },
 
-    store: Alpine.store('braid'),
-
     init() {
-        this._active = null;
-        this._loaded = null;
         this.patterns = {};
         this.patternMap = {
             '__braid.welcome': {
@@ -90,9 +88,9 @@ export default () => ({
             // Bail if there's no pattern ID
             return;
 
-        this._loaded = event.detail.patternMapId;
+        this.store.loadedPattern = event.detail.patternMapId;
 
-        console.debug('Pattern loaded', this._loaded);
+        console.debug('Pattern loaded', this.store.loadedPattern);
 
         this.$dispatch('patternloaded', {
             loadedPattern: this.loadedPattern
@@ -102,7 +100,7 @@ export default () => ({
     onPatternUnLoaded(event) {
         console.debug('Pattern unloaded', event.detail.patternMapId);
 
-        this._loaded = null;
+        this.store.loadedPattern = null;
 
         this.$dispatch('patternunloaded', {
             unLoadedPattern: event.detail.patternMapId
@@ -166,13 +164,13 @@ export default () => ({
     },
 
     switchPattern(id) {
-        if (this._active && id === this._active)
+        if (this.store.activePattern && id === this.store.activePattern)
             return;
 
-        this._loaded = null;
+        this.store.loadedPattern = null;
 
         if (this.patternMap[id])
-            this._active = id;
+            this.store.activePattern = id;
     },
 
     reloadPattern() {
