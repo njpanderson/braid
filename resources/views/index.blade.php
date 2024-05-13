@@ -70,7 +70,7 @@
 
             <div
                 id="braid-content"
-                class="relative grid rounded-l-[15px] shadow-frame overflow-hidden bg-white dark:bg-neutral-800"
+                class="relative grid shadow-frame bg-white dark:bg-neutral-800"
                 :class="{
                     'grid-rows-[50px_20px_1fr]': activePattern.id && store.ruler.open,
                     'grid-rows-[50px_1fr]': !activePattern.id || !store.ruler.open
@@ -92,9 +92,6 @@
                         <div
                             x-ref="patternCanvasOuter"
                             class="w-full h-full resize-x border-[3px] border-accent-100 dark:border-accent-400 hover:border-accent-200 dark:hover:border-accent-300 overflow-hidden"
-                            :class="{
-                                'rounded-bl-[15px]': !loadedPattern
-                            }"
                         >
                             <iframe
                                 src="about:blank"
