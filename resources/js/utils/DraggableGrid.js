@@ -51,6 +51,7 @@ export default class DraggableGrid {
             .on(this.container, 'touchstart', '[data-draggable-grid-trigger]', this.startDrag)
             .bind(window, 'mouseup', this.endDrag)
             .bind(window, 'touchend', this.endDrag)
+            .bind(window, 'touchcancel', this.endDrag)
             .bind(window, 'mousemove', this.drag)
             .bind(window, 'touchmove', this.drag);
     }
