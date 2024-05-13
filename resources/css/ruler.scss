@@ -1,5 +1,5 @@
 .ruler-bg {
-    --background: theme('colors.neutral.200');
+    --background: theme('colors.slate.100');
     --tick-minor: theme('colors.neutral.400');
     --tick-major: theme('colors.neutral.600');
 
@@ -69,13 +69,30 @@
         );
 }
 
-.ruler-mark {
+.ruler-mark-global {
     background-image: repeating-linear-gradient(
         transparent 0px,
         transparent 2px,
         theme('colors.red.500') 2px,
         theme('colors.red.500') 4px
     );
+}
+
+.ruler-mark-local {
+    background-image: repeating-linear-gradient(
+        transparent 0px,
+        transparent 2px,
+        theme('colors.blue.500') 2px,
+        theme('colors.blue.500') 4px
+    );
+}
+
+@media (prefers-color-scheme: dark) {
+    .ruler-bg {
+        --background: theme('colors.neutral.700');
+        --tick-minor: theme('colors.neutral.100');
+        --tick-major: theme('colors.neutral.200');
+    }
 }
 
 @layer components {
