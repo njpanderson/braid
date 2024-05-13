@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import storage from 'store2';
 
 import eventBus from '@lib/event-bus';
 import events from '@lib/events';
@@ -18,9 +19,7 @@ export default (offset) => ({
         this.store.ruler.open = true;
         this.store.ruler.offset = offset;
         this.store.ruler.dragMarker = null;
-        this.store.ruler.marks = {
-            __global: []
-        };
+        this.store.ruler.marks = this.getFromStorage();
 
         // Set offset into ruler element
         this.$refs.ruler.style.marginLeft = `${offset}px`;
@@ -28,8 +27,6 @@ export default (offset) => ({
         eventBus.bind('toolbar:button:toggle-ruler', this.toggleRuler.bind(this));
 
         events
-            // .on(this.$refs.root, 'mousedown', '.braid-mark', this.onMarkDragStart)
-            // .on(this.$refs.root, 'touchstart', '.braid-mark', this.onMarkDragStart)
             .bind(window, 'mouseup', this.onMarkDragEnd)
             .bind(window, 'touchend', this.onMarkDragEnd)
             .bind(window, 'touchcancel', this.onMarkDragEnd)
@@ -37,6 +34,10 @@ export default (offset) => ({
             .bind(window, 'touchmove', this.onMarkDragMove);
     },
 
+    /**
+     * The ruler has been clicked
+     * @param {Event} event
+     */
     onRulerClick(event) {
         const mark = this.getRulerOffset(event.clientX);
 
@@ -45,6 +46,11 @@ export default (offset) => ({
         ));
     },
 
+    /**
+     * A marker has been clicked.
+     * @param {Event} event
+     * @param {object} mark
+     */
     onMarkClick(event, mark) {
         if (event.altKey) {
             if (mark.store === this.consts.GLOBAL) {
@@ -56,8 +62,6 @@ export default (offset) => ({
 
             return;
         }
-
-        // this.removeMark(mark);
     },
 
     /**
@@ -103,9 +107,16 @@ export default (offset) => ({
             this.removeMark(this.store.ruler.dragMarker);
         }
 
+        // Tidy up
+        delete this.store.ruler.dragMarker.prevX;
         this.store.ruler.dragMarker = null;
+
+        this.updateStorage();
     },
 
+    /**
+     * Toggle the ruler on and off.
+     */
     toggleRuler() {
         this.store.ruler.open = !this.store.ruler.open;
     },
@@ -129,6 +140,10 @@ export default (offset) => ({
         return x;
     },
 
+    /**
+     * Retrieve all the global and local marks.
+     * @returns {array} - Array of mark data.
+     */
     getMarks() {
         return [
             ...this.store.ruler.marks[this.consts.GLOBAL],
@@ -136,6 +151,15 @@ export default (offset) => ({
         ];
     },
 
+    /**
+     * Add a mark to a store by position.
+     *
+     * If the store does not exist, it will be created.
+     *
+     * @param {number} x
+     * @param {string} store
+     * @returns
+     */
     addMark(x, store = null) {
         if (store === null)
             store = this.consts.GLOBAL;
@@ -146,29 +170,92 @@ export default (offset) => ({
         if (this.findMark(store, x))
             return;
 
-        let uuid = (crypto ? crypto.randomUUID() : performance.now());
-
         this.store.ruler.marks[store].push({
-            uuid,
+            uuid: this.makeMarkerId(),
             x,
             store: store
         });
+
+        this.updateStorage();
     },
 
+    /**
+     * Move a mark along its axis.
+     *
+     * Note: updateStorage() is not called here as it would update too often.
+     * Call updateStorage() (ideally in a throttled manner) from whatever
+     * process is resulting in calls to moveMark().
+     *
+     * @param {object} mark — Mark data.
+     * @param {number} x - X position.
+     */
     moveMark(mark, x) {
         mark.x = x;
     },
 
+    /**
+     * Move a mark from one store to another.
+     *
+     * Note: No need to updateStorage() here as both methods called do that.
+     *
+     * @param {object} mark - Mark data
+     * @param {string} store - Store name
+     */
     moveMarkStore(mark, store) {
         this.removeMark(mark);
-
         this.addMark(mark.x, store);
     },
 
+    /**
+     * Remove a mark
+     * @param {object} mark
+     */
     removeMark(mark) {
         this.store.ruler.marks[mark.store] = this.store.ruler.marks[mark.store].filter(
             (filterMark) => filterMark.x !== mark.x
         );
+
+        this.updateStorage();
+    },
+
+    /**
+     * Store current marks data in compressed format.
+     */
+    updateStorage() {
+        const data = {};
+
+        // Compress marks data into basic arrays
+        Object.keys(this.store.ruler.marks).forEach((store) => {
+            data[store] = this.store.ruler.marks[store].map(
+                mark => mark.x
+            );
+        });
+
+        storage.set('ruler.marks', data, true);
+    },
+
+    /**
+     * Retrieve uncompressed marks data from stores.
+     * @returns object
+     */
+    getFromStorage() {
+        const storeData = storage.get('ruler.marks', {
+            [this.consts.GLOBAL]: []
+        });
+
+        const data = {};
+
+        // Loop through stores
+        Object.keys(storeData).forEach((store) => {
+            // Create mark object
+            data[store] = storeData[store].map((x) => ({
+                uuid: this.makeMarkerId(),
+                x,
+                store
+            }));
+        });
+
+        return data;
     },
 
     findMark(store, findX) {
@@ -185,5 +272,9 @@ export default (offset) => ({
 
     getMarkLeftStyle(mark) {
         return `left: ${mark.x + this.store.ruler.offset}px`;
+    },
+
+    makeMarkerId() {
+        return (crypto ? crypto.randomUUID() : performance.now());
     }
 });

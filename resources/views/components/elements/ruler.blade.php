@@ -3,7 +3,7 @@
 <div
     x-ref="root"
     x-data="ruler(3)"
-    class="w-full overflow-hidden bg-neutral-100 dark:bg-neutral-700"
+    class="w-full overflow-hidden bg-neutral-100 dark:bg-neutral-600"
     x-show="activePattern.id && store.ruler.open"
 >
     <ul

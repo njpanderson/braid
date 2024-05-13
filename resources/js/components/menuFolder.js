@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs';
-import store from 'store2';
+import storage from 'store2';
 
 /**
  * Menu folder items
@@ -8,7 +8,7 @@ export default (id) => ({
     open: true,
 
     init() {
-        const menuStore = store.get(id, {});
+        const menuStore = storage.get(id, {});
         this.open = menuStore.open ?? true;
     },
 
@@ -34,7 +34,7 @@ export default (id) => ({
     setOpen(opened) {
         this.open = opened;
 
-        store.set(id, {
+        storage.set(id, {
             open: opened
         });
     }

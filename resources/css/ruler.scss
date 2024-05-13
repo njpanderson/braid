@@ -89,7 +89,7 @@
 
 @media (prefers-color-scheme: dark) {
     .ruler-bg {
-        --background: theme('colors.neutral.700');
+        --background: theme('colors.neutral.600');
         --tick-minor: theme('colors.neutral.100');
         --tick-major: theme('colors.neutral.200');
     }
@@ -97,6 +97,6 @@
 
 @layer components {
     .ruler-number {
-        @apply w-[100px] pt-[1px] shrink-0 text-[10px] indent-1 leading-none text-neutral-600;
+        @apply w-[100px] pt-[1px] shrink-0 text-[10px] indent-1 leading-none text-neutral-600 dark:text-neutral-200;
     }
 }
