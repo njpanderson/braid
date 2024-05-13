@@ -3,7 +3,7 @@
 @section('head')
     {{-- This is a configuration payload from the braid Laravel config --}}
     <script>
-        const BRAID = {
+        var BRAID = {
             config: {
                 'theme': { colour: '{{ config('braid.theme.colour') }}' },
                 'response_sizes': {!! collect(config('braid.response_sizes'))->toJson() !!}
