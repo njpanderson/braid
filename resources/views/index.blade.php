@@ -70,7 +70,7 @@
 
             <div
                 id="braid-content"
-                class="relative grid shadow-frame bg-white dark:bg-neutral-800"
+                class="relative grid shadow-frame overflow-hidden bg-white dark:bg-neutral-800"
                 :class="{
                     'grid-rows-[50px_20px_1fr]': activePattern.id && store.ruler.open,
                     'grid-rows-[50px_1fr]': !activePattern.id || !store.ruler.open
