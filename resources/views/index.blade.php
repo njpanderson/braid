@@ -70,35 +70,38 @@
 
             <div
                 id="braid-content"
-                class="relative grid shadow-frame overflow-hidden bg-white dark:bg-neutral-800"
-                :class="{
-                    'grid-rows-[50px_20px_1fr]': activePattern.id && store.ruler.open,
-                    'grid-rows-[50px_1fr]': !activePattern.id || !store.ruler.open
-                }"
+                class="relative grid grid-rows-[50px_1fr] shadow-frame overflow-hidden bg-white dark:bg-neutral-800"
             >
                 @include('braid::partials.toolbar')
 
-                <x-braid::elements.ruler/>
-
                 <div
                     x-ref="patternCanvas"
-                    class="grid overflow-hidden bg-primary-100 dark:bg-neutral-700"
+                    class="grid bg-primary-100 dark:bg-neutral-700"
                     data-draggable-direction="vertical"
                     data-draggable-template="1fr minmax(0px, <value>)"
                     data-draggable-initial="240"
                     data-draggable-min="40"
                 >
-                    <div class="w-full h-full overflow-x-auto">
-                        <div
-                            x-ref="patternCanvasOuter"
-                            class="w-full h-full resize-x border-[3px] border-accent-100 dark:border-accent-400 hover:border-accent-200 dark:hover:border-accent-300 overflow-hidden"
-                        >
-                            <iframe
-                                src="about:blank"
-                                :src="activePattern.url"
-                                class="w-full h-full overflow-auto bg-white"
-                                x-ref="patternCanvasFrame"
-                            ></iframe>
+                    <div class="grid max-w-full relative"
+                        :class="{
+                            'grid-rows-[20px_1fr]': activePattern.id && store.ruler.open,
+                            'grid-rows-[1fr]': !activePattern.id || !store.ruler.open
+                        }"
+                    >
+                        <x-braid::elements.ruler/>
+
+                        <div class="w-full h-full overflow-x-auto">
+                            <div
+                                x-ref="patternCanvasOuter"
+                                class="w-full h-full resize-x border-[3px] border-accent-100 dark:border-accent-400 hover:border-accent-200 dark:hover:border-accent-300 overflow-hidden"
+                            >
+                                <iframe
+                                    src="about:blank"
+                                    :src="activePattern.url"
+                                    class="w-full h-full overflow-auto bg-white"
+                                    x-ref="patternCanvasFrame"
+                                ></iframe>
+                            </div>
                         </div>
                     </div>
 

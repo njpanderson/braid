@@ -1,6 +1,7 @@
 {{-- TODO: Make this adjustable? --}}
 {{-- TODO: Add mark lines --}}
 <div
+    id="braid-ruler"
     x-ref="root"
     x-data="ruler(3)"
     class="w-full overflow-hidden bg-neutral-100 dark:bg-neutral-600"
@@ -19,7 +20,7 @@
     {{-- TODO: Come back to this and allow marks to be added by clicking on the ruler --}}
     <template x-for="mark in getMarks()" :key="mark.uuid">
         <div
-            class="absolute w-[1px] top-[50px] bottom-0 has-[:hover]:bg-current pointer-events-none"
+            class="absolute w-[1px] top-[6px] bottom-0 has-[:hover]:bg-current pointer-events-none"
             :class="{
                 'ruler-mark-global text-red-500': mark.store === consts.GLOBAL,
                 'ruler-mark-local text-blue-500': mark.store !== consts.GLOBAL,
@@ -27,7 +28,7 @@
             :style="getMarkLeftStyle(mark)"
         >
             <button
-                class="braid-mark group absolute w-[20px] h-[20px] top-0 left-[-9px] cursor-ew-resize pointer-events-auto"
+                class="overflow-hidden braid-mark group absolute w-[20px] h-[20px] top-0 left-[-9px] cursor-ew-resize pointer-events-auto hover:overflow-visible"
                 @click="onMarkClick($event, mark)"
                 @mousedown="onMarkDragStart($event, mark)"
                 @touchstart.passive="onMarkDragStart($event, mark)"

@@ -43,15 +43,14 @@ export default () => ({
         this.draggables = {
             patternCanvas: new DraggableGrid(document.querySelector('[x-ref="patternCanvas"]'))
                 .onStart(() => {
-                    // Prevent pointer from slipping into the pattern frame
-                    this.$refs.patternCanvasFrame.style.pointerEvents = 'none';
+                    this.setCanvasInteractable(false);
 
                     // Clear the pattern canvas height to avoid it preventing sizing of the panel
                     this.$refs.patternCanvasOuter.style.height = null;
                 }, this)
                 .onEnd(() => {
                     // Restore iframe pointer abilities
-                    this.$refs.patternCanvasFrame.style.pointerEvents = 'auto';
+                    this.setCanvasInteractable();
                 }, this)
         };
 
@@ -78,7 +77,9 @@ export default () => ({
             .bind('toolbar:button:reload-pattern', this.reloadPattern.bind(this))
             .bind('toolbar:button:open-new-window', this.openPatternInNewWindow.bind(this))
             .bind('toolbar:button:set-canvas-width', this.onSetCanvasWidth.bind(this))
-            .bind('toolbar:submit-canvas-width', this.onSubmitCanvasWidth.bind(this));
+            .bind('toolbar:submit-canvas-width', this.onSubmitCanvasWidth.bind(this))
+            .bind('ruler:drag-mark-start', this.onRulerDragMark.bind(this))
+            .bind('ruler:drag-mark-end', this.onRulerDragMark.bind(this));
 
         events.on(document.body, 'click', '[data-clip]', this.onClip.bind(this));
     },
@@ -140,6 +141,13 @@ export default () => ({
     onSubmitCanvasWidth(event) {
         this.setCanvasWidth(event.originalEvent.target.value, false);
         event.originalEvent.target.select();
+    },
+
+    onRulerDragMark(event) {
+        if (event.type === 'ruler:drag-mark-start')
+            return this.setCanvasInteractable(false);
+
+        this.setCanvasInteractable();
     },
 
     createPatternMap(data) {
@@ -215,6 +223,11 @@ export default () => ({
         this.$refs.patternCanvasOuter.style.width = (size + this.store.canvas.widthOffset) + 'px';
 
         this.storeCanvasWidth();
+    },
+
+    setCanvasInteractable(interact = true) {
+        // Prevent pointer from slipping into the pattern frame
+        this.$refs.patternCanvasFrame.style.pointerEvents = (interact ? 'auto': 'none');
     },
 
     storeCanvasWidth() {

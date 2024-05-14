@@ -16,7 +16,7 @@ export default (offset) => ({
         this.onMarkDragMove = this.onMarkDragMove.bind(this);
         this.onMarkDragEnd = this.onMarkDragEnd.bind(this);
 
-        this.store.ruler.open = true;
+        this.store.ruler.open = storage.get('ruler.open', false);
         this.store.ruler.offset = offset;
         this.store.ruler.dragMarker = null;
         this.store.ruler.marks = this.getFromStorage();
@@ -73,6 +73,8 @@ export default (offset) => ({
     onMarkDragStart(event, mark) {
         mark.prevX = mark.x;
         this.store.ruler.dragMarker = mark;
+
+        eventBus.fire('ruler:drag-mark-start');
     },
 
     /**
@@ -111,6 +113,8 @@ export default (offset) => ({
         delete this.store.ruler.dragMarker.prevX;
         this.store.ruler.dragMarker = null;
 
+        eventBus.fire('ruler:drag-mark-end');
+
         this.updateStorage();
     },
 
@@ -119,6 +123,7 @@ export default (offset) => ({
      */
     toggleRuler() {
         this.store.ruler.open = !this.store.ruler.open;
+        storage.set('ruler.open', this.store.ruler.open);
     },
 
     /**
