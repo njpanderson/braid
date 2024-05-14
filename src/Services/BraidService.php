@@ -258,16 +258,6 @@ class BraidService
         return $sizes;
     }
 
-    private function getThemeColours($theme = 'orange') {
-        if (!$this->themeColors)
-            $this->themeColors = require_once($this->resourcesPath . '/themes.php');
-
-        if (isset($this->themeColors[$theme]))
-            return $this->themeColors[$theme];
-
-        return null;
-    }
-
     private function getViewFromComponentName(string $componentClass)
     {
         $view = Str::trim(Str::lower($componentClass), '\\');
@@ -294,6 +284,6 @@ class BraidService
 
     private function getDirectoryHash(string $path, int $level = 0): string
     {
-        return 'braid-dir-' . sha1($level . $path);
+        return crc32($level . $path);
     }
 }

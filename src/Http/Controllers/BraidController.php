@@ -67,8 +67,11 @@ class BraidController
 
     public function menu()
     {
-        return response()->json(
-            $this->service->collectPatterns()
-        );
+        $patterns = $this->service->collectPatterns();
+
+        return response()->json([
+            'id' => crc32(json_encode($patterns)),
+            'patterns' => $patterns
+        ]);
     }
 }

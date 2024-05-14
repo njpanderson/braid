@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as clipboard from 'clipboard-polyfill';
 
+import storage from 'store2';
 import eventBus from '@/lib/event-bus';
 import events from '@lib/events';
 import DraggableGrid from '@utils/DraggableGrid';
@@ -36,8 +37,19 @@ export default () => ({
         // Get and store menu data
         axios.get('/braid/menu')
             .then((response) => {
-                this.patterns = response.data;
+                this.patterns = response.data.patterns;
                 this.createPatternMap(this.patterns);
+
+                storage.transact('menu', (menu) => {
+                    if (menu.id !== response.data.id) {
+                        eventBus.fire('braid.menu-reset');
+                        menu.closed = [];
+                    }
+
+                    menu.id = response.data.id;
+
+                    return menu;
+                }, { id: null, closed: [] });
             });
 
         this.draggables = {
