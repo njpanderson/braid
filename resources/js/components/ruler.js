@@ -133,6 +133,10 @@ export default (offset) => ({
         // Calculate x based on ruler offset
         x = x - (rect.x + this.store.ruler.offset);
 
+        // Pin to min/max
+        if (x < 0)
+            x = 0;
+
         if (roundTo > 0)
             // Round to nearest roundTo pixels
             x = Math.round(x / roundTo) * roundTo;
