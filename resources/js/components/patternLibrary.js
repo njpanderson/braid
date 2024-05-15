@@ -6,6 +6,9 @@ import eventBus from '@lib/event-bus';
 import events from '@lib/events';
 import DraggableGrid from '@utils/DraggableGrid';
 
+// URL query params
+const queryParams = (new URL(location)).searchParams;
+
 export default () => ({
     store: Alpine.store('braid'),
 
@@ -54,6 +57,9 @@ export default () => ({
 
                     return menu;
                 }, { id: null, closed: [] });
+
+                // Attempt load again, in case there's a pattern in query
+                this.loadfirstFramePage(queryParams.get('pattern'));
             });
 
         // Set up draggable grid items
@@ -73,7 +79,7 @@ export default () => ({
 
         this.initBinds();
         this.storeCanvasWidth();
-        this.switchPattern('__braid.welcome');
+        this.loadfirstFramePage();
     },
 
     initStore() {
@@ -82,7 +88,7 @@ export default () => ({
     },
 
     initBinds() {
-        this.$watch('activePattern', (activePattern) => {
+        this.$watch('activePattern', () => {
             this.$refs.patternCanvasFrame.contentWindow.location.replace(
                 this.activePattern.url
             );
@@ -176,6 +182,13 @@ export default () => ({
         this.setCanvasInteractable();
     },
 
+    loadfirstFramePage(patternId) {
+        if (patternId)
+            return this.switchPattern(patternId);
+
+        this.switchPattern('__braid.welcome');
+    },
+
     createPatternMap(data) {
         data.items.forEach((item) => {
             if (item.id)
@@ -203,6 +216,8 @@ export default () => ({
 
         this.store.loadedPattern = null;
 
+        console.log(this.patternMap, this.patternMap[id]);
+
         if (this.patternMap[id])
             this.store.activePattern = id;
     },
@@ -215,7 +230,13 @@ export default () => ({
         if (!this.activePattern)
             return false;
 
-        window.open(this.activePattern.url, '_blank');
+        const url = new URL(this.activePattern.url);
+        const params = url.searchParams;
+
+        params.set('mode', 'full');
+        url.search = params.toString();
+
+        window.open(url, '_blank');
     },
 
     /**
