@@ -97,7 +97,6 @@
                             >
                                 <iframe
                                     src="about:blank"
-                                    :src="activePattern.url"
                                     class="w-full h-full overflow-auto bg-white"
                                     x-ref="patternCanvasFrame"
                                 ></iframe>

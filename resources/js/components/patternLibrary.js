@@ -10,8 +10,7 @@ export default () => ({
     store: Alpine.store('braid'),
 
     get activePattern() {
-        return this.store.activePattern ? this.patternMap[this.store.activePattern] :
-            this.patternMap['__braid.welcome'];
+        return this.store.activePattern ? this.patternMap[this.store.activePattern] : null;
     },
 
     get loadedPattern() {
@@ -73,8 +72,8 @@ export default () => ({
         };
 
         this.initBinds();
-
         this.storeCanvasWidth();
+        this.switchPattern('__braid.welcome');
     },
 
     initStore() {
@@ -83,6 +82,12 @@ export default () => ({
     },
 
     initBinds() {
+        this.$watch('activePattern', (activePattern) => {
+            this.$refs.patternCanvasFrame.contentWindow.location.replace(
+                this.activePattern.url
+            );
+        });
+
         this.$watch('loadedPattern', (loadedPattern) => {
             if (loadedPattern === null)
                 return this.draggables.patternCanvas.sizeContainer(0, false);
@@ -203,15 +208,7 @@ export default () => ({
     },
 
     reloadPattern() {
-        const src = this.$refs.patternCanvasFrame.src;
-
-        const onloaded = () => {
-            this.$refs.patternCanvasFrame.src = src;
-            this.$refs.patternCanvasFrame.removeEventListener('load', onloaded);
-        };
-
-        this.$refs.patternCanvasFrame.addEventListener('load', onloaded);
-        this.$refs.patternCanvasFrame.src = 'about:blank';
+        this.$refs.patternCanvasFrame.contentWindow.location.reload();
     },
 
     openPatternInNewWindow() {
