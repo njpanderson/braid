@@ -38,20 +38,26 @@ export default () => ({
         axios.get('/braid/menu')
             .then((response) => {
                 this.patterns = response.data.patterns;
+
+                // Create a map of patterns for quick access
                 this.createPatternMap(this.patterns);
 
+                // Set up default menu storage
                 storage.transact('menu', (menu) => {
+                    // If the menu id (hash) has changed, reset the closed statuses
                     if (menu.id !== response.data.id) {
                         eventBus.fire('braid.menu-reset');
                         menu.closed = [];
                     }
 
+                    // Save the id
                     menu.id = response.data.id;
 
                     return menu;
                 }, { id: null, closed: [] });
             });
 
+        // Set up draggable grid items
         this.draggables = {
             patternCanvas: new DraggableGrid(document.querySelector('[x-ref="patternCanvas"]'))
                 .onStart(() => {
