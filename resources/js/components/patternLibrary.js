@@ -5,6 +5,7 @@ import storage from 'store2';
 import eventBus from '@lib/event-bus';
 import events from '@lib/events';
 import DraggableGrid from '@utils/DraggableGrid';
+import makeUrl from '@/utils/makeUrl';
 
 // URL query params
 const queryParams = (new URL(location)).searchParams;
@@ -230,13 +231,9 @@ export default () => ({
         if (!this.activePattern)
             return false;
 
-        const url = new URL(this.activePattern.url);
-        const params = url.searchParams;
-
-        params.set('mode', 'full');
-        url.search = params.toString();
-
-        window.open(url, '_blank');
+        window.open(makeUrl(this.activePattern.url, {
+            mode: 'full'
+        }), '_blank');
     },
 
     /**
