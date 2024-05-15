@@ -15,8 +15,8 @@
 @section('main')
     <div
         x-data="patternLibrary"
-        x-on:braidpatternloaded.window="onPatternLoaded"
-        x-on:braidpatternunloaded.window="onPatternUnLoaded"
+        x-on:braidframeloaded.window="onFrameLoaded"
+        x-on:braidframeunloaded.window="onFrameUnLoaded"
         x-on:braidcanvasresize.window.throttle.50ms="onCanvasResize"
         class="h-[100vh] bg-gradient-to-b from-primary-300 to-primary-400 dark:from-primary-600 dark:to-primary-700 dark:text-white"
     >

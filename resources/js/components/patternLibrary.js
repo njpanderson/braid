@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as clipboard from 'clipboard-polyfill';
 
 import storage from 'store2';
-import eventBus from '@/lib/event-bus';
+import eventBus from '@lib/event-bus';
 import events from '@lib/events';
 import DraggableGrid from '@utils/DraggableGrid';
 
@@ -102,9 +102,9 @@ export default () => ({
         events.on(document.body, 'click', '[data-clip]', this.onClip.bind(this));
     },
 
-    onPatternLoaded(event) {
-        if (!event.detail.patternMapId)
-            // Bail if there's no pattern ID
+    onFrameLoaded(event) {
+        if (!event.detail || !event.detail.patternMapId)
+            // Bail early if there's no pattern ID
             return;
 
         this.store.loadedPattern = event.detail.patternMapId;
@@ -116,8 +116,11 @@ export default () => ({
         });
     },
 
-    onPatternUnLoaded(event) {
-        console.debug('Pattern unloaded', event.detail.patternMapId);
+    onFrameUnLoaded(event) {
+        console.debug('Frame unloaded');
+
+        if (!event.detail || !event.detail.patternMapId)
+            return;
 
         this.store.loadedPattern = null;
 

@@ -17,17 +17,6 @@
         @yield('main')
     </main>
 
-    <script>
-        const events = [
-            'braidcanvasresize'
-        ].map((eventName) => {
-            const event = new Event(eventName);
-            return event;
-        });
-
-        window.addEventListener('resize', () => {
-            window.parent.dispatchEvent(events[0]);
-        });
-    </script>
+    @include('braid::partials.framescripts')
 </body>
 </html>
