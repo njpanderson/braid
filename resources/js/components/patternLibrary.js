@@ -3,9 +3,10 @@ import * as clipboard from 'clipboard-polyfill';
 
 import storage from 'store2';
 import eventBus from '@lib/event-bus';
+import debug from '@lib/debug';
 import events from '@lib/events';
 import DraggableGrid from '@utils/DraggableGrid';
-import makeUrl from '@/utils/makeUrl';
+import makeUrl from '@utils/makeUrl';
 
 // URL query params
 const queryParams = (new URL(location)).searchParams;
@@ -107,6 +108,7 @@ export default () => ({
             .bind('toolbar:button:reload-pattern', this.reloadPattern.bind(this))
             .bind('toolbar:button:open-new-window', this.openPatternInNewWindow.bind(this))
             .bind('toolbar:button:set-canvas-width', this.onSetCanvasWidth.bind(this))
+            .bind('toolbar:button:copy-pattern-url', this.onCopyPatternUrl.bind(this))
             .bind('toolbar:submit-canvas-width', this.onSubmitCanvasWidth.bind(this))
             .bind('ruler:drag-mark-start', this.onRulerDragMark.bind(this))
             .bind('ruler:drag-mark-end', this.onRulerDragMark.bind(this));
@@ -121,7 +123,7 @@ export default () => ({
 
         this.store.loadedPattern = event.detail.patternMapId;
 
-        console.debug('Pattern loaded', this.store.loadedPattern);
+        debug.log('Pattern loaded', this.store.loadedPattern);
 
         this.$dispatch('patternloaded', {
             loadedPattern: this.loadedPattern
@@ -129,7 +131,7 @@ export default () => ({
     },
 
     onFrameUnLoaded(event) {
-        console.debug('Frame unloaded');
+        debug.log('Frame unloaded');
 
         if (!event.detail || !event.detail.patternMapId)
             return;
@@ -176,6 +178,11 @@ export default () => ({
         event.originalEvent.target.select();
     },
 
+    onCopyPatternUrl(event) {
+        // TODO: Put pattern URL in clipboard (exclude mode=view for deep linking!)
+        // TODO: Make toolbar light up or produce a toast of some sort
+    },
+
     onRulerDragMark(event) {
         if (event.type === 'ruler:drag-mark-start')
             return this.setCanvasInteractable(false);
@@ -216,8 +223,6 @@ export default () => ({
             return;
 
         this.store.loadedPattern = null;
-
-        console.log(this.patternMap, this.patternMap[id]);
 
         if (this.patternMap[id])
             this.store.activePattern = id;
@@ -291,7 +296,7 @@ export default () => ({
     },
 
     toggleMenuItem(event) {
-        console.log(event.target, this.$data);
+        debug.log(event.target, this.$data);
     },
 
     toggleRuler() {

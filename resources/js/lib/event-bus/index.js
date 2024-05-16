@@ -92,12 +92,9 @@ class EventBus {
      * @returns EventBus
      */
     fire(event, detail = null, originalEvent = undefined) {
-        debug.groupCollapsed(`🚌 EventBus - ${event} (firing ${
+        debug.log(`🚌 EventBus - ${event} (firing ${
             (this.listeners[event] ? this.listeners[event].handlers.length : 0)
         } handler(s))`);
-
-        if (detail) debug.log(detail);
-        debug.groupEnd();
 
         if (!(this.listeners[event]))
             return;

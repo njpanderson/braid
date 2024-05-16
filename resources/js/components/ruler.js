@@ -106,6 +106,7 @@ export default (offset) => ({
             !event.altKey
         ) {
             // Delta is zero, altKey not pressed
+            // TODO: Need to check delta for the pointer, not the bar, this is too strict otherwise!
             this.removeMark(this.store.ruler.dragMarker);
         }
 

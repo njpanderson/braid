@@ -66,30 +66,43 @@
                 </span>
             </div>
 
-            <div class="flex items-center ml-auto gap-x-2">
-                <x-braid::toolbutton
-                    id="toggle-ruler"
-                    icon="bars-3-center-left"
-                    icon-class="-rotate-90"
-                    toggle-state="store.ruler.open"
-                    data-tooltip="{{ __('Toggle ruler') }}"
-                    {{-- @click="toggleRuler" --}}
-                />
+            <ul class="flex ml-auto gap-x-2">
+                <li>
+                    <x-braid::toolbutton
+                        id="toggle-ruler"
+                        icon="bars-3-center-left"
+                        icon-class="-rotate-90"
+                        toggle-state="store.ruler.open"
+                        data-tooltip="{{ __('Toggle ruler') }}"
+                    />
+                </li>
 
-                <x-braid::toolbutton
-                    id="reload-pattern"
-                    icon="arrow-path-rounded-square"
-                    data-tooltip="{{ __('Reload pattern') }}"
-                    {{-- @click="reloadPattern" --}}
-                />
+                <li class="flex"><span class="block border-r border-r-neutral-200/50 my-1.5"></span></li>
 
-                <x-braid::toolbutton
-                    id="open-new-window"
-                    icon="arrow-top-right-on-square"
-                    data-tooltip="{{ __('Open in new window or tab') }}"
-                    {{-- @click="openPatternInNewWindow" --}}
-                />
-            </div>
+                <li>
+                    <x-braid::toolbutton
+                        id="reload-pattern"
+                        icon="arrow-path-rounded-square"
+                        data-tooltip="{{ __('Reload pattern') }}"
+                    />
+                </li>
+
+                <li>
+                    <x-braid::toolbutton
+                        id="copy-pattern-url"
+                        icon="link"
+                        data-tooltip="{{ __('Copy link to pattern') }}"
+                    />
+                </li>
+
+                <li>
+                    <x-braid::toolbutton
+                        id="open-new-window"
+                        icon="arrow-top-right-on-square"
+                        data-tooltip="{{ __('Open in new window or tab') }}"
+                    />
+                </li>
+            </ul>
         </div>
     </template>
 </div>
