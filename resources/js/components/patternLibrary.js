@@ -178,7 +178,7 @@ export default () => ({
         event.originalEvent.target.select();
     },
 
-    onCopyPatternUrl(event) {
+    onCopyPatternUrl() {
         // TODO: Put pattern URL in clipboard (exclude mode=view for deep linking!)
         // TODO: Make toolbar light up or produce a toast of some sort
     },
