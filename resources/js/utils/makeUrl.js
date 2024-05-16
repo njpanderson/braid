@@ -13,7 +13,7 @@
  * @returns URL
  */
 export default function makeUrl(url, params = {}) {
-    if (!url instanceof URL)
+    if (!(url instanceof URL))
         url = new URL(url);
 
     const searchParams = url.searchParams;
