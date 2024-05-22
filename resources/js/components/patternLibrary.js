@@ -216,6 +216,10 @@ export default () => ({
         this.setCanvasInteractable();
     },
 
+    onMenuScroll(event) {
+        this.store.menuScrolled = !!event.target.scrollTop;
+    },
+
     loadfirstFramePage(patternId) {
         if (patternId)
             return this.switchPattern(patternId);

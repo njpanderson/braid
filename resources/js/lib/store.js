@@ -2,6 +2,7 @@ export default {
     loadedPattern: null,
     activePattern: null,
     menuOpen: true,
+    menuScrolled: false,
     ruler: {
         open: false
     },

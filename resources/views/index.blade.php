@@ -66,9 +66,11 @@
 
             <menu
                 class="h-full w-full flex-1"
+                @scroll="onMenuScroll"
                 :class="{
                     'overflow-y-auto': store.menuOpen,
                     'overflow-hidden': !store.menuOpen,
+                    'border-t-2 border-t-primary-200/40': store.menuScrolled
                 }"
             >
                 @include('braid::partials.menu', [
