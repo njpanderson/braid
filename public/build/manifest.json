@@ -12,7 +12,7 @@
     "isDynamicEntry": true
   },
   "resources/css/braid.scss": {
-    "file": "assets/braid-jYi2Sjx0.css",
+    "file": "assets/braid-DSc3HV_Q.css",
     "src": "resources/css/braid.scss",
     "isEntry": true
   },
@@ -57,7 +57,7 @@
     "src": "resources/css/fonts/Lato-ThinItalic.woff2"
   },
   "resources/js/braid.js": {
-    "file": "assets/braid-B1rKqe1W.js",
+    "file": "assets/braid-BxvdG3Nz.js",
     "name": "braid",
     "src": "resources/js/braid.js",
     "isEntry": true,

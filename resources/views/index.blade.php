@@ -64,6 +64,37 @@
                 </button>
             </header>
 
+            <form
+                class="mb-2 px-2"
+                @submit="onSearchSubmit"
+            >
+                <div class="flex rounded-sm border-2 border-primary-200/40 focus-within:border-accent-300 bg-neutral-50 dark:bg-neutral-700">
+                    <input
+                        type="text"
+                        placeholder="Find patterns"
+                        x-model.debounce.150ms="store.search.term"
+                        @keyup.esc="onSearchClose"
+                        class="p-1 text-sm flex-grow appearance-none bg-transparent focus-visible:outline-none min-w-0">
+
+                    <button
+                        type="submit"
+                        class="flex shrink-0 items-center justify-center w-[30px] group"
+                        x-show="!store.search.open"
+                    >
+                        <x-heroicon-s-magnifying-glass class="w-4 h-4 group-hover:stroke-accent-300"/>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="flex shrink-0 items-center justify-center w-[30px] group"
+                        x-show="store.search.open"
+                        @click="onSearchClose"
+                    >
+                        <x-heroicon-s-x-mark class="w-4 h-4 group-hover:stroke-accent-300"/>
+                    </button>
+                </div>
+            </form>
+
             <menu
                 class="h-full w-full flex-1"
                 @scroll="onMenuScroll"
@@ -73,15 +104,21 @@
                     'border-t-2 border-t-primary-200/40': store.menuScrolled
                 }"
             >
-                @include('braid::partials.menu', [
-                    'dir' => $patternFiles
-                ])
+                <template x-if="!store.search.open">
+                    @include('braid::partials.menu', [
+                        'dir' => $patternFiles
+                    ])
+                </template>
+
+                <template x-if="store.search.open">
+                    @include('braid::partials.search')
+                </template>
 
                 <button
                     x-show="store.menuOpen"
                     data-draggable-handle="patternLibrary"
                     data-draggable-type="cols"
-                    class="absolute top-0 right-0 bottom-0 w-[6px] bg-neutral-300/50 dark:bg-neutral-500/50 cursor-ew-resize flex items-center justify-center hover:bg-accent-300 dark:hover:bg-accent-600"
+                    class="absolute top-0 right-0 bottom-0 w-[6px] opacity-0 hover:opacity-100 bg-accent-300 dark:bg-accent-600 cursor-ew-resize flex items-center justify-center"
                     title="Resize menu"
                 ><span class="h-[20px] bg-neutral-600 dark:bg-neutral-100 w-[1px]"></span></button>
             </menu>

@@ -180,6 +180,7 @@ class BraidService
                     if ($patternClass)
                         $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
                             'url' => $this->getRoute($id, $context),
+                            'type' => 'context',
                             'contextId' => $context,
                             'patternId' => $id,
                             'id' => $id . '.' . $context,

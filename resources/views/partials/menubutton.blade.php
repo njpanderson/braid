@@ -1,8 +1,8 @@
 <button
     type="button"
-    class="flex items-center w-full px-1 py-0.5 rounded-md hover:bg-accent-400 dark:hover:bg-accent-600 gap-1"
+    class="flex items-center w-full px-1 py-0.5 rounded-md hover:bg-accent-500 dark:hover:bg-accent-600 gap-1"
     :class="{
-        'bg-accent-300': activePattern.id == '{{ $patternId }}'
+        'bg-accent-400': activePattern.id == '{{ $patternId }}'
     }"
     @click="switchPattern('{{ $patternId }}')"
 >

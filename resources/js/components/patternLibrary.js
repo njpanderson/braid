@@ -220,6 +220,24 @@ export default () => ({
         this.store.menuScrolled = !!event.target.scrollTop;
     },
 
+    onSearchSubmit(event) {
+        event.preventDefault();
+
+        if (!this.store.search.term) {
+            this.store.search.open = false;
+            return;
+        }
+
+        this.store.search.open = true;
+    },
+
+    onSearchClose(event) {
+        event.preventDefault();
+
+        this.store.search.term = '';
+        this.store.search.open = false;
+    },
+
     loadfirstFramePage(patternId) {
         if (patternId)
             return this.switchPattern(patternId);
@@ -229,15 +247,22 @@ export default () => ({
 
     createPatternMap(data) {
         data.items.forEach((item) => {
-            if (item.id)
-                this.patternMap[item.id] = item;
+            if (item.id) {
+                this.patternMap[item.id] = {
+                    index: item.label.toLowerCase(),
+                    ...item
+                };
+            }
 
             if (item.contexts) {
                 item.contexts.forEach((context) => {
                     context.label = item.label;
                     context.contextLabel = context.label;
 
-                    this.patternMap[context.id] = context;
+                    this.patternMap[context.id] = {
+                        index: `${item.label}${context.contextId}`.toLowerCase(),
+                        ...context
+                    };
 
                     delete this.patternMap[item.id].contexts;
                 });
@@ -329,6 +354,44 @@ export default () => ({
             return 1;
 
         return length - 1;
+    },
+
+    getSearchResults() {
+        const term = this.store.search.term.toLowerCase();
+
+        return Object.keys(this.patternMap)
+            .filter((key) => {
+                return (
+                    (
+                        this.patternMap[key].type === 'file' ||
+                        (this.patternMap[key].type === 'context' && !this.patternMap[key].default)
+                    ) &&
+                    this.patternMap[key].label !== undefined &&
+                    this.patternMap[key].index.includes(term)
+                );
+            })
+            .map((key) => {
+                return {...this.patternMap[key]};
+            });
+    },
+
+    getSearchLabel(pattern) {
+        if (pattern.type === 'context')
+            return `${pattern.label} (${pattern.contextId})`;
+
+        return pattern.label;
+    },
+
+    getPatternSearchPath(pattern) {
+        let prop = 'id';
+
+        if (pattern.type === 'context')
+            prop = 'patternId';
+
+        return pattern[prop]
+            .split(':')
+            .slice(0, -1)
+            .join(' / ');
     },
 
     toggleMenuItem(event) {

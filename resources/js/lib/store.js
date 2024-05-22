@@ -3,6 +3,10 @@ export default {
     activePattern: null,
     menuOpen: true,
     menuScrolled: false,
+    search: {
+        term: '',
+        open: false
+    },
     ruler: {
         open: false
     },

@@ -3,7 +3,7 @@
         @class([
             'text-md',
             'pl-1 ml-3 border-l-4 border-primary-400' => $dir['level'],
-            'p-2' => !$dir['level']
+            'px-2' => !$dir['level']
         ])
         @if ($dir['level'])
             x-show="open"
