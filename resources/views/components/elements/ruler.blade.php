@@ -20,7 +20,7 @@
     {{-- TODO: Come back to this and allow marks to be added by clicking on the ruler --}}
     <template x-for="mark in getMarks()" :key="mark.uuid">
         <div
-            class="absolute w-[1px] top-[6px] bottom-0 has-[:hover]:bg-current pointer-events-none"
+            class="absolute w-[1px] top-[6px] bottom-0 has-[:hover]:bg-current pointer-events-none z-50"
             :class="{
                 'ruler-mark-global text-red-500': mark.store === consts.GLOBAL,
                 'ruler-mark-local text-blue-500': mark.store !== consts.GLOBAL,

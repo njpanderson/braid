@@ -2,58 +2,100 @@ import events from '@lib/events';
 
 export default class DraggableGrid {
     constructor(gridContainer, options = {}) {
-        this.startDrag = this.startDrag.bind(this);
-        this.endDrag = this.endDrag.bind(this);
-        this.drag = this.drag.bind(this);
-
         this.container = gridContainer;
+
+        this.state = {
+            dragging: null,
+            bounds: null,
+            cols: {
+                dragStartPos: null,
+                startSize: null,
+                currentSize: null
+            },
+            rows: {
+                dragStartPos: null,
+                startSize: null,
+                currentSize: null
+            }
+        };
 
         this.callbacks = {
             start: [],
             end: []
         };
 
+        this.types = {
+            rows: {
+                dragMetric: 'clientY',
+                dragStyleProperty: 'gridTemplateRows'
+            },
+            cols: {
+                dragMetric: 'clientX',
+                dragStyleProperty: 'gridTemplateColumns'
+            }
+        };
+
         const dataset = this.container.dataset;
 
-        // Configurable options default to data-draggable-***
-        // attributes on the element
         this.options = {
-            startSize: parseInt(dataset.draggableInitial, 10) ?? 0,
-            minSize: parseInt(dataset.draggableMin, 10) ?? 0,
-            maxSize: parseInt(dataset.draggableMax, 10) ?? 0,
-            template: dataset.draggableTemplate.split('<value>'),
-            direction: dataset.draggableDirection,
-            ...options,
-            dragStyleProperty: null,
-            dragMetric: null
+            id: dataset.draggable,
+            cols: {
+                template: dataset.draggableTemplateCols ?? '',
+                startSize: parseInt(dataset.draggableColsInitial ?? 0, 10),
+                maxSize: parseInt(dataset.draggableColsMax ?? 0, 10),
+                minSize: parseInt(dataset.draggableColsMin ?? 0, 10)
+            },
+            rows: {
+                template: dataset.draggableTemplateRows ?? '',
+                startSize: parseInt(dataset.draggableRowsInitial ?? 0, 10),
+                maxSize: parseInt(dataset.draggableRowsMax ?? 0, 10),
+                minSize: parseInt(dataset.draggableRowsMin ?? 0, 10)
+            },
+            handleSize: parseInt(dataset.draggableHandleSize ?? 0, 10),
+            handleSelector: '[data-draggable-handle]',
+            ...options
         };
 
-        if (!this.options.template.length || this.options.template.length != 2)
-            throw new Error('Template must contain a single <value> keyword');
+        this.setState();
+        this.bindEvents();
+        this.initMutationObserver();
+    }
 
-        if (this.options.direction === 'vertical') {
-            this.options.dragStyleProperty = 'gridTemplateRows';
-            this.options.dragMetric = 'clientY';
-        } else {
-            this.options.dragStyleProperty = 'gridTemplateColumns';
-            this.options.dragMetric = 'clientX';
-        }
+    setState() {
+        this.refreshBounds();
 
-        this.state = {
-            dragging: false,
-            dragStartPos: 0,
-            startSize: this.options.startSize,
-            currentSize: 0
-        };
+        this.sizeContainer('cols');
+        this.sizeContainer('rows');
+    }
 
+    bindEvents() {
         events
-            .on(this.container, 'mousedown', '[data-draggable-grid-trigger]', this.startDrag)
-            .on(this.container, 'touchstart', '[data-draggable-grid-trigger]', this.startDrag)
-            .bind(window, 'mouseup', this.endDrag)
-            .bind(window, 'touchend', this.endDrag)
-            .bind(window, 'touchcancel', this.endDrag)
-            .bind(window, 'mousemove', this.drag)
-            .bind(window, 'touchmove', this.drag);
+            .on(
+                this.container,
+                'mousedown',
+                `[data-draggable-handle='${this.options.id}']`,
+                this.onStartDrag.bind(this)
+            )
+            .on(
+                this.container,
+                'touchstart',
+                `[data-draggable-handle='${this.options.id}']`,
+                this.onStartDrag.bind(this)
+            )
+            .bind(window, 'mouseup', this.onEndDrag.bind(this))
+            .bind(window, 'touchend', this.onEndDrag.bind(this))
+            .bind(window, 'touchcancel', this.onEndDrag.bind(this))
+            .bind(window, 'mousemove', this.onDrag.bind(this))
+            .bind(window, 'touchmove', this.onDrag.bind(this))
+            .bind(window, 'resize', this.onResize.bind(this));
+    }
+
+    initMutationObserver() {
+        const observer = new MutationObserver(this.onContainerMutate.bind(this));
+
+        observer.observe(this.container, {
+            attributes: true
+        });
     }
 
     /**
@@ -62,7 +104,7 @@ export default class DraggableGrid {
      * @param {*} context
      * @returns DraggableGrid
      */
-    onStart(fn, context = null) {
+    start(fn, context = null) {
         this.callbacks.start.push({ fn, context });
         return this;
     }
@@ -73,105 +115,177 @@ export default class DraggableGrid {
      * @param {*} context
      * @returns DraggableGrid
      */
-    onEnd(fn, context = null) {
+    end(fn, context = null) {
         this.callbacks.end.push({ fn, context });
         return this;
     }
 
-    /**
-     * Start the dragging process.
-     * @param {Event} event
-     */
-    startDrag(event) {
+    onStartDrag(event, handle) {
         this.fireCallbacks('start', event);
 
-        this.state.dragging = true;
-        this.state.dragStartPos = event[this.options.dragMetric];
+        const type = handle.dataset.draggableType;
+
+        this.state.dragging = type;
+        this.state[type].dragStartPos = event[this.types[type].dragMetric];
     }
 
-    /**
-     * End the dragging process
-     * @param {Event} event
-     * @returns
-     */
-    endDrag(event) {
+    onDrag(event) {
+        let offset;
+
+        if (!this.state.dragging)
+            return;
+
+        const type = this.state.dragging;
+
+        if (type === 'rows') {
+            offset = event[this.types[type].dragMetric] - this.state[type].dragStartPos;
+        } else {
+            offset = this.state[type].dragStartPos - event[this.types[type].dragMetric];
+        }
+
+        this.sizeContainer(type, this.state[type].startSize - offset);
+    }
+
+    onEndDrag(event) {
         if (!this.state.dragging)
             return;
 
         this.fireCallbacks('end', event);
 
-        // Shorten vars for reuse
-        const min = this.options.minSize;
-        const max = this.options.maxSize;
+        const type = this.state.dragging;
 
-        // Determine amount of movement between start and end
-        if (Math.abs(this.state.currentSize - this.state.startSize) < 5) {
-            // Toggle the canvas size if click was without (much) movement
-            if (max && this.state.startSize == min) {
-                // Max height exists and element is at minimum
-                this.sizeContainer(max);
-            } else if (min && this.state.startSize == max) {
-                // Max height exists and element is at maximum
-                this.sizeContainer(min);
-            } else {
-                // Element is somewhere in between
-                this.sizeContainer(
-                    this.state.startSize >= (max / 2) ?
-                        max : min
-                );
-            }
-        } else {
-            // Otherwise, snap within x pixels
-            if (max && this.state.currentSize >= (max - (max * 0.10))) {
-                this.sizeContainer(max);
-            } else if (this.state.currentSize <= (min + (min * 0.50))) {
-                this.sizeContainer(min);
-            }
-        }
+        this.state[type].startSize = this.state[type].currentSize;
+        this.state.dragging = null;
+    }
 
-        this.state.startSize = this.state.currentSize;
-        this.state.dragging = false;
+    onResize(event) {
+        this.refreshBounds();
+
+        this.sizeContainer('cols');
+        this.sizeContainer('rows');
+    }
+
+    onContainerMutate(mutations) {
+        if (this.state.dragging)
+            return;
+
+        mutations
+            .filter(mutation => mutation.type === 'attributes')
+            .forEach((mutation) => {
+                if (mutation.target.dataset.draggableTemplateCols)
+                    this.setDraggableTemplates(
+                        'cols',
+                        mutation.target.dataset.draggableTemplateCols
+                    );
+
+                if (mutation.target.dataset.draggableTemplateRows)
+                    this.setDraggableTemplates(
+                        'rows',
+                        mutation.target.dataset.draggableTemplateRows
+                    );
+            });
     }
 
     /**
-     * Drag event (mousemove, touchmove).
-     * @param {Event} event
-     * @returns
+     * Set/refresh the bounding box metrics for the container, and set
+     * the start sizes for the cols/rows within it
      */
-    drag(event) {
-        if (!this.state.dragging)
-            return;
+    refreshBounds() {
+        this.state.bounds = this.container.getBoundingClientRect();
 
-        const offset = event[this.options.dragMetric] - this.state.dragStartPos;
+        // Get start sizes from state or options
+        let startColSize = this.state.cols.startSize ??
+            this.options.cols.startSize;
 
-        this.sizeContainer(this.state.startSize - offset);
+        let startRowSize = this.state.rows.startSize ??
+            this.options.rows.startSize;
+
+        // Check sizes aren't out of bounds
+        if (startColSize > this.state.bounds.width)
+            startColSize = this.state.bounds.width;
+
+        if (startRowSize > this.state.bounds.height)
+            startRowSize = this.state.bounds.height;
+
+        this.state.cols.startSize = startColSize;
+        this.state.rows.startSize = startRowSize;
+    }
+
+    setDraggableTemplates(type, data) {
+        if (data.includes('<value>')) {
+            data = data.split('<value>');
+
+            if (!data.length || data.length != 2)
+                throw new Error('Template must contain a single <value> keyword');
+        } else {
+            data = [data];
+        }
+
+        this.options[type].template = {
+            valueIndex: data.findIndex(t => t === ''),
+            data
+        };
+
+        this.sizeContainer(type);
     }
 
     /**
      * Perform the container grid size change.
+     * @param {string} type - cols or rows
      * @param {number} size
      * @param {boolean} constraints
      * @returns
      */
-    sizeContainer(size = null, constraints = true) {
-        if (size === null) {
-            size = this.state.startSize;
-            constraints = false;
-        }
+    sizeContainer(type, size) {
+        let template, maxSize, minSize;
 
         if (
-            constraints &&
-            (size < this.options.minSize || (
-                this.options.maxSize && size > this.options.maxSize
-            ))
+            !this.options[type].template ||
+            !this.options[type].template.data
         ) {
+            // Bail if there is no template
             return;
         }
 
-        this.state.currentSize = size;
+        if (size === undefined) {
+            // Set default size based on current start size
+            size = this.state[type].startSize;
+        }
 
-        this.container.style[this.options.dragStyleProperty] =
-            `${this.options.template[0]}${size}px${this.options.template[1]}`;
+        // Boundary lookup based on sizing orientation
+        const boundary = (type === 'cols' ? 'width' : 'height');
+
+        // Set min/max sizes
+        maxSize = (this.options[type].maxSize !== 0) ? this.options[type].maxSize : this.state.bounds[boundary];
+        minSize = (this.options[type].minSize !== 0) ? this.options[type].minSize : this.options.handleSize;
+
+        // Restrict to minimum
+        if (size < (minSize + 10))
+            size = minSize;
+
+        // Restrict to maximum
+        if (size > (maxSize - 10))
+            size = maxSize;
+
+        // Set template
+        if (this.options[type].template.valueIndex > -1) {
+            template = this.options[type].template.data
+                .reduce((acc, current, index) => {
+                    if (index === this.options[type].template.valueIndex) {
+                        return acc + `${size}px`;
+                    }
+
+                    return acc + '' + current;
+                }, '');
+        } else {
+            template = this.options[type].template.data[0];
+        }
+
+        // Style container
+        this.container.style[this.types[type].dragStyleProperty] = template;
+
+        // Save current size
+        this.state[type].currentSize = size;
     }
 
     /**

@@ -6,9 +6,10 @@
     class="relative h-full flex flex-col bg-neutral-50 dark:bg-neutral-800"
 >
     <button
-        data-draggable-grid-trigger
-        class="absolute top-0 left-0 right-0 h-[6px] bg-neutral-300 dark:bg-neutral-500 cursor-ns-resize flex items-center justify-center hover:bg-accent-300 dark:hover:bg-accent-600"
-        title="Resize tools (click to toggle size)"
+        data-draggable-handle="patternLibrary"
+        data-draggable-type="rows"
+        class="absolute top-0 left-0 right-0 h-[6px] bg-neutral-300/50 dark:bg-neutral-500/50 cursor-ns-resize flex items-center justify-center hover:bg-accent-300 dark:hover:bg-accent-600"
+        title="Resize tools"
     ><span class="w-[20px] bg-neutral-600 dark:bg-neutral-100 h-[1px]"></span></button>
     <menu class="h-[40px] w-full border-b border-neutral-50 dark:border-neutral-400 bg-neutral-200 dark:bg-neutral-700">
         <ul

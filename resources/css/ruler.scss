@@ -97,6 +97,6 @@
 
 @layer components {
     .ruler-number {
-        @apply w-[100px] pt-[1px] shrink-0 text-[10px] indent-1 leading-none text-neutral-600 dark:text-neutral-200;
+        @apply w-[100px] pt-[1px] shrink-0 text-[10px] indent-1 leading-none text-neutral-600 dark:text-neutral-200 pointer-events-none select-none;
     }
 }

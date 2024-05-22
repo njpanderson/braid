@@ -1,11 +1,12 @@
 <div
     x-data="toolbar"
-    class="bg-neutral-200 dark:bg-neutral-600 dark:text-white flex items-center px-2 gap-x-2 border-b-2 border-neutral-300 dark:border-neutral-400"
+    class="h-[50px] bg-neutral-200 dark:bg-neutral-600 dark:text-white flex items-center px-2 gap-x-2 border-b-2 border-neutral-300 dark:border-neutral-400 shrink-0"
 >
     <x-braid::toolbutton
         icon="arrow-right-start-on-rectangle"
         x-show="!store.menuOpen"
         @click="store.menuOpen = !store.menuOpen"
+        data-tooltip="Open menu"
         label-hidden
     >Open menu</x-braid::toolbutton>
 
@@ -13,7 +14,7 @@
         <div class="flex w-full justify-between items-center gap-x-2">
             <span class="block w-[2px] bg-neutral-50 dark:bg-neutral-500 self-stretch rounded" x-show="!store.menuOpen"></span>
 
-            <h1 class="flex gap-1 mr-auto">
+            <h1 class="flex gap-1 mr-auto whitespace-nowrap text-ellipsis">
                 @svg('heroicon-o-document', 'w-6 h-6')
                 <span x-text="activePattern.label"></span>
                 <span x-show="activePattern.contextLabel">

@@ -1,4 +1,23 @@
 @layer components {
+    .braid-app {
+        @apply grid;
+        grid-template-areas:
+            'menu content content'
+            'menu tools tools'
+    }
+
+    .braid-menu {
+        grid-area: menu;
+    }
+
+    .braid-content {
+        grid-area: content;
+    }
+
+    .braid-tools {
+        grid-area: tools;
+    }
+
     .pl-prose {
         @apply prose prose-slate p-2;
     }

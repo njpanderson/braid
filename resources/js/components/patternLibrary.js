@@ -5,7 +5,7 @@ import storage from 'store2';
 import eventBus from '@lib/event-bus';
 import debug from '@lib/debug';
 import events from '@lib/events';
-import DraggableGrid from '@utils/DraggableGrid';
+import DraggableGrid from '@/utils/DraggableGrid';
 import makeUrl from '@utils/makeUrl';
 
 // URL query params
@@ -64,20 +64,38 @@ export default () => ({
                 this.loadfirstFramePage(queryParams.get('pattern'));
             });
 
-        // Set up draggable grid items
-        this.draggables = {
-            patternCanvas: new DraggableGrid(document.querySelector('[x-ref="patternCanvas"]'))
-                .onStart(() => {
-                    this.setCanvasInteractable(false);
+        document.querySelectorAll('[data-draggable]').forEach((element) => {
+            const id = element.dataset.draggable;
 
-                    // Clear the pattern canvas height to avoid it preventing sizing of the panel
-                    this.$refs.patternCanvasOuter.style.height = null;
-                }, this)
-                .onEnd(() => {
-                    // Restore iframe pointer abilities
-                    this.setCanvasInteractable();
-                }, this)
-        };
+            this.draggables = {
+                [id]: new DraggableGrid(element)
+                    .start(() => {
+                        this.setCanvasInteractable(false);
+
+                        // Clear the pattern canvas height to avoid it preventing sizing of the panel
+                        this.$refs.patternCanvasOuter.style.height = null;
+                    }, this)
+                    .end(() => {
+                        // Restore iframe pointer abilities
+                        this.setCanvasInteractable();
+                    }, this)
+            };
+        });
+
+        // Set up draggable grid items
+        // this.draggables = {
+        //     patternCanvas: new DraggableGrid(document.querySelector('[x-ref="patternCanvas"]'))
+                // .onStartDrag(() => {
+                //     this.setCanvasInteractable(false);
+
+                //     // Clear the pattern canvas height to avoid it preventing sizing of the panel
+                //     this.$refs.patternCanvasOuter.style.height = null;
+                // }, this)
+                // .onEndDrag(() => {
+                //     // Restore iframe pointer abilities
+                //     this.setCanvasInteractable();
+                // }, this)
+        // };
 
         this.initBinds();
         this.storeCanvasWidth();
@@ -85,23 +103,31 @@ export default () => ({
     },
 
     initStore() {
+        if (!this.$refs.patternCanvasOuter) {
+            this.store.canvas.widthOffset = 0;
+            return;
+        }
+
         this.store.canvas.widthOffset = this.$refs.patternCanvasOuter.offsetWidth -
             this.$refs.patternCanvasOuter.clientWidth;
     },
 
     initBinds() {
         this.$watch('activePattern', () => {
+            if (!this.$refs.patternCanvasFrame)
+                return;
+
             this.$refs.patternCanvasFrame.contentWindow.location.replace(
                 this.activePattern.url
             );
         });
 
         this.$watch('loadedPattern', (loadedPattern) => {
-            if (loadedPattern === null)
-                return this.draggables.patternCanvas.sizeContainer(0, false);
+            // if (loadedPattern === null)
+                // return this.draggables.patternCanvas.sizeContainer(0, false);
 
             // Set the pattern canvas/toolbar size to previously dragged size (if any)
-            this.draggables.patternCanvas.sizeContainer();
+            // this.draggables.patternCanvas.sizeContainer();
         });
 
         eventBus
@@ -272,6 +298,12 @@ export default () => ({
     },
 
     storeCanvasWidth() {
+        if (!this.$refs.patternCanvasOuter) {
+            this.store.canvas.width = 0;
+            this.store.canvas.resizeInputValue = 0;
+            return;
+        }
+
         this.store.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
         this.store.canvas.resizeInputValue = this.store.canvas.width;
     },

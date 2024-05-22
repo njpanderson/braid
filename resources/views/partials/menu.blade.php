@@ -20,32 +20,27 @@
                 ])
             >
                 @if ($item['type'] === 'dir')
+                    {{-- Directories --}}
                     <button
                         class="w-full px-1 rounded-md group"
                         @click="toggle"
-                        data-tooltip="{{
-                            __('Open/close folder ') .
-                            '<i class="block text-xs">' .
-                            __('hold alt/opt to close all descendents') .
-                            '</i>'
-                        }}"
                     >
                         <span class="flex items-center gap-1 text-neutral-700 dark:text-neutral-100 py-1">
                             @if (!$dir['level'])
-                                @svg('heroicon-o-folder', 'h-6')
+                                @svg('heroicon-o-folder', 'h-6 w-6 shrink-0')
                             @else
-                                @svg('heroicon-o-folder', 'h-5')
+                                @svg('heroicon-o-folder', 'h-5 w-5 shrink-0')
                             @endif
                             <b
                                 @class([
-                                    'font-semibold',
+                                    'font-semibold overflow-hidden text-ellipsis',
                                     'text-lg' => !$dir['level']
                                 ])
                             >{{ $item['label'] }}</b>
 
                             @foreach (['down', 'right'] as $direction)
-                            <span x-show="{{ $direction === 'down' ? 'open' : '!open' }}" class="ml-auto">
-                                @svg('heroicon-o-chevron-' . $direction, 'h-5 ring rounded ring-2 ring-transparent group-hover:ring-accent-400')
+                            <span x-show="{{ $direction === 'down' ? 'open' : '!open' }}" class="ml-auto shrink-0">
+                                @svg('heroicon-o-chevron-' . $direction, 'h-5 w-5 ring rounded ring-2 ring-transparent group-hover:ring-accent-400')
                             </span>
                             @endforeach
                         </span>
@@ -55,6 +50,7 @@
                         'dir' => $item
                     ])
                 @else
+                    {{-- Files --}}
                     <span class="flex font-medium">
                         @include('braid::partials.menubutton', [
                             'icon' => $item['icon'],
