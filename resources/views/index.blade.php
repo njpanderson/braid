@@ -5,6 +5,7 @@
     <script>
         var BRAID = {
             config: {
+                'path': '{{ trim(config('braid.path'), '\/') }}',
                 'theme': { colour: '{{ config('braid.theme.colour') }}' },
                 'response_sizes': {!! collect(config('braid.response_sizes'))->toJson() !!}
             }

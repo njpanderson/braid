@@ -158,7 +158,7 @@ export default class DraggableGrid {
         this.state.dragging = null;
     }
 
-    onResize(event) {
+    onResize() {
         this.refreshBounds();
 
         this.sizeContainer('cols');

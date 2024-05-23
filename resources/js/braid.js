@@ -11,9 +11,10 @@ import menuFolder from '@components/menuFolder';
 import ruler from '@components/ruler';
 
 window.Alpine = Alpine;
+// window.axios = axios;
 
-window.axios = axios;
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.baseURL = `/${BRAID.config.path}`;
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 Alpine.store('braid', store);
 

@@ -32,13 +32,15 @@ final class BraidServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/braid'),
-        ], ['laravel-assets']);
+        ], ['braid-assets', 'laravel-assets']);
 
         // TODO: Test, etc
         $this->publishes([
             __DIR__.'/../resources/views/layouts/pattern.blade.php' => resource_path('views/vendor/braid/layouts'),
-        //     __DIR__.'/../resources/views/welcome.blade.php' => resource_path('views/vendor/braid'),
-        ], ['laravel-templates']);
+            __DIR__.'/../resources/views/welcome.blade.php' => resource_path('views/vendor/braid'),
+        ], ['braid-templates']);
+
+        Route::middlewareGroup('braid', config('braid.middleware', []));
 
         Route::bind('braidTool', function (string $toolClass) {
             if (!class_exists($toolClass))
@@ -59,8 +61,9 @@ final class BraidServiceProvider extends ServiceProvider
 
         Blade::componentNamespace('njpanderson\\Braid\\View\\Components', 'braid');
 
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'braid');
+
+        $this->registerRoutes();
 
         Gate::define('view-braid-patternlib', function() {
             return false;
@@ -85,6 +88,24 @@ final class BraidServiceProvider extends ServiceProvider
 
         $this->app->singleton(BraidService::class, function (Application $app) {
             return new BraidService(new Filesystem());
+        });
+    }
+
+    /**
+     * Register the package routes.
+     *
+     * @return void
+     */
+    protected function registerRoutes()
+    {
+        Route::group([
+            // TBC
+            // 'domain' => config('braid.domain', null),
+            // 'namespace' => 'njpanderson\Braid\Http\Controllers',
+            'prefix' => config('braid.path'),
+            'middleware' => 'braid',
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
     }
 }

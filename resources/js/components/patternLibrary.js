@@ -26,7 +26,7 @@ export default () => ({
         this.patterns = {};
         this.patternMap = {
             '__braid.welcome': {
-                url: '/braid/welcome'
+                url: `/${BRAID.config.path}/welcome`
             }
         };
 
@@ -39,7 +39,7 @@ export default () => ({
         this.initStore();
 
         // Get and store menu data
-        axios.get('/braid/menu')
+        axios.get('/menu')
             .then((response) => {
                 this.patterns = response.data.patterns;
 
@@ -82,21 +82,6 @@ export default () => ({
             };
         });
 
-        // Set up draggable grid items
-        // this.draggables = {
-        //     patternCanvas: new DraggableGrid(document.querySelector('[x-ref="patternCanvas"]'))
-                // .onStartDrag(() => {
-                //     this.setCanvasInteractable(false);
-
-                //     // Clear the pattern canvas height to avoid it preventing sizing of the panel
-                //     this.$refs.patternCanvasOuter.style.height = null;
-                // }, this)
-                // .onEndDrag(() => {
-                //     // Restore iframe pointer abilities
-                //     this.setCanvasInteractable();
-                // }, this)
-        // };
-
         this.initBinds();
         this.storeCanvasWidth();
         this.loadfirstFramePage();
@@ -122,13 +107,13 @@ export default () => ({
             );
         });
 
-        this.$watch('loadedPattern', (loadedPattern) => {
+        // this.$watch('loadedPattern', (loadedPattern) => {
             // if (loadedPattern === null)
                 // return this.draggables.patternCanvas.sizeContainer(0, false);
 
             // Set the pattern canvas/toolbar size to previously dragged size (if any)
             // this.draggables.patternCanvas.sizeContainer();
-        });
+        // });
 
         eventBus
             .bind('toolbar:button:reload-pattern', this.reloadPattern.bind(this))

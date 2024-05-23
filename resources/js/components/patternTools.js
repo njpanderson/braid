@@ -29,7 +29,7 @@ export default () => ({
             return this.loadTool(this.tools[0].id);
 
         // Load tools
-        axios.get('/braid/patterntools')
+        axios.get('/patterntools')
             .then((response) => {
                 this.tools = response.data;
 
@@ -104,7 +104,7 @@ export default () => ({
         if (!pattern)
             return '';
 
-        return `/braid/patterntools/tool/${
+        return `/patterntools/tool/${
             encodeURIComponent(tool.className)
         }/${
             pattern.patternId ?? pattern.id

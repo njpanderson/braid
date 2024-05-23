@@ -1,8 +1,13 @@
 <?php
 
+use njpanderson\Braid\Http\Middleware\Authorize;
+
 return [
     // Will show above the pattern list
     'title' => 'Braid',
+
+    // Base path for braid's front-end. Customise this as you wish.
+    'path' => env('BRAID_PATH', 'braid'),
 
     // The namespace under which patterns are stored
     'patterns_namespace' => 'Tests\\Patterns',
@@ -21,6 +26,11 @@ return [
             'lg' => 1024,
             'xl' => 1280
         ]
+    ],
+
+    'middleware' => [
+        'web',
+        Authorize::class,
     ],
 
     // Public path to the Braid vendor folder, change this only if you need to.
