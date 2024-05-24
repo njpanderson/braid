@@ -28,42 +28,25 @@ final class BraidServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/braid.php' => config_path('braid.php'),
-        ]);
+        ], ['braid-config']);
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/braid'),
         ], ['braid-assets', 'laravel-assets']);
 
-        // TODO: Test, etc
         $this->publishes([
-            __DIR__.'/../resources/views/layouts/pattern.blade.php' => resource_path('views/vendor/braid/layouts'),
-            __DIR__.'/../resources/views/welcome.blade.php' => resource_path('views/vendor/braid'),
+            __DIR__.'/../resources/views/welcome.blade.php' => resource_path('views/vendor/braid/welcome.blade.php'),
+            __DIR__.'/../resources/views/layouts/pattern.blade.php' => resource_path('views/vendor/braid/layouts/pattern.blade.php')
         ], ['braid-templates']);
 
         Route::middlewareGroup('braid', config('braid.middleware', []));
-
-        Route::bind('braidTool', function (string $toolClass) {
-            if (!class_exists($toolClass))
-                abort(404);
-
-            return new $toolClass();
-        });
-
-        Route::bind('braidPattern', function (string $value) use ($service) {
-            try {
-                $patternClass = $service->getPatternClass($value);
-            } catch (UnknownPatternClassException $error) {
-                abort(404, $error->getMessage());
-            };
-
-            return new $patternClass;
-        });
 
         Blade::componentNamespace('njpanderson\\Braid\\View\\Components', 'braid');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'braid');
 
-        $this->registerRoutes();
+        $this->registerCommands();
+        $this->registerRoutes($service);
 
         Gate::define('view-braid-patternlib', function() {
             return false;
@@ -96,8 +79,25 @@ final class BraidServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerRoutes()
+    protected function registerRoutes(BraidService $service): void
     {
+        Route::bind('braidTool', function (string $toolClass) {
+            if (!class_exists($toolClass))
+                abort(404);
+
+            return new $toolClass();
+        });
+
+        Route::bind('braidPattern', function (string $value) use ($service) {
+            try {
+                $patternClass = $service->getPatternClass($value);
+            } catch (UnknownPatternClassException $error) {
+                abort(404, $error->getMessage());
+            };
+
+            return new $patternClass;
+        });
+
         Route::group([
             // TBC
             // 'domain' => config('braid.domain', null),
@@ -107,5 +107,19 @@ final class BraidServiceProvider extends ServiceProvider
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
+    }
+
+    /**
+     * Register the package's commands.
+     *
+     * @return void
+     */
+    protected function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Console\InstallCommand::class,
+            ]);
+        }
     }
 }

@@ -78,7 +78,7 @@
                     />
                 </li>
 
-                <li class="flex"><span class="block border-r border-r-neutral-200/50 my-1.5"></span></li>
+                <li class="flex"><span class="block border-r border-r-neutral-400/70 my-1.5"></span></li>
 
                 <li>
                     <x-braid::toolbutton

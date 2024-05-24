@@ -20,12 +20,13 @@ class Authorize
     public function handle(Request $request, Closure $next): Response
     {
         if (
-            !app()->environment('local') &&
-            !app()->make(BraidService::class)->authorized()
+            app()->environment('local') ||
+            app()->make(BraidService::class)->authorized()
         ) {
-            return abort(404);
+            // Environment is local or the request has been authorised
+            return $next($request);
         }
 
-        return $next($request);
+        return abort(404);
     }
 }

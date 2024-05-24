@@ -26,16 +26,11 @@ class BraidService
 
     private array $patternTools = [];
 
-    private string $resourcesPath;
-
-    private array|null $themeColors = null;
-
     public function __construct(
         private Filesystem $files
     ) {
         $this->patternsNamespace = Config::get('braid.patterns_namespace');
         $this->patternsPath = $this->namespaceToPath($this->patternsNamespace);
-        $this->resourcesPath = realpath(__DIR__ . '/../../resources');
     }
 
     public function getPatternClass(string $patternRouteId): string
@@ -213,15 +208,26 @@ class BraidService
         });
     }
 
+    /**
+     * Set the authorisation callback
+     *
+     * @param Closure $callback
+     * @return BraidService
+     */
     public function authorizeWith(Closure $callback): BraidService
     {
         $this->authorizeCallback = $callback;
-
         return $this;
     }
 
-    public function authorized()
+    /**
+     * Authorise the request via a callback
+     *
+     * @return bool
+     */
+    public function authorized(): bool
     {
+        // Default to not authorizing if no callback exists
         if (!isset($this->authorizeCallback))
             return false;
 
