@@ -27,6 +27,10 @@ final class BraidServiceProvider extends ServiceProvider
         $service = App::make(BraidService::class);
 
         $this->publishes([
+            __DIR__.'/../stubs/BraidServiceProvider.stub.php' => app_path('Providers/BraidServiceProvider.php'),
+        ], ['braid-provider']);
+
+        $this->publishes([
             __DIR__ . '/../config/braid.php' => config_path('braid.php'),
         ], ['braid-config']);
 

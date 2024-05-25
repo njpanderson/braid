@@ -96,17 +96,21 @@ item | description
 
 ### Authorising requests
 
-Braid will be accessible in local environments to all users. By default, it cannot be viewed on any other environment.
+Braid is accessible in `local` environments to all visitors. By default, it cannot be viewed on any other environment.
 
-If you would like to determine Braid's visibility on other environments, you can add a call to the Braid service within your application’s service provider `boot` method:
+If you would like to determine Braid's visibility on other environments, you can alter the `braidGate` method within `App\Providers\BraidServiceProvider`.
+
+You should return a boolean from this method determining whether or not the visitor has access. For example:
 
 ```php
-use njpanderson\Braid\Services\BraidService;
+use Illuminate\Http\Request;
 
-$this->app->make(BraidService::class)
-    ->authorizeWith(function() {
-        // ...
-    });
+protected function braidGate(Request $request): bool
+{
+    return in_array($request->user()->email, [
+        'admin@example.com'
+    ]);
+}
 ```
 
 Braid expects the return value of the `authorizeWith` callback to be a boolean `true` or `false`, the value of which will determine whether or not the visitor has access.

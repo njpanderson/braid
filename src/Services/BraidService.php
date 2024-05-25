@@ -22,8 +22,6 @@ class BraidService
 
     private string $patternsPath;
 
-    private ?Closure $authorizeCallback;
-
     private array $patternTools = [];
 
     public function __construct(
@@ -206,32 +204,6 @@ class BraidService
 
             return $result;
         });
-    }
-
-    /**
-     * Set the authorisation callback
-     *
-     * @param Closure $callback
-     * @return BraidService
-     */
-    public function authorizeWith(Closure $callback): BraidService
-    {
-        $this->authorizeCallback = $callback;
-        return $this;
-    }
-
-    /**
-     * Authorise the request via a callback
-     *
-     * @return bool
-     */
-    public function authorized(): bool
-    {
-        // Default to not authorizing if no callback exists
-        if (!isset($this->authorizeCallback))
-            return false;
-
-        return call_user_func($this->authorizeCallback);
     }
 
     public function getPatternsPath()
