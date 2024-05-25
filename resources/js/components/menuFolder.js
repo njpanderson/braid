@@ -2,6 +2,7 @@ import Alpine from 'alpinejs';
 import storage from 'store2';
 
 import eventBus from '@lib/event-bus';
+import constants from '@/constants';
 
 /**
  * Menu folder items
@@ -10,7 +11,7 @@ export default (id) => ({
     open: true,
 
     init() {
-        const menuStore = storage.get('menu');
+        const menuStore = this.getStoredMenu();
         this.open = !menuStore.closed.includes(id);
 
         eventBus.bind('braid.menu-reset', () => {
@@ -40,7 +41,7 @@ export default (id) => ({
     setOpen(opened = true) {
         this.open = opened;
 
-        const menuStore = storage.get('menu');
+        const menuStore = this.getStoredMenu();
 
         if (opened) {
             menuStore.closed = menuStore.closed.filter(menuId => menuId !== id);
@@ -48,6 +49,10 @@ export default (id) => ({
             menuStore.closed.push(id);
         }
 
-        storage.set('menu', menuStore);
+        storage.set(constants.storageKeys.menu, menuStore);
+    },
+
+    getStoredMenu() {
+        return storage.get(constants.storageKeys.menu, { closed: [] });
     }
 });

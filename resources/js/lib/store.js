@@ -1,3 +1,5 @@
+import storage from 'store2';
+
 export default {
     loadedPattern: null,
     activePattern: null,
@@ -6,6 +8,9 @@ export default {
     search: {
         term: '',
         open: false
+    },
+    theme: {
+        darkMode: storage.get('braid-darkmode', 'auto')
     },
     ruler: {
         open: false

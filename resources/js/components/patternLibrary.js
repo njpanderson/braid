@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as clipboard from 'clipboard-polyfill';
 
+import constants from '@/constants';
 import storage from 'store2';
 import eventBus from '@lib/event-bus';
 import debug from '@lib/debug';
@@ -13,6 +14,13 @@ const queryParams = (new URL(location)).searchParams;
 
 export default () => ({
     store: Alpine.store('braid'),
+
+    // Storage for matchMedia objects
+    media: {
+        darkMode: window.matchMedia(
+            '(prefers-color-scheme: dark)'
+        )
+    },
 
     get activePattern() {
         return this.store.activePattern ? this.patternMap[this.store.activePattern] : null;
@@ -37,6 +45,7 @@ export default () => ({
         }, BRAID.config ?? {});
 
         this.initStore();
+        this.setDarkMode();
 
         // Get and store menu data
         axios.get('/menu')
@@ -47,7 +56,7 @@ export default () => ({
                 this.createPatternMap(this.patterns);
 
                 // Set up default menu storage
-                storage.transact('menu', (menu) => {
+                storage.transact(constants.storageKeys.menu, (menu) => {
                     // If the menu id (hash) has changed, reset the closed statuses
                     if (menu.id !== response.data.id) {
                         eventBus.fire('braid.menu-reset');
@@ -105,6 +114,16 @@ export default () => ({
             this.$refs.patternCanvasFrame.contentWindow.location.replace(
                 this.activePattern.url
             );
+        });
+
+        // Listen to dark mode store changes (from interface)
+        this.$watch('store.theme.darkMode', () => {
+            this.setUserDarkMode(this.store.theme.darkMode);
+        });
+
+        // Listen to dark mode media changes
+        this.media.darkMode.addEventListener('change', () => {
+            this.setDarkMode();
         });
 
         // this.$watch('loadedPattern', (loadedPattern) => {
@@ -279,6 +298,40 @@ export default () => ({
         window.open(makeUrl(this.activePattern.url, {
             mode: 'full'
         }), '_blank');
+    },
+
+    /**
+     * Set the user preferece for dark mode
+     * @param {string} mode - Mode of 'auto', 'off' or 'on'
+     * @returns
+     */
+    setUserDarkMode(mode) {
+        if (mode === 'auto') {
+            storage.clear('braid-darkmode');
+        } else {
+            storage.set('braid-darkmode', mode);
+        }
+
+        this.setDarkMode();
+    },
+
+    /**
+     * Set the document's dark mode based on user or user agent preference.
+     */
+    setDarkMode() {
+        const userDarkMode = storage.get(
+            'braid-darkmode',
+            this.store.theme.darkMode
+        );
+
+        if (
+            userDarkMode === 'on' ||
+            (userDarkMode === 'auto' && this.media.darkMode.matches)
+        ) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     },
 
     /**
