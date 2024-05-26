@@ -6,13 +6,19 @@ use Illuminate\Http\Request;
 
 class Braid
 {
-    // public static $darkMode = false;
+    public static $darkMode = null;
 
     public static $authCallback;
 
-    // public static function setDarkMode() {
-    //     static::$darkMode = true;
-    // }
+    /**
+     * Override dark mode selector/detection with fixed option.
+     *
+     * @param boolean $darkMode
+     * @return void
+     */
+    public static function setDarkMode($darkMode = true) {
+        static::$darkMode = $darkMode;
+    }
 
     /**
      * Set the authorisation callback.

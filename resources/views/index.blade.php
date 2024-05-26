@@ -1,18 +1,5 @@
 @extends('braid::layouts.default')
 
-@section('head')
-    {{-- This is a configuration payload from the braid Laravel config --}}
-    <script>
-        var BRAID = {
-            config: {
-                'path': '{{ trim(config('braid.path'), '\/') }}',
-                'theme': { colour: '{{ config('braid.theme.colour') }}' },
-                'response_sizes': {!! collect(config('braid.response_sizes'))->toJson() !!}
-            }
-        }
-    </script>
-@endsection
-
 @section('main')
     <div
         x-data="patternLibrary"

@@ -68,11 +68,11 @@
         </div>
 
         <ul class="flex ml-auto gap-x-2">
-            <li class="flex items-center">
+            <li class="flex items-center" x-show="BRAID.darkMode === 'auto'">
                 <form
-                    class="flex bg-neutral-100 dark:bg-neutral-800 rounded-lg overflow-hidden border border-neutral-300"
+                    class="flex bg-neutral-100 dark:bg-neutral-700 rounded-lg overflow-hidden border border-neutral-300 dark:border-neutral-500"
                 >
-                    <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-primary-300 hover:bg-primary-200 dark:has-[:checked]:bg-primary-500 dark:hover:bg-primary-600 group cursor-pointer transition-colors"
+                    <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-primary-300 hover:bg-primary-200 dark:has-[:checked]:bg-primary-400 dark:hover:bg-primary-600 group cursor-pointer transition-colors"
                         data-tooltip="Light mode">
                         <input type="radio" name="darkmode" value="off" x-model="store.theme.darkMode" class="sr-only peer">
                         <span class="sr-only">Dark Mode Off</span>
@@ -85,7 +85,7 @@
                         <span class="w-[5px] h-[5px] rounded-full border border-neutral-800 dark:border-neutral-300"><span class="sr-only">Mode Auto</span></span>
                     </label>
 
-                    <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-primary-300 hover:bg-primary-200 dark:has-[:checked]:bg-primary-500 dark:hover:bg-primary-600 group cursor-pointer transition-colors"
+                    <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-primary-300 hover:bg-primary-200 dark:has-[:checked]:bg-primary-400 dark:hover:bg-primary-600 group cursor-pointer transition-colors"
                         data-tooltip="Dark mode">
                         <input type="radio" name="darkmode" value="on" x-model="store.theme.darkMode" class="sr-only peer">
                         <span class="sr-only">Dark Mode On</span>
@@ -94,7 +94,7 @@
                 </form>
             </li>
 
-            <x-braid::toolbar.divider/>
+            <x-braid::toolbar.divider x-show="BRAID.darkMode === 'auto'"/>
 
             <li x-show="activePattern.id">
                 <x-braid::toolbutton

@@ -2,7 +2,6 @@
 
 namespace njpanderson\Braid\Services;
 
-use Closure;
 use stdClass;
 use Illuminate\View\View;
 use Illuminate\Filesystem\Filesystem;
@@ -11,6 +10,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 
+use njpanderson\Braid\Braid;
 use njpanderson\Braid\Contracts\PatternContext;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Contracts\PatternTool;
@@ -204,6 +204,14 @@ class BraidService
 
             return $result;
         });
+    }
+
+    public function getDarkModeJS()
+    {
+        if (Braid::$darkMode === null)
+            return 'auto';
+
+        return Braid::$darkMode ? 'on' : 'off';
     }
 
     public function getPatternsPath()

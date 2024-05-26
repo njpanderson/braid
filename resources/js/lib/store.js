@@ -10,7 +10,8 @@ export default {
         open: false
     },
     theme: {
-        darkMode: storage.get('braid-darkmode', 'auto')
+        darkMode: window.BRAID.darkMode === 'auto' ?
+            storage.get('braid-darkmode', 'auto') : window.BRAID.darkMode
     },
     ruler: {
         open: false

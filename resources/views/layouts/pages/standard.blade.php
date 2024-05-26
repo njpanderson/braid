@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @include('braid::partials.head')
-
     <title>@yield('title', config('braid.title'))</title>
+
+    @include('braid::partials.head')
 
     {{
         Vite::useHotFile(public_path() . '/' . config('braid.vendor_path') . '/hot')
             ->useBuildDirectory(config('braid.vendor_path') . '/build')
     }}
+
+    @section('head')
+    @show
 
     @vite('resources/css/braid.scss')
 </head>

@@ -5,7 +5,8 @@
     const darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
 
     function setDarkMode() {
-        const userDarkMode = JSON.parse(localStorage['braid-darkmode'] ?? '"auto"');
+        const userDarkMode = BRAID.darkMode === 'auto' ?
+            JSON.parse(localStorage['braid-darkmode'] ?? '"auto"') : BRAID.darkMode;
 
         if (
             userDarkMode === 'on' ||
@@ -47,12 +48,16 @@
         window.parent.dispatchEvent(events[2]);
     });
 
-    window.addEventListener("storage", (event) => {
-        if (event.key === 'braid-darkmode' || event.key === null)
-            setDarkMode();
-    });
+    if (typeof window.BRAID !== 'undefined') {
+        if (BRAID.darkMode === 'auto') {
+            window.addEventListener("storage", (event) => {
+                if (event.key === 'braid-darkmode' || event.key === null)
+                    setDarkMode();
+            });
 
-    darkMedia.addEventListener('change', setDarkMode);
+            darkMedia.addEventListener('change', setDarkMode);
+        }
 
-    setDarkMode();
+        setDarkMode();
+    }
 }());

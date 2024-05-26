@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use njpanderson\Braid\Braid;
 use Illuminate\Http\Request;
 use njpanderson\Braid\BraidAppServiceProvider;
 

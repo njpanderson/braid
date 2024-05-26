@@ -306,6 +306,7 @@ export default () => ({
      * @returns
      */
     setUserDarkMode(mode) {
+        console.log('setUserDarkMode', mode);
         if (mode === 'auto') {
             storage.clear('braid-darkmode');
         } else {
@@ -319,10 +320,7 @@ export default () => ({
      * Set the document's dark mode based on user or user agent preference.
      */
     setDarkMode() {
-        const userDarkMode = storage.get(
-            'braid-darkmode',
-            this.store.theme.darkMode
-        );
+        const userDarkMode = this.store.theme.darkMode;
 
         if (
             userDarkMode === 'on' ||
