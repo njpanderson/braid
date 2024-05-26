@@ -15,17 +15,16 @@
     ],
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^11.0",
-        "illuminate/filesystem": "^11.0",
-        "illuminate/view": "^11.0",
-        "illuminate/routing": "^11.0",
+        "ext-json": "*",
+        "laravel/framework": "^11.0",
+        "symfony/console": "^7.0",
+        "symfony/var-dumper": "^7.0",
         "blade-ui-kit/blade-heroicons": "^2.3"
     },
     "suggest": {
-        "livewire/livewire": "Required if using Livewire components"
+        "livewire/livewire": "Required if working with Livewire components"
     },
     "require-dev": {
-        "laravel/framework": "^11.0",
         "livewire/livewire": "^3.4"
     },
     "extra": {
