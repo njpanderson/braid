@@ -118,9 +118,9 @@
         >
             @include('braid::partials.toolbar')
 
-            <div x-ref="patternCanvas" class="flex flex-col flex-1 min-h-0 max-w-full relative overflow-x-auto">
-                <x-braid::elements.ruler/>
+            <x-braid::elements.ruler/>
 
+            <div x-ref="patternCanvas" class="flex flex-col flex-1 min-h-0 max-w-full relative overflow-x-auto bg-accent-100 dark:bg-neutral-700">
                 <div
                     x-ref="patternCanvasOuter"
                     class="relative flex-1 w-full h-full resize-x border-[3px] border-accent-100 dark:border-accent-400 hover:border-accent-200 dark:hover:border-accent-300 overflow-auto"

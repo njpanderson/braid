@@ -20,7 +20,7 @@
     {{-- TODO: Come back to this and allow marks to be added by clicking on the ruler --}}
     <template x-for="mark in getMarks()" :key="mark.uuid">
         <div
-            class="absolute w-[1px] top-[6px] bottom-0 has-[:hover]:bg-current pointer-events-none z-50"
+            class="absolute w-[1px] top-[56px] bottom-0 has-[:hover]:bg-current pointer-events-none z-50"
             :class="{
                 'ruler-mark-global text-red-500': mark.store === consts.GLOBAL,
                 'ruler-mark-local text-blue-500': mark.store !== consts.GLOBAL,
@@ -40,7 +40,7 @@
                 {{-- Left arrow --}}
                 <span class="absolute top-[3px] left-[-2px] h-0 w-0 overflow-hidden border-[5px] border-transparent border-r-[5px] border-r-current opacity-50 group-hover:opacity-100"></span>
                 {{-- Label --}}
-                <span class="absolute left-[-20px] bottom-[20px] bg-neutral-200 border-[1px] border-current rounded w-[60px] text-xs py-0.5 text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="absolute left-[-20px] bottom-[20px] bg-neutral-200 dark:bg-neutral-400 border-[1px] border-current rounded w-[60px] text-xs py-0.5 text-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <span><span x-text="mark.x"></span>px</span>
                     <i class="block text-xs" x-show="mark.store === consts.GLOBAL">global</i>
                 </span>

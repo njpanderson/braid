@@ -1,7 +1,13 @@
 .ruler-bg {
-    --background: theme('colors.slate.100');
+    --background: theme('colors.neutral.100');
     --tick-minor: theme('colors.neutral.400');
     --tick-major: theme('colors.neutral.600');
+
+    .dark & {
+        --background: theme('colors.neutral.600');
+        --tick-minor: theme('colors.neutral.500');
+        --tick-major: theme('colors.neutral.100');
+    }
 
     background-size: 50px 22px;
     background-repeat: repeat-x;
@@ -85,14 +91,6 @@
         theme('colors.blue.500') 2px,
         theme('colors.blue.500') 4px
     );
-}
-
-@media (prefers-color-scheme: dark) {
-    .ruler-bg {
-        --background: theme('colors.neutral.600');
-        --tick-minor: theme('colors.neutral.100');
-        --tick-major: theme('colors.neutral.200');
-    }
 }
 
 @layer components {

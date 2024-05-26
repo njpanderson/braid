@@ -79,7 +79,7 @@
                         <x-heroicon-s-sun class="w-4 h-4 fill-neutral-700 dark:fill-neutral-200 peer-checked:fill-neutral-900 dark:peer-checked:fill-neutral-200 group-hover:fill-neutral-900 dark:group-hover:fill-neutral-200"/>
                     </label>
 
-                    <label class="flex items-center p-1 has-[:checked]:bg-neutral-400 dark:has-[:checked]:bg-neutral-600 hover:bg-neutral-200 dark:hover:bg-neutral-700 group cursor-pointer transition-colors"
+                    <label class="flex items-center p-1 has-[:checked]:bg-neutral-400 dark:has-[:checked]:bg-neutral-600 hover:bg-neutral-200 dark:hover:bg-neutral-600 group cursor-pointer transition-colors"
                         data-tooltip="Use system colour scheme">
                         <input type="radio" name="darkmode" value="auto" x-model="store.theme.darkMode" class="sr-only">
                         <span class="w-[5px] h-[5px] rounded-full border border-neutral-800 dark:border-neutral-300"><span class="sr-only">Mode Auto</span></span>
