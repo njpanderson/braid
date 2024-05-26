@@ -1,5 +1,7 @@
 import storage from 'store2';
 
+import constants from '@/constants';
+
 export default {
     loadedPattern: null,
     activePattern: null,
@@ -11,7 +13,7 @@ export default {
     },
     theme: {
         darkMode: window.BRAID.darkMode === 'auto' ?
-            storage.get('braid-darkmode', 'auto') : window.BRAID.darkMode
+            storage.get(constants.storageKeys.darkMode, 'auto') : window.BRAID.darkMode
     },
     ruler: {
         open: false

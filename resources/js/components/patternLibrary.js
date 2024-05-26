@@ -307,9 +307,9 @@ export default () => ({
      */
     setUserDarkMode(mode) {
         if (mode === 'auto') {
-            storage.clear('braid-darkmode');
+            storage.clear(constants.storageKeys.darkMode);
         } else {
-            storage.set('braid-darkmode', mode);
+            storage.set(constants.storageKeys.darkMode, mode);
         }
 
         this.setDarkMode();

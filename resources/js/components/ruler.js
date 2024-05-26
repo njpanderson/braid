@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 import storage from 'store2';
 
+import constants from '@/constants';
 import eventBus from '@lib/event-bus';
 import events from '@lib/events';
 
@@ -16,7 +17,7 @@ export default (offset) => ({
         this.onMarkDragMove = this.onMarkDragMove.bind(this);
         this.onMarkDragEnd = this.onMarkDragEnd.bind(this);
 
-        this.store.ruler.open = storage.get('ruler.open', false);
+        this.store.ruler.open = storage.get(constants.storageKeys.ruler.open, false);
         this.store.ruler.offset = offset;
         this.store.ruler.dragMarker = null;
         this.store.ruler.marks = this.getFromStorage();
@@ -124,7 +125,7 @@ export default (offset) => ({
      */
     toggleRuler() {
         this.store.ruler.open = !this.store.ruler.open;
-        storage.set('ruler.open', this.store.ruler.open);
+        storage.set(constants.storageKeys.ruler.open, this.store.ruler.open);
     },
 
     /**
@@ -241,7 +242,7 @@ export default (offset) => ({
             );
         });
 
-        storage.set('ruler.marks', data, true);
+        storage.set(constants.storageKeys.ruler.marks, data, true);
     },
 
     /**
@@ -249,7 +250,7 @@ export default (offset) => ({
      * @returns object
      */
     getFromStorage() {
-        const storeData = storage.get('ruler.marks', {
+        const storeData = storage.get(constants.storageKeys.ruler.marks, {
             [this.consts.GLOBAL]: []
         });
 
