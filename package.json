@@ -29,7 +29,7 @@
             "extensions": "js,css,scss,php",
             "runOnChangeOnly": true,
             "inherit": true,
-            "delay": 1000,
+            "delay": 500,
             "quiet": false,
             "silent": true
         }
