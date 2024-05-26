@@ -306,7 +306,6 @@ export default () => ({
      * @returns
      */
     setUserDarkMode(mode) {
-        console.log('setUserDarkMode', mode);
         if (mode === 'auto') {
             storage.clear('braid-darkmode');
         } else {
