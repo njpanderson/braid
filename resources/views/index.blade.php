@@ -30,20 +30,20 @@
                 'opacity-100': store.menuOpen,
             }"
         >
-            <header class="flex items-center h-[50px]">
+            <header class="flex items-start min-h-[50px]">
                 <h1
-                    class="px-2 text-2xl font-bold whitespace-nowrap text-primary-900 dark:text-primary-200"
+                    class="overflow-auto p-2 text-2xl font-bold self-start text-primary-900 dark:text-primary-200"
                 >
                     <button
                         @click="switchPattern('__braid.welcome')"
-                        class="hover:underline underline-offset-2"
+                        class="text-left hover:underline underline-offset-2 break-words hyphens-auto max-w-full"
                     >
                         {{ config('braid.title') }}
                     </button>
                 </h1>
 
                 <button
-                    class="ml-auto mr-2 p-1 hover:bg-slate-200/50 rounded"
+                    class="shrink-0 ml-auto mr-2 p-1 mt-2 hover:bg-slate-200/50 rounded"
                     data-tooltip="Close menu"
                     @click="store.menuOpen = !store.menuOpen"
                 >
