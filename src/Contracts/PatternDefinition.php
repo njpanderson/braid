@@ -4,6 +4,7 @@ namespace njpanderson\Braid\Contracts;
 
 use Illuminate\Contracts\View\View;
 use njpanderson\Braid\Contracts\PatternContext;
+use njpanderson\Braid\Models\Pattern;
 
 interface PatternDefinition
 {

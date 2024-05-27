@@ -189,13 +189,8 @@ export default () => ({
 
         if (clipData) {
             clipboard.writeText(clipData);
-            element.classList.remove('ring-transparent');
-            element.classList.add('ring-primary-600');
 
-            window.setTimeout(() => {
-                element.classList.remove('ring-primary-600');
-                element.classList.add('ring-transparent');
-            }, 700);
+            this.highlightElement(element, 'primary-600');
         }
     },
 
@@ -208,9 +203,15 @@ export default () => ({
         event.originalEvent.target.select();
     },
 
-    onCopyPatternUrl() {
-        // TODO: Put pattern URL in clipboard (exclude mode=view for deep linking!)
-        // TODO: Make toolbar light up or produce a toast of some sort
+    /**
+     * Toolbar button "copy pattern URL" was pressed.
+     *
+     * Copy the current pattern URL to the clipboard.
+     */
+    onCopyPatternUrl(event) {
+        clipboard.writeText(this.activePattern.url);
+
+        this.highlightElement(event.originalEvent.currentTarget);
     },
 
     onRulerDragMark(event) {
@@ -427,6 +428,25 @@ export default () => ({
             .split(':')
             .slice(0, -1)
             .join(' / ');
+    },
+
+    /**
+     * Highlight an element with a temporary ring effect
+     * @param {HTMLElement} element - HTML Element to highlight
+     * @param {string} ringColour - Ring colour, as defined in tailwind
+     */
+    highlightElement(element, ringColour = 'primary-600') {
+        if (!element)
+            return;
+
+        element.classList.remove('ring-transparent');
+        element.classList.add(`ring-${ringColour}`);
+        element.classList.add('ring-2');
+
+        window.setTimeout(() => {
+            element.classList.remove(`ring-${ringColour}`);
+            element.classList.add('ring-transparent');
+        }, 700);
     },
 
     toggleMenuItem(event) {

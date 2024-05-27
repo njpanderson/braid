@@ -9,6 +9,7 @@ import patternTools from '@components/patternTools';
 import toolbar from '@components/toolbar';
 import menuFolder from '@components/menuFolder';
 import ruler from '@components/ruler';
+import inlineForm from '@components/inlineForm';
 
 window.Alpine = Alpine;
 // window.axios = axios;
@@ -25,6 +26,7 @@ class Braid {
         Alpine.data('menuFolder', menuFolder);
         Alpine.data('ruler', ruler);
         Alpine.data('toolbar', toolbar);
+        Alpine.data('inlineForm', inlineForm);
 
         this.parse().then(() => {
             Alpine.start();

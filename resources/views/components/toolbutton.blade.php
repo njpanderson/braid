@@ -4,7 +4,8 @@
         :class="{ 'ring-2 ring-accent-400 dark:ring-accent-200': {{ $toggleState }} }"
     @endif
     @if($id)
-        @click="fire('button:{{ $id }}')"
+        id="toolbutton-{{ $id }}"
+        @click="fire($event, 'button:{{ $id }}')"
     @endif
     {{ $attributes }}
 >

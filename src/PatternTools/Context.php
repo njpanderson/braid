@@ -3,6 +3,7 @@
 namespace njpanderson\Braid\PatternTools;
 
 use Illuminate\Contracts\View\View;
+
 use njpanderson\Braid\Base\PatternTool;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Exceptions\PatternContextViewNotFoundException;

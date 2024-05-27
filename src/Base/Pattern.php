@@ -5,11 +5,11 @@ namespace njpanderson\Braid\Base;
 use stdClass;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
-use Illuminate\View\ComponentAttributeBag;
 use Illuminate\Support\Str;
 
 use njpanderson\Braid\Contracts\PatternDefinition as Contract;
 use njpanderson\Braid\Contracts\PatternContext as PatternContextContract;
+use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Dictionaries\PatternContext;
 use njpanderson\Braid\Dictionaries\ScopedSlot;
 use njpanderson\Braid\Services\BraidService;
@@ -48,8 +48,7 @@ abstract class Pattern implements Contract
      */
     protected string $icon = 'document';
 
-    public function __construct(
-    ) {
+    public function __construct() {
         $this->service = App::make(BraidService::class);
 
         $this->id = $this->setId();

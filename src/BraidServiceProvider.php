@@ -12,10 +12,9 @@ use Illuminate\Contracts\Foundation\Application;
 
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 use njpanderson\Braid\Services\BraidService;
-use njpanderson\Braid\View\Components\ToolButton;
-use njpanderson\Braid\View\Components\Elements\DefinitionList;
-use njpanderson\Braid\View\Components\Elements\Clipboard;
-use njpanderson\Braid\View\Components\Elements\Ruler;
+use njpanderson\Braid\Contracts\Storage\PatternsRepository;
+use njpanderson\Braid\Services\BraidTemplateService;
+use njpanderson\Braid\Storage\DatabasePatternsRepository;
 
 final class BraidServiceProvider extends ServiceProvider
 {
@@ -38,6 +37,10 @@ final class BraidServiceProvider extends ServiceProvider
             __DIR__.'/../public' => public_path('vendor/braid'),
         ], ['braid-assets', 'laravel-assets']);
 
+        $this->publishesMigrations([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'braid-migrations');
+
         $this->publishes([
             __DIR__.'/../resources/views/welcome.blade.php' => resource_path('views/vendor/braid/welcome.blade.php'),
             __DIR__.'/../resources/views/layouts/pattern.blade.php' => resource_path('views/vendor/braid/layouts/pattern.blade.php')
@@ -49,16 +52,18 @@ final class BraidServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'braid');
 
-        $this->registerCommands();
-        $this->registerRoutes($service);
 
         Gate::define('view-braid-patternlib', function() {
             return false;
         });
 
-        view()->share('braid', $service);
+        $this->registerCommands();
+        $this->registerRoutes($service);
 
-        $service->registerPatternTool(
+        view()->share('braid', $service);
+        view()->share('braidHtml', App::make(BraidTemplateService::class));
+
+        $service->registerPatternTools(
             new \njpanderson\Braid\PatternTools\Info,
             new \njpanderson\Braid\PatternTools\Context
         );
@@ -73,9 +78,10 @@ final class BraidServiceProvider extends ServiceProvider
             __DIR__.'/../config/braid.php', 'braid'
         );
 
-        $this->app->singleton(BraidService::class, function (Application $app) {
-            return new BraidService(new Filesystem());
-        });
+        $this->registerDatabaseDriver();
+
+        $this->app->singleton(BraidService::class);
+        $this->app->singleton(BraidTemplateService::class);
     }
 
     /**
@@ -125,5 +131,21 @@ final class BraidServiceProvider extends ServiceProvider
                 Console\InstallCommand::class,
             ]);
         }
+    }
+
+    /**
+     * Register the package database storage driver.
+     *
+     * @return void
+     */
+    protected function registerDatabaseDriver()
+    {
+        $this->app->singleton(
+            PatternsRepository::class, DatabasePatternsRepository::class
+        );
+
+        $this->app->when(DatabasePatternsRepository::class)
+            ->needs('$connection')
+            ->give(config('braid.database.connection'));
     }
 }

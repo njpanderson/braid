@@ -10,7 +10,16 @@ return [
     'path' => env('BRAID_PATH', 'braid'),
 
     // The namespace under which patterns are stored
-    'patterns_namespace' => 'Tests\\Patterns',
+    'patterns' => [
+        'namespace' => 'Tests\\Patterns',
+
+        'statuses' => [
+            0 => [ 'label' => 'Draft', 'color' => '#C9C9C9' ],
+            1 => [ 'label' => 'In Progress', 'color' => '#4083C9' ],
+            2 => [ 'label' => 'Complete', 'color' => '#40C967' ],
+            3 => [ 'label' => 'On Hold', 'color' => '#C440C9' ],
+        ]
+    ],
 
     'theme' => [
         // Possible values are: wheat, forest, river, plum
@@ -37,5 +46,11 @@ return [
     'vendor_path' => 'vendor/braid',
 
     // Set to false if you neeed to show Laravel's own exceptions within Braid
-    'exceptions' => env('BRAID_EXCEPTIONS', true)
+    'exceptions' => env('BRAID_EXCEPTIONS', true),
+
+    // The database connection on which to store pattern metadata.
+    // This can be disabled if you do not require metadata storage.
+    'database' => [
+        'connection' => env('DB_CONNECTION', 'mysql')
+    ]
 ];

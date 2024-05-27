@@ -1,6 +1,7 @@
 <button
+    type="button"
     {{ $attributes->class([
-        'transition-all rounded-sm ring-2 ring-transparent'
+        'transition-all rounded-sm'
     ]) }}
     data-tooltip="Copy to clipboard"
     data-clip="{{ $clip }}"

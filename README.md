@@ -71,6 +71,18 @@ $ php artisan braid:install
 
 If all goes well, you should be able to access `/braid` within your project.
 
+### Enabling database storage
+Each pattern in Braid can be assigned shared metadata such as notes or the build status of a pattern. This metadata is stored using a database table and is accessible to anyone viewing Braid on the same environment.
+
+It is not enabled by default, but if you would like to enable this, you can publish the migrations:
+
+```
+$ php artisan vendor:publish --tag=braid-migrations
+$ php artisan migrate
+```
+
+If you would like to configure the database connection Braid uses for storing pattern metadata, you can do so within the braid [config file](#configuring-your-project).
+
 ## Configuring your project
 The `braid:install` command will place a `config/braid.php` file in your application. This can be used to configure various components of Braid:
 
@@ -78,12 +90,13 @@ item | description
 --- | ---
 `title` | The title shown on the pattern library interface.
 `path` | The path at which the pattern library can be found.
-`patterns_namespace` | Defaulting to `Test\Patterns`, this is where Braid will look for your pattern definitions.
+`patterns.namespace` | Defaulting to `Test\Patterns`, this is where Braid will look for your pattern definitions.
 `theme` | ...
 `response_sizes` | ...
 `middleware` | ...
 `vendor_path` | ...
 `exceptions` | In some cases (such as malformed template definitions), a Braid exception will show in place of a Laravel driven exception with full stack traces. If you want to disable these, set `exceptions` to `false`.
+`database.connection` | ...
 
 ### Defining your patterns
 ...

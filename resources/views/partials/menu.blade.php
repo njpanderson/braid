@@ -80,5 +80,5 @@
         @endforeach
     </ul>
 @else
-    <p class="p-2">No patterns found in the namespace <b>{{ config('braid.patterns_namespace') }}</b>.</p>
+    <p class="p-2">No patterns found in the namespace <b>{{ config('braid.patterns.namespace') }}</b>.</p>
 @endif

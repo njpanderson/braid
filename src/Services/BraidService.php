@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use njpanderson\Braid\Braid;
 use njpanderson\Braid\Contracts\PatternContext;
 use njpanderson\Braid\Contracts\PatternDefinition;
+use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Contracts\PatternTool;
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 
@@ -25,10 +26,40 @@ class BraidService
     private array $patternTools = [];
 
     public function __construct(
-        private Filesystem $files
+        private Filesystem $files,
+        private PatternsRepository $patternsRepo
     ) {
-        $this->patternsNamespace = Config::get('braid.patterns_namespace');
+        $this->patternsNamespace = Config::get('braid.patterns.namespace');
         $this->patternsPath = $this->namespaceToPath($this->patternsNamespace);
+    }
+
+    /**
+     * Format a view result given the view's name
+     *
+     * @param string $view
+     * @return stdClass
+     */
+    public function formatView(string $view): stdClass
+    {
+        if (strpos($view, 'livewire.') === 0)
+            return (object) [
+                'fullName' => $view,
+                'name' => preg_replace('/^livewire\./', '', $view),
+                'type' => 'livewire'
+            ];
+
+        if (strpos($view, 'components.') === 0)
+            return (object) [
+                'fullName' => $view,
+                'name' => preg_replace('/^components\./', '', $view),
+                'type' => 'component'
+            ];
+
+        return (object) [
+            'fullName' => $view,
+            'name' => $view,
+            'type' => 'template'
+        ];
     }
 
     public function getPatternClass(string $patternRouteId): string
@@ -61,35 +92,6 @@ class BraidService
         }
 
         return $this->formatView($view);
-    }
-
-    /**
-     * Format a view result given the view's name
-     *
-     * @param string $view
-     * @return stdClass
-     */
-    public function formatView(string $view): stdClass
-    {
-        if (strpos($view, 'livewire.') === 0)
-            return (object) [
-                'fullName' => $view,
-                'name' => preg_replace('/^livewire\./', '', $view),
-                'type' => 'livewire'
-            ];
-
-        if (strpos($view, 'components.') === 0)
-            return (object) [
-                'fullName' => $view,
-                'name' => preg_replace('/^components\./', '', $view),
-                'type' => 'component'
-            ];
-
-        return (object) [
-            'fullName' => $view,
-            'name' => $view,
-            'type' => 'template'
-        ];
     }
 
     public function getRoute(
@@ -134,7 +136,7 @@ class BraidService
         return collect($this->patternTools);
     }
 
-    public function registerPatternTool(PatternTool ...$tools): BraidService
+    public function registerPatternTools(PatternTool ...$tools): BraidService
     {
         $this->patternTools = array_merge($this->patternTools, $tools);
 
@@ -153,57 +155,61 @@ class BraidService
                 'items' => []
             ];
 
-        return Cache::remember('braid-pattern-menu-' . $root, 5, function() use ($root, $level) {
-            $result = [
-                'level' => $level,
-                'type' => 'dir',
-                'id' => $this->getDirectoryHash($root, $level),
-                'path' => $root,
-                'label' => $this->files->basename($root),
-                'items' => collect(
-                    $this->files->files($root)
-                )->map(function($file) {
-                    $contexts = [];
-                    $patternClass = $this->pathToNamespace($file->getRealPath());
+        return Cache::remember(
+            'braid-pattern-menu-' . $root,
+            5,
+            function() use ($root, $level) {
+                $result = [
+                    'level' => $level,
+                    'type' => 'dir',
+                    'id' => $this->getDirectoryHash($root, $level),
+                    'path' => $root,
+                    'label' => $this->files->basename($root),
+                    'items' => collect(
+                        $this->files->files($root)
+                    )->map(function($file) {
+                        $contexts = [];
+                        $patternClass = $this->pathToNamespace($file->getRealPath());
 
-                    /** @var \njpanderson\Braid\Contracts\PatternDefinition */
-                    $patternClass = new $patternClass();
-                    $id = $patternClass->getId();
+                        /** @var \njpanderson\Braid\Contracts\PatternDefinition */
+                        $patternClass = new $patternClass();
+                        $id = $patternClass->getId();
 
-                    if ($patternClass)
-                        $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
-                            'url' => $this->getRoute($id, $context),
-                            'type' => 'context',
-                            'contextId' => $context,
-                            'patternId' => $id,
-                            'id' => $id . '.' . $context,
-                            'default' => ($context === 'default'),
-                            'label' => Str::ucfirst($context)
-                        ]));
+                        if ($patternClass)
+                            $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
+                                'url' => $this->getRoute($id, $context),
+                                'type' => 'context',
+                                'contextId' => $context,
+                                'patternId' => $id,
+                                'id' => $id . '.' . $context,
+                                'default' => ($context === 'default'),
+                                'label' => Str::ucfirst($context)
+                            ]));
 
-                    $patternLabel = $patternClass->getLabel();
+                        $patternLabel = $patternClass->getLabel();
 
-                    return [
-                        'type' => 'file',
-                        'label' => $patternLabel,
-                        'icon' => $patternClass->getIcon(),
-                        'path' => $file->getRealPath(),
-                        'id' => $id,
-                        'contexts' => $contexts,
-                        'url' => $this->getRoute($id)
-                    ];
-                })->toArray()
-            ];
+                        return [
+                            'type' => 'file',
+                            'label' => $patternLabel,
+                            'icon' => $patternClass->getIcon(),
+                            'path' => $file->getRealPath(),
+                            'id' => $id,
+                            'contexts' => $contexts,
+                            'url' => $this->getRoute($id)
+                        ];
+                    })->toArray()
+                ];
 
-            $result['items'] = array_merge(
-                $result['items'],
-                collect($this->files->directories($root))->map(
-                    fn($dir) => $this->collectPatterns($dir, $level + 1)
-                )->toArray()
-            );
+                $result['items'] = array_merge(
+                    $result['items'],
+                    collect($this->files->directories($root))->map(
+                        fn($dir) => $this->collectPatterns($dir, $level + 1)
+                    )->toArray()
+                );
 
-            return $result;
-        });
+                return $result;
+            }
+        );
     }
 
     public function getDarkModeJS()
