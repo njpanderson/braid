@@ -15,7 +15,7 @@
         }"
         data-draggable="patternLibrary"
         data-draggable-cols-initial="240"
-        data-draggable-rows-initial="250"
+        data-draggable-rows-initial="300"
         data-draggable-handle-size="6"
         data-draggable-cols-max="350"
         data-draggable-cols-min="200"
