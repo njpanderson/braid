@@ -9,7 +9,7 @@
 					:href="`#tab-${tool.id}`"
 					class="flex items-center px-3 py-1.5 text-sm border-b-[3px] hover:border-accent-500 dark:hover:border-accent-300"
 					:class="{
-						'text-accent-500 dark:text-accent-300 border-accent-500 dark:border-accent-300': isActiveTool(tool.id),
+						'text-accent-600 dark:text-accent-300 border-accent-600 dark:border-accent-300': isActiveTool(tool.id),
 						'border-transparent': !isActiveTool(tool.id)
 					}"
 					@click.prevent="loadTool(tool.id)"

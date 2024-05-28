@@ -1,6 +1,41 @@
 /**
- * Themes generated at https://goodpalette.io/
+ * Colours generated at https://goodpalette.io/
  */
+
+.theme-lake {
+    /* Primary: Lakeview */
+    --color-primary-100: 242, 249, 255; /* rgb(242, 249, 255) */
+    --color-primary-200: 232, 244, 254; /* rgb(232, 244, 254) */
+    --color-primary-300: 214, 233, 243; /* rgb(214, 233, 243) */
+    --color-primary-400: 182, 205, 215; /* rgb(182, 205, 215) */
+    --color-primary-500: 130, 153, 161; /* rgb(130, 153, 161) */
+    --color-primary-600: 90, 122, 130; /* rgb(90, 122, 130) */
+    --color-primary-700: 63, 95, 99; /* rgb(63, 95, 99) */
+    --color-primary-800: 42, 67, 69; /* rgb(42, 67, 69) */
+    --color-primary-900: 23, 38, 38; /* rgb(23, 38, 38) */
+
+    /* Accent: New Yellow */
+    --color-accent-100: 255, 255, 242; /* rgb(255, 255, 242) */
+    --color-accent-200: 255, 251, 201; /* rgb(255, 251, 201) */
+    --color-accent-300: 252, 240, 159; /* rgb(252, 240, 159) */
+    --color-accent-400: 245, 220, 115; /* rgb(245, 220, 115) */
+    --color-accent-500: 232, 192, 72; /* rgb(232, 192, 72) */
+    --color-accent-600: 184, 138, 36; /* rgb(184, 138, 36) */
+    --color-accent-700: 135, 92, 18; /* rgb(135, 92, 18) */
+    --color-accent-800: 87, 54, 10; /* rgb(87, 54, 10) */
+    --color-accent-900: 38, 22, 4; /* rgb(38, 22, 4) */
+
+    /* Neutral */
+    --color-neutral-100: 250, 251, 252; /* rgb(250, 251, 252) */
+    --color-neutral-200: 231, 235, 238; /* rgb(231, 235, 238) */
+    --color-neutral-300: 213, 219, 223; /* rgb(213, 219, 223) */
+    --color-neutral-400: 195, 204, 208; /* rgb(195, 204, 208) */
+    --color-neutral-500: 178, 190, 194; /* rgb(178, 190, 194) */
+    --color-neutral-600: 142, 152, 155; /* rgb(142, 152, 155) */
+    --color-neutral-700: 106, 115, 116; /* rgb(106, 115, 116) */
+    --color-neutral-800: 70, 77, 77; /* rgb(70, 77, 77) */
+    --color-neutral-900: 34, 38, 38; /* rgb(34, 38, 38) */
+}
 
 .theme-wheat {
     /* Primary: 24 Carrot */
@@ -73,37 +108,37 @@
 }
 
 .theme-river {
-    /* Primary: Peaceful River */
-    --color-primary-100: 242, 247, 255; /* rgb(242, 247, 255) */
-    --color-primary-200: 202, 224, 254; /* rgb(202, 224, 254) */
-    --color-primary-300: 160, 203, 250; /* rgb(160, 203, 250) */
-    --color-primary-400: 115, 182, 238; /* rgb(115, 182, 238) */
-    --color-primary-500: 71, 157, 214; /* rgb(71, 157, 214) */
-    --color-primary-600: 36, 125, 170; /* rgb(36, 125, 170) */
-    --color-primary-700: 20, 96, 126; /* rgb(20, 96, 126) */
-    --color-primary-800: 11, 66, 82; /* rgb(11, 66, 82) */
-    --color-primary-900: 5, 33, 38; /* rgb(5, 33, 38) */
+    /* Primary: Andrea Blue */
+    --color-primary-100: 242, 244, 255; /* rgb(242, 244, 255) */
+    --color-primary-200: 199, 211, 254; /* rgb(199, 211, 254) */
+    --color-primary-300: 154, 180, 250; /* rgb(154, 180, 250) */
+    --color-primary-400: 107, 150, 239; /* rgb(107, 150, 239) */
+    --color-primary-500: 61, 121, 217; /* rgb(61, 121, 217) */
+    --color-primary-600: 28, 92, 172; /* rgb(28, 92, 172) */
+    --color-primary-700: 13, 70, 128; /* rgb(13, 70, 128) */
+    --color-primary-800: 7, 49, 83; /* rgb(7, 49, 83) */
+    --color-primary-900: 3, 25, 38; /* rgb(3, 25, 38) */
 
-    /* Accent: Banana Brick */
-    --color-accent-100: 253, 255, 242; /* rgb(253, 255, 242) */
-    --color-accent-200: 250, 255, 194; /* rgb(250, 255, 194) */
-    --color-accent-300: 251, 252, 145; /* rgb(251, 252, 145) */
-    --color-accent-400: 246, 240, 95; /* rgb(246, 240, 95) */
-    --color-accent-500: 235, 216, 47; /* rgb(235, 216, 47) */
-    --color-accent-600: 186, 159, 16; /* rgb(186, 159, 16) */
-    --color-accent-700: 136, 108, 3; /* rgb(136, 108, 3) */
-    --color-accent-800: 87, 63, 0; /* rgb(87, 63, 0) */
-    --color-accent-900: 38, 26, 0; /* rgb(38, 26, 0) */
+    /* Accent: Opal Flame */
+    --color-accent-100: 255, 247, 242; /* rgb(255, 247, 242) */
+    --color-accent-200: 255, 217, 202; /* rgb(255, 217, 202) */
+    --color-accent-300: 251, 181, 160; /* rgb(251, 181, 160) */
+    --color-accent-400: 243, 138, 116; /* rgb(243, 138, 116) */
+    --color-accent-500: 227, 91, 73; /* rgb(227, 91, 73) */
+    --color-accent-600: 180, 45, 37; /* rgb(180, 45, 37) */
+    --color-accent-700: 133, 19, 19; /* rgb(133, 19, 19) */
+    --color-accent-800: 85, 11, 11; /* rgb(85, 11, 11) */
+    --color-accent-900: 38, 5, 5; /* rgb(38, 5, 5) */
 
     /* Neutral */
-    --color-neutral-100: 250, 251, 252; /* rgb(250, 251, 252) */
-    --color-neutral-200: 232, 233, 235; /* rgb(232, 233, 235) */
-    --color-neutral-300: 214, 215, 218; /* rgb(214, 215, 218) */
-    --color-neutral-400: 196, 198, 201; /* rgb(196, 198, 201) */
-    --color-neutral-500: 178, 181, 184; /* rgb(178, 181, 184) */
-    --color-neutral-600: 140, 144, 147; /* rgb(140, 144, 147) */
-    --color-neutral-700: 104, 108, 111; /* rgb(104, 108, 111) */
-    --color-neutral-800: 68, 73, 75; /* rgb(68, 73, 75) */
+    --color-neutral-100: 250, 250, 252; /* rgb(250, 250, 252) */
+    --color-neutral-200: 230, 231, 234; /* rgb(230, 231, 234) */
+    --color-neutral-300: 211, 212, 215; /* rgb(211, 212, 215) */
+    --color-neutral-400: 192, 193, 197; /* rgb(192, 193, 197) */
+    --color-neutral-500: 173, 175, 179; /* rgb(173, 175, 179) */
+    --color-neutral-600: 137, 139, 143; /* rgb(137, 139, 143) */
+    --color-neutral-700: 101, 105, 108; /* rgb(101, 105, 108) */
+    --color-neutral-800: 67, 70, 73; /* rgb(67, 70, 73) */
     --color-neutral-900: 34, 37, 38; /* rgb(34, 37, 38) */
 }
 
@@ -119,16 +154,16 @@
     --color-primary-800: 37, 8, 83; /* rgb(37, 8, 83) */
     --color-primary-900: 15, 3, 38; /* rgb(15, 3, 38) */
 
-    /* Accent: Mint Jelly */
-    --color-accent-100: 242, 255, 252; /* rgb(242, 255, 252) */
-    --color-accent-200: 202, 255, 241; /* rgb(202, 255, 241) */
-    --color-accent-300: 161, 251, 223; /* rgb(161, 251, 223) */
-    --color-accent-400: 118, 243, 196; /* rgb(118, 243, 196) */
-    --color-accent-500: 75, 227, 161; /* rgb(75, 227, 161) */
-    --color-accent-600: 39, 180, 110; /* rgb(39, 180, 110) */
-    --color-accent-700: 21, 133, 71; /* rgb(21, 133, 71) */
-    --color-accent-800: 11, 85, 40; /* rgb(11, 85, 40) */
-    --color-accent-900: 5, 38, 16; /* rgb(5, 38, 16) */
+    /* Accent: Cruel Ruby */
+    --color-accent-100: 255, 242, 242; /* rgb(255, 242, 242) */
+    --color-accent-200: 255, 197, 197; /* rgb(255, 197, 197) */
+    --color-accent-300: 251, 149, 149; /* rgb(251, 149, 149) */
+    --color-accent-400: 242, 101, 101; /* rgb(242, 101, 101) */
+    --color-accent-500: 224, 54, 62; /* rgb(224, 54, 62) */
+    --color-accent-600: 178, 22, 39; /* rgb(178, 22, 39) */
+    --color-accent-700: 131, 9, 29; /* rgb(131, 9, 29) */
+    --color-accent-800: 85, 4, 22; /* rgb(85, 4, 22) */
+    --color-accent-900: 38, 2, 12; /* rgb(38, 2, 12) */
 
     /* Neutral */
     --color-neutral-100: 252, 250, 252; /* rgb(252, 250, 252) */
