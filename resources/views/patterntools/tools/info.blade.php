@@ -52,7 +52,6 @@
                 expanding
                 name="notes"
                 rows="2"
-                class="font-mono"
                 id="patterntools-info-notes"
                 x-model="fields.notes"
                 :value="$model->notes ?? ''"

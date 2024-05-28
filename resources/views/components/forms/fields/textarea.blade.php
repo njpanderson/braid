@@ -14,9 +14,7 @@
 		@if ($value && isset($xModel))
 			x-init="{{ $xModel }} = $refs['{{ $xModel }}'].value.trim()"
 		@endif
-		{{ $attributes->class([
-			'rounded border border-neutral-400 bg-neutral-50 dark:bg-neutral-900'
-		]) }}
+		{{ $attributes }}
 	>
 		{{ $value }}
 	</textarea>

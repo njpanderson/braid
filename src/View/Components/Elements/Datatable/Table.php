@@ -12,7 +12,8 @@ class Table extends Component {
      */
     public function __construct(
         public int $level = 0,
-        public array $items = []
+        public array $items = [],
+        public bool $showEmptyValues = false
     ) { }
 
     /**

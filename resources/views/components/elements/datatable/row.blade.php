@@ -4,10 +4,10 @@
 			@if (!empty($icon))
 				@svg(
 					'heroicon-' . ($icon),
-					'w-[22px] pr-1',
+					'w-[20px] pr-1',
 					[
-						'width' => 22,
-						'height' => 22,
+						'width' => 20,
+						'height' => 20,
 						// 'style' => implode(' ', [
 						// 	(!empty($iconFill) ? "fill: ${iconFill}" : ''),
 						// 	(!empty($iconStroke) ? "stroke: ${iconStroke}" : ''),

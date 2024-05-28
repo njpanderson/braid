@@ -6,7 +6,7 @@
 >
     <tbody>
         @foreach ($items as $row)
-            @if (!empty($row['value']))
+            @if (!empty($row['value']) || $showEmptyValues)
                 <x-braid::elements.datatable.row
                     :level="$level"
                     :key="$row['key']"
