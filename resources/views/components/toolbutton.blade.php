@@ -5,7 +5,7 @@
     @endif
     @if($id)
         id="toolbutton-{{ $id }}"
-        @click="fire($event, 'button:{{ $id }}')"
+        @click="fire('button:{{ $id }}', $event)"
     @endif
     {{ $attributes }}
 >

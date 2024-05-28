@@ -2,12 +2,11 @@ import eventBus from '@lib/event-bus';
 
 export default () => ({
     fire(
-        event,
         id,
+        event,
         detail = null
     ) {
-        id = `toolbar:${id}`;
-        eventBus.fire(id, detail, {
+        eventBus.fire(`toolbar:${id}`, detail, {
             ...event,
             currentTarget: event.currentTarget
         });

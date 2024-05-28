@@ -199,8 +199,8 @@ export default () => ({
     },
 
     onSubmitCanvasWidth(event) {
-        this.setCanvasWidth(event.originalEvent.target.value, false);
-        event.originalEvent.target.select();
+        this.setCanvasWidth(event.originalEvent.currentTarget.value, false);
+        event.originalEvent.currentTarget.select();
     },
 
     /**
