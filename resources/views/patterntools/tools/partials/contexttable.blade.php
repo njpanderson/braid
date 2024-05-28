@@ -7,7 +7,7 @@
     <tbody>
         @foreach ($context as $key => $value)
         <tr class="even:bg-neutral-200 dark:even:bg-neutral-700 odd:bg-white dark:odd:bg-neutral-800">
-            <th class="text-left px-2 py-1 align-top border-r-2 border-r-slate-100 dark:border-r-slate-600 break-words max-w-[20ch]">
+            <th class="text-left p-2 align-top border-r-2 border-r-slate-100 dark:border-r-slate-600 break-words max-w-[20ch]">
                 @if (is_numeric($key))
                     <span class="block bg-accent-400 dark:bg-accent-600 px-1 py-0.5 leading-none text-white rounded-md text-xs mt-0.5 text-center">
                         {{ $key }}
@@ -17,7 +17,7 @@
                 @endif
             </th>
             @if (is_scalar($value))
-                <td class="px-2 py-1 align-top w-full">
+                <td class="p-2 align-top w-full">
                     @if (is_bool($value))
                         <code
                             @class([

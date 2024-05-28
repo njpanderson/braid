@@ -1,5 +1,5 @@
 <tr class="even:bg-neutral-200 dark:even:bg-neutral-700 odd:bg-white dark:odd:bg-neutral-800">
-	<th class="text-left px-2 py-1 align-top border-r-2 border-r-slate-100 dark:border-r-slate-600 break-words max-w-[20ch]">
+	<th class="text-left p-2 align-top border-r-2 border-r-slate-100 dark:border-r-slate-600 break-words max-w-[20ch] font-semibold">
 		<div class="flex items-center text-left">
 			@if (!empty($icon))
 				@svg(
@@ -35,7 +35,7 @@
 				/>
 			</td>
 		@else
-			<td class="px-2 py-1 align-top w-full">
+			<td class="p-2 align-top w-full">
 				<div class="flex items-center">
 					@if (isset($clip) && $clip)
 						<x-braid::elements.clipboard

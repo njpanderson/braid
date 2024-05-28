@@ -42,7 +42,7 @@
 @elseif (is_string($context))
     <div class="grid h-full grid-rows-[min-content_1fr]">
         @if ($contextViewPath)
-            <p class="flex px-2 py-1 text-sm bg-neutral-200 dark:bg-neutral-700 items-center">
+            <p class="flex p-1 text-sm bg-neutral-200 dark:bg-neutral-700 items-center">
                 @svg('heroicon-o-document', 'h-5')
                 <code>{{ $contextViewPath }}</code>
             </p>

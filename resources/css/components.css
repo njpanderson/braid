@@ -21,8 +21,4 @@
     .pl-prose {
         @apply prose prose-slate p-2;
     }
-
-    .shiki {
-        @apply px-2 py-1 w-full whitespace-pre-wrap overflow-auto;
-    }
 }

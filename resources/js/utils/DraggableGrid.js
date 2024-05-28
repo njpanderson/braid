@@ -51,6 +51,7 @@ export default class DraggableGrid {
                 maxSize: parseInt(dataset.draggableRowsMax ?? 0, 10),
                 minSize: parseInt(dataset.draggableRowsMin ?? 0, 10)
             },
+            sizeSnapTolerance: 20,
             handleSize: parseInt(dataset.draggableHandleSize ?? 0, 10),
             handleSelector: '[data-draggable-handle]',
             ...options
@@ -260,11 +261,11 @@ export default class DraggableGrid {
         minSize = (this.options[type].minSize !== 0) ? this.options[type].minSize : this.options.handleSize;
 
         // Restrict to minimum
-        if (size < (minSize + 10))
+        if (size < (minSize + this.options.sizeSnapTolerance))
             size = minSize;
 
         // Restrict to maximum
-        if (size > (maxSize - 10))
+        if (size > (maxSize - this.options.sizeSnapTolerance))
             size = maxSize;
 
         // Set template
