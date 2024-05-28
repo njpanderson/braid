@@ -14,10 +14,10 @@ return [
         'namespace' => 'Tests\\Patterns',
 
         'statuses' => [
-            0 => [ 'label' => 'Draft', 'color' => '#C9C9C9' ],
-            1 => [ 'label' => 'In Progress', 'color' => '#4083C9' ],
-            2 => [ 'label' => 'Complete', 'color' => '#40C967' ],
-            3 => [ 'label' => 'On Hold', 'color' => '#C440C9' ],
+            [ 'label' => 'Draft', 'color' => '#C9C9C9' ],
+            [ 'label' => 'In Progress', 'color' => '#4083C9' ],
+            [ 'label' => 'Complete', 'color' => '#40C967' ],
+            [ 'label' => 'On Hold', 'color' => '#C440C9' ],
         ]
     ],
 

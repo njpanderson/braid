@@ -24,7 +24,7 @@
     >
         <div
             id="braid-menu"
-            class="braid-menu flex flex-col overflow-hidden relative transition-opacity select-none border-r border-r-neutral-400"
+            class="braid-menu flex flex-col relative transition-opacity select-none border-r border-r-neutral-400 overflow-x-auto"
             :class="{
                 'opacity-0 pointer-events-none': !store.menuOpen,
                 'opacity-100': store.menuOpen,
@@ -52,36 +52,7 @@
                 </button>
             </header>
 
-            <form
-                class="mb-2 px-2"
-                @submit="onSearchSubmit"
-            >
-                <div class="flex rounded-sm border-2 border-primary-200/40 focus-within:border-accent-300 bg-neutral-50 dark:bg-neutral-700">
-                    <input
-                        type="text"
-                        placeholder="Find patterns"
-                        x-model.debounce.150ms="store.search.term"
-                        @keyup.esc="onSearchClose"
-                        class="p-1 text-sm flex-grow appearance-none bg-transparent focus-visible:outline-none min-w-0">
-
-                    <button
-                        type="submit"
-                        class="flex shrink-0 items-center justify-center w-[30px] group"
-                        x-show="!store.search.open"
-                    >
-                        <x-heroicon-s-magnifying-glass class="w-4 h-4 group-hover:stroke-accent-300"/>
-                    </button>
-
-                    <button
-                        type="button"
-                        class="flex shrink-0 items-center justify-center w-[30px] group"
-                        x-show="store.search.open"
-                        @click="onSearchClose"
-                    >
-                        <x-heroicon-s-x-mark class="w-4 h-4 group-hover:stroke-accent-300"/>
-                    </button>
-                </div>
-            </form>
+            <x-braid::search.form/>
 
             <menu
                 class="h-full w-full flex-1"
@@ -99,7 +70,7 @@
                 </template>
 
                 <template x-if="store.search.open">
-                    @include('braid::partials.search')
+                    <x-braid::search.results/>
                 </template>
 
                 <button
@@ -127,7 +98,7 @@
                 >
                     <iframe
                         src="about:blank"
-                        class="z-0 w-full h-full bg-white"
+                        class="z-0 w-full h-full bg-white data-[disabled]:opacity-70 data-[disabled]:grayscale"
                         x-ref="patternCanvasFrame"
                     ></iframe>
                 </div>

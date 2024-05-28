@@ -141,7 +141,10 @@ export default () => ({
             .bind('toolbar:button:copy-pattern-url', this.onCopyPatternUrl.bind(this))
             .bind('toolbar:submit-canvas-width', this.onSubmitCanvasWidth.bind(this))
             .bind('ruler:drag-mark-start', this.onRulerDragMark.bind(this))
-            .bind('ruler:drag-mark-end', this.onRulerDragMark.bind(this));
+            .bind('ruler:drag-mark-end', this.onRulerDragMark.bind(this))
+            .bind('search:filters-state-change', (event) => {
+                this.setCanvasInteractable(!event.detail);
+            });
 
         events.on(document.body, 'click', '[data-clip]', this.onClip.bind(this));
     },
@@ -223,24 +226,6 @@ export default () => ({
 
     onMenuScroll(event) {
         this.store.menuScrolled = !!event.target.scrollTop;
-    },
-
-    onSearchSubmit(event) {
-        event.preventDefault();
-
-        if (!this.store.search.term) {
-            this.store.search.open = false;
-            return;
-        }
-
-        this.store.search.open = true;
-    },
-
-    onSearchClose(event) {
-        event.preventDefault();
-
-        this.store.search.term = '';
-        this.store.search.open = false;
     },
 
     loadfirstFramePage(patternId) {
@@ -359,7 +344,15 @@ export default () => ({
 
     setCanvasInteractable(interact = true) {
         // Prevent pointer from slipping into the pattern frame
-        this.$refs.patternCanvasFrame.style.pointerEvents = (interact ? 'auto': 'none');
+        if (interact) {
+            // Allowing interaction
+            delete this.$refs.patternCanvasFrame.dataset.disabled;
+            this.$refs.patternCanvasFrame.style.pointerEvents = 'auto';
+            return;
+        }
+
+        this.$refs.patternCanvasFrame.dataset.disabled = '';
+        this.$refs.patternCanvasFrame.style.pointerEvents = 'none';
     },
 
     storeCanvasWidth() {
@@ -393,17 +386,30 @@ export default () => ({
     },
 
     getSearchResults() {
-        const term = this.store.search.term.toLowerCase();
+        const term = this.store.search.term.toLowerCase(),
+            filters = this.store.search.filters.terms;
 
         return Object.keys(this.patternMap)
             .filter((key) => {
                 return (
+                    // Correct types
                     (
                         this.patternMap[key].type === 'file' ||
                         (this.patternMap[key].type === 'context' && !this.patternMap[key].default)
                     ) &&
+                    // Label exists
                     this.patternMap[key].label !== undefined &&
-                    this.patternMap[key].index.includes(term)
+                    (
+                        // Search term against index data
+                        this.patternMap[key].index.includes(term) &&
+
+                        // Status
+                        (!filters.status || (
+                            filters.status &&
+                            this.patternMap[key].model &&
+                            this.patternMap[key].model.status == filters.status
+                        ))
+                    )
                 );
             })
             .map((key) => {

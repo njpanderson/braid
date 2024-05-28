@@ -15,4 +15,8 @@
             </button>
         </li>
     </template>
+
+    <template x-if="!(getSearchResults()).length">
+        <li>(No items)</li>
+    </template>
 </ul>

@@ -60,10 +60,23 @@ class DatabasePatternsRepository implements Contract
      * @param int $status
      * @return Collection
      */
-    public function get($status): Collection
+    public function getByStatus($status): Collection
     {
         return Pattern::on($this->connection)
             ->where('status', $status)
+            ->get();
+    }
+
+    /**
+     * Get patterns matching the given pattern IDs.
+     *
+     * @param array $ids
+     * @return Collection
+     */
+    public function getByIds(array $ids): Collection
+    {
+        return Pattern::on($this->connection)
+            ->whereIn('pattern_id', $ids)
             ->get();
     }
 

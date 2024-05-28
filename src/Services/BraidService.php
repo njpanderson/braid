@@ -5,6 +5,7 @@ namespace njpanderson\Braid\Services;
 use stdClass;
 use Illuminate\View\View;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
@@ -15,22 +16,20 @@ use njpanderson\Braid\Contracts\PatternContext;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Contracts\PatternTool;
+use njpanderson\Braid\Contracts\Services\PatternCollector;
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 
-class BraidService
+class BraidService implements PatternCollector
 {
     public string $patternsNamespace;
-
-    private string $patternsPath;
 
     private array $patternTools = [];
 
     public function __construct(
-        private Filesystem $files,
-        private PatternsRepository $patternsRepo
+        private PatternsRepository $patternsRepo,
+        private BraidFileService $files
     ) {
         $this->patternsNamespace = Config::get('braid.patterns.namespace');
-        $this->patternsPath = $this->namespaceToPath($this->patternsNamespace);
     }
 
     /**
@@ -94,17 +93,6 @@ class BraidService
         return $this->formatView($view);
     }
 
-    public function getRoute(
-        string $id,
-        ?string $context = '',
-        string $route = 'braid.pattern'
-    ) {
-        return route($route, [
-            'braidPattern' => $id,
-            'contextId' => $context
-        ]);
-    }
-
     public function getPatternClassFromRoute(): string
     {
         $route = Route::current();
@@ -131,6 +119,12 @@ class BraidService
         return $default;
     }
 
+    public function collectPatterns(
+        ?string $root = null
+    ): Collection {
+        return $this->files->collectPatterns($root);
+    }
+
     public function getPatternTools()
     {
         return collect($this->patternTools);
@@ -143,86 +137,12 @@ class BraidService
         return $this;
     }
 
-    public function collectPatterns(
-        ?string $root = null,
-        int $level = 0
-    ) {
-        $root = $root ?? $this->patternsPath;
-
-        if (!$this->files->exists($root))
-            return [
-                'level' => $level,
-                'items' => []
-            ];
-
-        return Cache::remember(
-            'braid-pattern-menu-' . $root,
-            5,
-            function() use ($root, $level) {
-                $result = [
-                    'level' => $level,
-                    'type' => 'dir',
-                    'id' => $this->getDirectoryHash($root, $level),
-                    'path' => $root,
-                    'label' => $this->files->basename($root),
-                    'items' => collect(
-                        $this->files->files($root)
-                    )->map(function($file) {
-                        $contexts = [];
-                        $patternClass = $this->pathToNamespace($file->getRealPath());
-
-                        /** @var \njpanderson\Braid\Contracts\PatternDefinition */
-                        $patternClass = new $patternClass();
-                        $id = $patternClass->getId();
-
-                        if ($patternClass)
-                            $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
-                                'url' => $this->getRoute($id, $context),
-                                'type' => 'context',
-                                'contextId' => $context,
-                                'patternId' => $id,
-                                'id' => $id . '.' . $context,
-                                'default' => ($context === 'default'),
-                                'label' => Str::ucfirst($context)
-                            ]));
-
-                        $patternLabel = $patternClass->getLabel();
-
-                        return [
-                            'type' => 'file',
-                            'label' => $patternLabel,
-                            'icon' => $patternClass->getIcon(),
-                            'path' => $file->getRealPath(),
-                            'id' => $id,
-                            'contexts' => $contexts,
-                            'url' => $this->getRoute($id)
-                        ];
-                    })->toArray()
-                ];
-
-                $result['items'] = array_merge(
-                    $result['items'],
-                    collect($this->files->directories($root))->map(
-                        fn($dir) => $this->collectPatterns($dir, $level + 1)
-                    )->toArray()
-                );
-
-                return $result;
-            }
-        );
-    }
-
     public function getDarkModeJS()
     {
         if (Braid::$darkMode === null)
             return 'auto';
 
         return Braid::$darkMode ? 'on' : 'off';
-    }
-
-    public function getPatternsPath()
-    {
-        return $this->patternsPath;
     }
 
     public function getResponseSizes()
@@ -257,26 +177,5 @@ class BraidService
         $view = str_replace('\\', '.', $view);
 
         return $view;
-    }
-
-    private function namespaceToPath(string $namespace, $prefix = null)
-    {
-        $prefix = $prefix ?? base_path() . '/';
-        return $prefix . str_replace('\\', '/', $namespace);
-    }
-
-    private function pathToNamespace(string $path)
-    {
-        $path = str_replace(base_path(), '', $path);
-        $path = preg_replace('/\.php$/', '', $path);
-        $path = trim($path, '/');
-        $path = str_replace('/', '\\', $path);
-
-        return $path;
-    }
-
-    private function getDirectoryHash(string $path, int $level = 0): string
-    {
-        return crc32($level . $path);
     }
 }

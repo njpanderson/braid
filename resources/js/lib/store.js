@@ -9,6 +9,12 @@ export default {
     menuScrolled: false,
     search: {
         term: '',
+        filters: {
+            open: false,
+            terms: {
+                status: null
+            }
+        },
         open: false
     },
     theme: {

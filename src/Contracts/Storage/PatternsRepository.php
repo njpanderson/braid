@@ -30,7 +30,15 @@ interface PatternsRepository
      * @param int $status
      * @return \Illuminate\Support\Collection
      */
-    public function get($status): Collection;
+    public function getByStatus($status): Collection;
+
+    /**
+     * Return all of the entries matching the given IDs
+     *
+     * @param array $ids
+     * @return Collection
+     */
+    public function getByIds(array $ids): Collection;
 
     /**
      * Run the closure or return the default if enabled/disabled.

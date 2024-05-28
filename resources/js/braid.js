@@ -10,6 +10,7 @@ import toolbar from '@components/toolbar';
 import menuFolder from '@components/menuFolder';
 import ruler from '@components/ruler';
 import inlineForm from '@components/inlineForm';
+import search from '@components/search';
 
 window.Alpine = Alpine;
 // window.axios = axios;
@@ -27,6 +28,7 @@ class Braid {
         Alpine.data('ruler', ruler);
         Alpine.data('toolbar', toolbar);
         Alpine.data('inlineForm', inlineForm);
+        Alpine.data('search', search);
 
         this.parse().then(() => {
             Alpine.start();
