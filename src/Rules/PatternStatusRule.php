@@ -16,7 +16,10 @@ class PatternStatusRule implements ValidationRule
     {
         $statuses = config('braid.patterns.statuses');
 
-        if (!array_key_exists($value, $statuses)) {
+        if (
+            !empty($value) &&
+            !array_key_exists($value, $statuses)
+        ) {
             $fail('The :attribute is invalid.');
         }
     }

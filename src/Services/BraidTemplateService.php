@@ -14,7 +14,7 @@ class BraidTemplateService
                 'label' => $status['label']
             ]))
             ->unshift([
-                'id' => -1,
+                'id' => '',
                 'label' => __('Unknown')
             ]);
     }

@@ -10,13 +10,13 @@ class PatternStatus
 		private ?string $color = '000000'
 	) { }
 
-	public static function fromConfig(int $id = -1) {
+	public static function fromConfig(int|null $id = null) {
 		$statuses = config('braid.patterns.statuses');
 
 		if (!isset($statuses[$id])) {
 			// Default to the first status
 			return new static(
-				-1,
+				null,
 				__('Unknown')
 			);
 		}
