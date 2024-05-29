@@ -6,7 +6,7 @@
 
     <x-braid::elements.datatable.table
         :items="[[
-            'key' => 'Patern',
+            'key' => 'Pattern',
             'icon' => 'o-document',
             'value' => $pattern->getLabel(),
             'clip' => true
