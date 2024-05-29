@@ -3,7 +3,6 @@
     action="{{ route('braid.pattern.update', [$pattern->getId()]) }}"
     autocomplete="off"
 >
-
     <x-braid::elements.datatable.table
         :items="[[
             'key' => 'Pattern',
@@ -24,6 +23,11 @@
             'key' => 'Component',
             'icon' => 'o-code-bracket-square',
             'value' => $pattern->getComponentClass(),
+            'clip' => true
+        ], [
+            'key' => 'View',
+            'icon' => 'o-photo',
+            'value' => $pattern->getView()->fullName,
             'clip' => true
         ]]"
     >
