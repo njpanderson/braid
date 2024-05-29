@@ -1,4 +1,5 @@
 <x-braid::forms.inline
+    id="pattern-info"
     action="{{ route('braid.pattern.update', [$pattern->getId()]) }}"
     autocomplete="off"
 >

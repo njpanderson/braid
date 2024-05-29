@@ -8,6 +8,7 @@ import debug from '@lib/debug';
 import events from '@lib/events';
 import DraggableGrid from '@/utils/DraggableGrid';
 import makeUrl from '@utils/makeUrl';
+import EventBusEvent from '@/lib/event-bus/EventBusEvent';
 
 // URL query params
 const queryParams = (new URL(location)).searchParams;
@@ -48,27 +49,8 @@ export default () => ({
         this.setDarkMode();
 
         // Get and store menu data
-        axios.get('/menu')
-            .then((response) => {
-                this.patterns = response.data.patterns;
-
-                // Create a map of patterns for quick access
-                this.createPatternMap(this.patterns);
-
-                // Set up default menu storage
-                storage.transact(constants.storageKeys.menu, (menu) => {
-                    // If the menu id (hash) has changed, reset the closed statuses
-                    if (menu.id !== response.data.id) {
-                        eventBus.fire('braid.menu-reset');
-                        menu.closed = [];
-                    }
-
-                    // Save the id
-                    menu.id = response.data.id;
-
-                    return menu;
-                }, { id: null, closed: [] });
-
+        this.getMenuData()
+            .then(() => {
                 // Attempt load again, in case there's a pattern in query
                 this.loadfirstFramePage(queryParams.get('pattern'));
             });
@@ -126,14 +108,6 @@ export default () => ({
             this.setDarkMode();
         });
 
-        // this.$watch('loadedPattern', (loadedPattern) => {
-            // if (loadedPattern === null)
-                // return this.draggables.patternCanvas.sizeContainer(0, false);
-
-            // Set the pattern canvas/toolbar size to previously dragged size (if any)
-            // this.draggables.patternCanvas.sizeContainer();
-        // });
-
         eventBus
             .bind('toolbar:button:reload-pattern', this.reloadPattern.bind(this))
             .bind('toolbar:button:open-new-window', this.openPatternInNewWindow.bind(this))
@@ -142,6 +116,7 @@ export default () => ({
             .bind('toolbar:submit-canvas-width', this.onSubmitCanvasWidth.bind(this))
             .bind('ruler:drag-mark-start', this.onRulerDragMark.bind(this))
             .bind('ruler:drag-mark-end', this.onRulerDragMark.bind(this))
+            .bind('inlineform:pattern-info:fieldchange', this.onPatternInfoChange.bind(this))
             .bind('search:filters-state-change', (event) => {
                 this.setCanvasInteractable(!event.detail);
             });
@@ -226,6 +201,17 @@ export default () => ({
 
     onMenuScroll(event) {
         this.store.menuScrolled = !!event.target.scrollTop;
+    },
+
+    /**
+     * Fires whenever a pattern info form field changes
+     * @param {EventBusEvent} event
+     */
+    onPatternInfoChange(event) {
+        if (event.detail.field === 'fields.status') {
+            // On valid fields, get new menu data
+            this.getMenuData();
+        }
     },
 
     loadfirstFramePage(patternId) {
@@ -364,6 +350,36 @@ export default () => ({
 
         this.store.canvas.width = this.$refs.patternCanvasOuter.clientWidth;
         this.store.canvas.resizeInputValue = this.store.canvas.width;
+    },
+
+    /**
+     * Retrieve menu data from server.
+     * @returns {Promise} a Promise, containing the menu data
+     */
+    getMenuData() {
+        return axios.get('/menu')
+            .then((response) => {
+                this.patterns = response.data.patterns;
+
+                // Create a map of patterns for quick access
+                this.createPatternMap(this.patterns);
+
+                // Set up default menu storage
+                storage.transact(constants.storageKeys.menu, (menu) => {
+                    // If the menu id (hash) has changed, reset the closed statuses
+                    if (menu.id !== response.data.id) {
+                        eventBus.fire('braid.menu-reset');
+                        menu.closed = [];
+                    }
+
+                    // Save the id
+                    menu.id = response.data.id;
+
+                    return menu;
+                }, { id: null, closed: [] });
+
+                return this.patterns;
+            });
     },
 
     getCanvasRangeClasses(min, max = null, inClasses = '', outClasses = '') {
