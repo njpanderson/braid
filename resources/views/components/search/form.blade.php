@@ -12,18 +12,20 @@
             class="p-1 text-sm flex-grow appearance-none bg-transparent focus-visible:outline-none min-w-0"
         >
 
-        <button
-            type="button"
-            class="flex shrink-0 items-center justify-center w-[25px] group"
-            @click="toggleFilters()"
-        >
-            <span x-show="hasTerms">
-                <x-heroicon-s-funnel class="w-4 h-4 fill-accent-600"/>
-            </span>
-            <span x-show="!hasTerms">
-                <x-heroicon-o-funnel class="w-4 h-4 hover:stroke-accent-600"/>
-            </span>
-        </button>
+        @if ($braid->getIsRepositoryEnabled())
+            <button
+                type="button"
+                class="flex shrink-0 items-center justify-center w-[25px] group"
+                @click="toggleFilters()"
+            >
+                <span x-show="hasTerms">
+                    <x-heroicon-s-funnel class="w-4 h-4 fill-accent-600"/>
+                </span>
+                <span x-show="!hasTerms">
+                    <x-heroicon-o-funnel class="w-4 h-4 hover:stroke-accent-600"/>
+                </span>
+            </button>
+        @endif
 
         <button
             type="submit"
@@ -43,28 +45,30 @@
         </button>
     </div>
 
-    <menu
-        class="absolute left-0 right-0 border-l border-r border-b border-primary-200/40 rounded-b top-full bg-neutral-100"
-        x-show="store.search.filters.open"
-        @click.outside="closeFilters"
-        x-transition
-    >
-        <div class="mb-4 last:mb-0">
-            <h2 class="p-1 px-1.5 font-semibold text-md">Status</h2>
+    @if ($braid->getIsRepositoryEnabled())
+        <menu
+            class="absolute left-0 right-0 border-l border-r border-b border-primary-200/40 rounded-b top-full bg-neutral-100"
+            x-show="store.search.filters.open"
+            @click.outside="closeFilters"
+            x-transition
+        >
+            <div class="mb-4 last:mb-0">
+                <h2 class="p-1 px-1.5 font-semibold text-md">Status</h2>
 
-            @foreach(config('braid.patterns.statuses') as $index => $status)
-                <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-accent-300 hover:bg-primary-200 dark:has-[:checked]:bg-accent-400 dark:hover:bg-primary-600 group cursor-pointer transition-colors text-sm">
-                    <input
-                        type="radio"
-                        name="status"
-                        value="{{ $index }}"
-                        @click="toggleFilterTerm('status', '{{ $index }}')"
-                        x-model="store.search.filters.terms.status"
-                        class="sr-only"
-                    >
-                    <span>{{ $status['label'] }}</span>
-                </label>
-            @endforeach
-        </div>
-    </menu>
+                @foreach(config('braid.patterns.statuses') as $index => $status)
+                    <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-accent-300 hover:bg-primary-200 dark:has-[:checked]:bg-accent-400 dark:hover:bg-primary-600 group cursor-pointer transition-colors text-sm">
+                        <input
+                            type="radio"
+                            name="status"
+                            value="{{ $index }}"
+                            @click="toggleFilterTerm('status', '{{ $index }}')"
+                            x-model="store.search.filters.terms.status"
+                            class="sr-only"
+                        >
+                        <span>{{ $status['label'] }}</span>
+                    </label>
+                @endforeach
+            </div>
+        </menu>
+    @endif
 </form>

@@ -4,7 +4,7 @@ namespace njpanderson\Braid\Storage;
 
 use Dotenv\Store\File\Paths;
 use Illuminate\Database\Eloquent\Collection;
-
+use Illuminate\Support\Facades\Schema;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository as Contract;
 use njpanderson\Braid\Models\Pattern;
 
@@ -24,18 +24,13 @@ class DatabasePatternsRepository implements Contract
     ) {
         if ($connection !== null) {
             $this->connection = $connection;
-            $this->enabled = true;
+
+            if (Schema::hasTable('braid_patterns'))
+                $this->enabled = true;
         }
     }
 
-    public function findByPatternId(string $patternId): Pattern|null
-    {
-        return Pattern::on($this->connection)
-            ->where('pattern_id', $patternId)
-            ->first();
-    }
-
-    function getIsEnabled(): bool
+    public function getIsEnabled(): bool
     {
         return $this->enabled;
     }
@@ -47,11 +42,21 @@ class DatabasePatternsRepository implements Contract
      * @param mixed $default Default variable to return.
      * @return mixed The result of the callback.
      */
-    function ifEnabled(callable $fn, mixed $default = null) {
+    public function ifEnabled(callable $fn, mixed $default = null) {
         if (!$this->enabled)
             return $default;
 
         return $fn($this);
+    }
+
+    public function findByPatternId(string $patternId): Pattern|null
+    {
+        if (!$this->enabled)
+            return null;
+
+        return Pattern::on($this->connection)
+            ->where('pattern_id', $patternId)
+            ->first();
     }
 
     /**
@@ -62,6 +67,9 @@ class DatabasePatternsRepository implements Contract
      */
     public function getByStatus($status): Collection
     {
+        if (!$this->enabled)
+            return new Collection();
+
         return Pattern::on($this->connection)
             ->where('status', $status)
             ->get();
@@ -75,13 +83,25 @@ class DatabasePatternsRepository implements Contract
      */
     public function getByIds(array $ids): Collection
     {
+        if (!$this->enabled)
+            return new Collection();
+
         return Pattern::on($this->connection)
             ->whereIn('pattern_id', $ids)
             ->get();
     }
 
-    public function create(array $data): Pattern
+    /**
+     * Create an entry.
+     *
+     * @param array $data
+     * @return Pattern|null
+     */
+    public function create(array $data): Pattern|null
     {
+        if (!$this->enabled)
+            return null;
+
         return Pattern::create($data);
     }
 
@@ -94,6 +114,9 @@ class DatabasePatternsRepository implements Contract
      */
     public function update(int $id, array $updates)
     {
+        if (!$this->enabled)
+            return;
+
         Pattern::on($this->connection)
             ->find($id)
             ->update($updates);

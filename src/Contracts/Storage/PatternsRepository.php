@@ -17,6 +17,13 @@ interface PatternsRepository
     // public function find($id): Pattern|null;
 
     /**
+     * Return whether the repository is enabled.
+     *
+     * @return boolean
+     */
+    public function getIsEnabled(): bool;
+
+    /**
      * Find a pattern by its class id
      *
      * @param string $patternId
@@ -53,9 +60,9 @@ interface PatternsRepository
      * Create an entry.
      *
      * @param array $data
-     * @return Pattern
+     * @return Pattern|null
      */
-    public function create(array $data);
+    public function create(array $data): Pattern|null;
 
     /**
      * Store the given entry updates.

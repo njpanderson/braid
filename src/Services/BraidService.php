@@ -61,6 +61,16 @@ class BraidService implements PatternCollector
         ];
     }
 
+    /**
+     * Return whether the pattern meta repository is enabled.
+     *
+     * @return boolean
+     */
+    public function getIsRepositoryEnabled(): bool
+    {
+        return $this->patternsRepo->getIsEnabled();
+    }
+
     public function getPatternClass(string $patternRouteId): string
     {
         $classPath = collect(explode(':', $patternRouteId))
