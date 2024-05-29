@@ -61,6 +61,6 @@
 			</td>
 		@endif
 	@else
-		<td class="px-2 py-1 align-top w-full">{{ $slot }}</td>
+		<td class="p-2 align-top w-full">{{ $slot }}</td>
 	@endif
 </tr>
