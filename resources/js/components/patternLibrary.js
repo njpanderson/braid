@@ -7,8 +7,8 @@ import eventBus from '@lib/event-bus';
 import debug from '@lib/debug';
 import events from '@lib/events';
 import DraggableGrid from '@/utils/DraggableGrid';
-import makeUrl from '@utils/makeUrl';
 import EventBusEvent from '@/lib/event-bus/EventBusEvent';
+import HistoryManager from '@/utils/HistoryManager';
 
 // URL query params
 const queryParams = (new URL(location)).searchParams;
@@ -35,7 +35,9 @@ export default () => ({
         this.patterns = {};
         this.patternMap = {
             '__braid.welcome': {
-                url: `/${BRAID.config.path}/welcome`
+                label: 'Welcome',
+                url: `${location.protocol}//${location.host}/${BRAID.config.path}/`,
+                frameUrl: `${location.protocol}//${location.host}/${BRAID.config.path}/welcome/full`
             }
         };
 
@@ -45,6 +47,8 @@ export default () => ({
             response_sizes: { enabled: false, sizes: [] },
         }, BRAID.config ?? {});
 
+        this.history = new HistoryManager();
+
         this.initStore();
         this.setDarkMode();
 
@@ -52,7 +56,7 @@ export default () => ({
         this.getMenuData()
             .then(() => {
                 // Attempt load again, in case there's a pattern in query
-                this.loadfirstFramePage(queryParams.get('pattern'));
+                this.loadfirstFramePage(window.location);
             });
 
         document.querySelectorAll('[data-draggable]').forEach((element) => {
@@ -75,7 +79,7 @@ export default () => ({
 
         this.initBinds();
         this.storeCanvasWidth();
-        this.loadfirstFramePage();
+        this.loadfirstFramePage(window.location);
     },
 
     initStore() {
@@ -89,13 +93,16 @@ export default () => ({
     },
 
     initBinds() {
+        console.warn('initBinds');
         this.$watch('activePattern', () => {
             if (!this.$refs.patternCanvasFrame)
                 return;
 
-            this.$refs.patternCanvasFrame.contentWindow.location.replace(
-                this.activePattern.url
-            );
+            if (this.$refs.patternCanvasFrame.contentWindow) {
+                this.$refs.patternCanvasFrame.contentWindow.location.replace(
+                    this.activePattern.frameUrl
+                );
+            }
         });
 
         // Listen to dark mode store changes (from interface)
@@ -107,6 +114,9 @@ export default () => ({
         this.media.darkMode.addEventListener('change', () => {
             this.setDarkMode();
         });
+
+        // Listen to in place URL changes
+        this.history.pop(this.onHistoryPop.bind(this));
 
         eventBus
             .bind('toolbar:button:reload-pattern', this.reloadPattern.bind(this))
@@ -214,9 +224,21 @@ export default () => ({
         }
     },
 
-    loadfirstFramePage(patternId) {
-        if (patternId)
-            return this.switchPattern(patternId);
+    onHistoryPop(location) {
+        let id;
+
+        if ((id = this.getPatternIdByPath(location))) {
+            this.switchPattern(id, false);
+        }
+    },
+
+    loadfirstFramePage(location) {
+        let id;
+        console.log('load first frame page...', location);
+
+        if ((id = this.getPatternIdByPath(location))) {
+            return this.switchPattern(id, false);
+        }
 
         this.switchPattern('__braid.welcome');
     },
@@ -249,27 +271,40 @@ export default () => ({
         });
     },
 
-    switchPattern(id) {
+    switchPattern(id, push = true) {
         if (this.store.activePattern && id === this.store.activePattern)
             return;
 
         this.store.loadedPattern = null;
 
-        if (this.patternMap[id])
+        if (this.patternMap[id]) {
             this.store.activePattern = id;
+
+            console.log('switching to pattern', id);
+
+            if (this.activePattern.label) {
+                document.title = `${BRAID.config.title} — ${this.activePattern.label}`;
+            } else {
+                document.title = BRAID.config.title;
+            }
+
+            if (push) {
+                this.history.push(this.activePattern.url);
+            }
+        }
     },
 
     reloadPattern() {
-        this.$refs.patternCanvasFrame.contentWindow.location.reload();
+        if (this.$refs.patternCanvasFrame.contentWindow) {
+            this.$refs.patternCanvasFrame.contentWindow.location.reload();
+        }
     },
 
     openPatternInNewWindow() {
         if (!this.activePattern)
             return false;
 
-        window.open(makeUrl(this.activePattern.url, {
-            mode: 'full'
-        }), '_blank');
+        window.open(this.activePattern.frameUrl, '_blank');
     },
 
     /**
@@ -438,6 +473,19 @@ export default () => ({
             return `${pattern.label} (${pattern.contextId})`;
 
         return pattern.label;
+    },
+
+    getPatternIdByPath(location) {
+        const url = `${window.location.protocol}//${window.location.host}${
+            location.pathname
+        }`;
+
+        for (const id in this.patternMap) {
+            if (this.patternMap[id].url === url)
+                return id;
+        }
+
+        return null;
     },
 
     getPatternSearchPath(pattern) {

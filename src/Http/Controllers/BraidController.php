@@ -2,7 +2,7 @@
 
 namespace njpanderson\Braid\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Services\BraidService;

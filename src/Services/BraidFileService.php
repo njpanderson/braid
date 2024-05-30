@@ -113,6 +113,7 @@ class BraidFileService implements PatternCollector
                 if ($patternClass) {
                     $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
                         'url' => $this->getRoute($id, $context),
+                        'frameUrl' => $this->getRoute($id, $context, true),
                         'type' => 'context',
                         'contextId' => $context,
                         'patternId' => $id,
@@ -130,7 +131,8 @@ class BraidFileService implements PatternCollector
                     'model' => $id,
                     'id' => $id,
                     'contexts' => $contexts,
-                    'url' => $this->getRoute($id)
+                    'url' => $this->getRoute($id),
+                    'frameUrl' => $this->getRoute($id, '', true)
                 ];
             })->toArray()
         ];
@@ -153,11 +155,19 @@ class BraidFileService implements PatternCollector
     public function getRoute(
         string $id,
         ?string $context = '',
-        string $route = 'braid.pattern'
+        bool $full = false
     ) {
-        return route($route, [
-            'braidPattern' => $id,
-            'contextId' => $context
+        $full = ($full ? '.full' : '');
+
+        if ($context) {
+            return route('braid.pattern.context' . $full, [
+                'braidPattern' => $id,
+                'contextId' => $context
+            ]);
+        }
+
+        return route('braid.pattern' . $full, [
+            'braidPattern' => $id
         ]);
     }
 

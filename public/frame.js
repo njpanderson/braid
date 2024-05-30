@@ -31,12 +31,12 @@
         return event;
     });
 
-    if (
-        window.self === window.top &&
-        (!params.has('mode') || params.get('mode') !== 'full')
-    ) {
-        location.replace(indexRoute);
-    }
+    // if (
+    //     window.self === window.top &&
+    //     (!params.has('mode') || params.get('mode') !== 'full')
+    // ) {
+    //     location.replace(indexRoute);
+    // }
 
     window.parent.dispatchEvent(events[0]);
 
