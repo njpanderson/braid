@@ -35,10 +35,10 @@ class BraidFileService implements PatternCollector
                 $root = $root ?? $this->patternsPath;
 
                 if (!$this->files->exists($root))
-                    return [
+                    return collect([
                         'level' => 0,
                         'items' => []
-                    ];
+                    ]);
 
                 return $this->addModelData(
                     $this->traversePatterns($root)
