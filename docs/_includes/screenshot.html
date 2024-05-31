@@ -1,0 +1,6 @@
+<figure class="screenshot{% if include.breakout %} breakout{% endif %}">
+   <img src="{{ site.baseurl }}{{ include.src }}" alt="{{ include.alt }}"/>
+   {% if include.caption %}
+	<figcaption>{{ include.caption }}</figcaption>
+   {% endif %}
+</figure>

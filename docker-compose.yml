@@ -1,0 +1,12 @@
+name: braid
+services:
+    jekyll:
+        image: jekyll/jekyll
+        # build:
+          # context: docker/jekyll
+        platform: linux/amd64
+        volumes:
+          - $PWD/docs:/srv/jekyll
+        ports:
+          - 4000:4000
+        command: jekyll serve

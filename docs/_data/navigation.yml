@@ -1,0 +1,33 @@
+# main links
+main:
+  - title: "Quick start 🚀"
+    url: /docs/quick-start/
+  - title: "Documentation"
+    url: /docs/
+  # - title: "Sample Posts"
+  #   url: /year-archive/
+  # - title: "Sample Collections"
+  #   url: /collection-archive/
+  # - title: "Sitemap"
+  #   url: /sitemap/
+
+docs:
+  - title: Getting Started
+    children:
+      - title: "Quick start"
+        url: /docs/quick-start/
+      - title: "Requirements"
+        url: /docs/requirements/
+      - title: "Installation"
+        url: /docs/installation/
+      # - title: "Upgrading"
+      #   url: /docs/upgrading/
+
+  - title: Pattern Types
+    children:
+      - title: "Basic"
+        url: /docs/pattern-types/basic/
+      - title: "Component"
+        url: /docs/pattern-types/component/
+      - title: "Livewire"
+        url: /docs/pattern-types/livewire/
