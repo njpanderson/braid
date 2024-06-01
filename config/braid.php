@@ -32,6 +32,9 @@ return [
         ]
     ],
 
+    // How much visual margin to give the pattern display
+    'pattern_margin' => '0.5rem',
+
     'middleware' => [
         'web',
         Authorize::class,

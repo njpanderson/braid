@@ -10,7 +10,6 @@
         label-hidden
     >Open menu</x-braid::toolbutton>
 
-
     <div class="flex w-full justify-between items-center gap-x-2">
         <span class="block w-[2px] bg-neutral-50 dark:bg-neutral-500 self-stretch rounded" x-show="!store.menuOpen"></span>
 
