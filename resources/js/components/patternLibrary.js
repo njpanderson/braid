@@ -248,8 +248,8 @@ export default () => ({
 
             if (item.contexts) {
                 item.contexts.forEach((context) => {
-                    context.label = item.label;
                     context.contextLabel = context.label;
+                    context.label = item.label;
 
                     this.patternMap[context.id] = {
                         index: `${item.label}${context.contextId}`.toLowerCase(),
