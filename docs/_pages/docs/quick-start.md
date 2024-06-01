@@ -5,31 +5,29 @@ permalink: /docs/quick-start/
 toc: true
 ---
 
-Getting Braid up and running couldn't be simpler.
+Getting Braid up and running couldn't be simpler, but if you’d prefer a deep-dive into the documentation instead, start with the [Requirements](/braid/docs/requirements/).
 
 ## Prerequisites
-This guide will assume at least a baseline knowledge of Laravel and the following packages and tools preinstalled:
-
- - [Composer](https://getcomposer.org).
- - [Livewire](https://livewire.laravel.com), if creating Livewire components.
- - A baseline front end build process for your *own assets* (See [Laravel documentation](https://laravel.com/docs/11.x/vite#main-content)).
- - An understanding of PHP Classes.
- - A local development environment with web server (or `php artisan serve` up and running).
+Before you start, you’ll need to make sure you at least have a working **Laravel 11** app ready to rock, and are using **Composer**. See the [Requirements](/braid/docs/requirements/) page for detailed info.
 
 ## Installation
 First, use Composer to install Braid within your existing Laravel project:
 
-~~~ shell
-$ composer require njpanderson/braid
-~~~
+```shell
+composer require njpanderson/braid
+```
 
 Once the Braid package files are installed, run the following artisan command to install the core files:
 
-~~~ shell
-$ php artisan braid:install
-~~~
+```shell
+php artisan braid:install
+```
 
 This will install the service provider, front-end assets and a configuration file.
+
+## Creating the pattern layout
+
+{% include docs/pattern-layout.md %}
 
 ## Deciding which templates to show
 Braid will automatically map pattern definitions to view files in the same path. For instance, a pattern at `\Test\Patterns\Components\Button` will show the view at `components/button.blade.php`.
@@ -41,38 +39,11 @@ If you don't want your pattern structure to follow the view files, each pattern 
 ## Setting up your first pattern
 Once you’ve decided which partial, component or Livewire component to show in Braid, create a Pattern file in the same subfolder within your patterns namespace. For instance, given our button example with a view file in `./resources/views/components/button.blade.php`:
 
-{% highlight twig linenos %}
-{% raw %}
-<button
-    {{ $attributes->class([
-        "border rounded-md border-sky-400 shadow-md ..."
-    ]) }}
->
-    {{ $slot }}
-</button>
-{% endraw %}
-{% endhighlight %}
+{% include basic-component.md %}
 
-The following pattern definition would be created at `./tests/Patterns/Components/Button.php`:
+The following pattern definition could be created at `./tests/Patterns/Components/Button.php`:
 
-{% highlight php linenos %}
-<?php
-
-namespace Tests\Patterns\Components;
-
-use Illuminate\View\View;
-use njpanderson\Braid\Base\ComponentPattern;
-use njpanderson\Braid\Contracts\PatternContext;
-
-class Button extends ComponentPattern {
-    public function contextData(string $context): PatternContext|View
-    {
-        return $this->makeContext(
-            slot: 'Button'
-        );
-    }
-}
-{% endhighlight %}
+{% include basic-pattern.md %}
 
 Navigate to `/braid` and the following screen should show:
 

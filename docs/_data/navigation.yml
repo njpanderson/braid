@@ -20,14 +20,28 @@ docs:
         url: /docs/requirements/
       - title: "Installation"
         url: /docs/installation/
+      - title: "Database storage"
+        url: /docs/database-storage/
+      - title: "Your first pattern"
+        url: /docs/your-first-pattern/
       # - title: "Upgrading"
       #   url: /docs/upgrading/
 
-  - title: Pattern Types
+  - title: Contexts
     children:
-      - title: "Basic"
-        url: /docs/pattern-types/basic/
-      - title: "Component"
-        url: /docs/pattern-types/component/
-      - title: "Livewire"
-        url: /docs/pattern-types/livewire/
+      - title: "Context data"
+        url: /docs/context-data/
+      - title: "Using views"
+        url: /docs/context-data/views/
+
+  - title: Customising
+    children:
+      - title: "Service Provider"
+        url: /docs/service-provider/
+      - title: "Configuring Braid"
+        url: /docs/configuration/
+
+  - title: Reference
+    children:
+      - title: "Patterns"
+        url: /docs/reference/patterns/

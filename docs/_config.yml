@@ -41,6 +41,12 @@ minimal_mistakes_skin: "sunrise"
 enable_copy_code_button: true
 # breadcrumbs: true
 
+markdown: kramdown
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
 include: ["_pages"]
 
 defaults:
