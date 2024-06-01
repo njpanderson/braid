@@ -11,7 +11,7 @@ class PatternStatus
 	) { }
 
 	public static function fromConfig(int|null $id = null) {
-		$statuses = config('braid.patterns.statuses');
+		$statuses = config('braid.statuses');
 
 		if (!isset($statuses[$id])) {
 			// Default to the first status

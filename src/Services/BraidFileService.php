@@ -13,7 +13,7 @@ use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 
 class BraidFileService implements PatternCollector
 {
-    private string $patternsNamespace;
+    private string $patternsNamespace = 'Tests\\Patterns';
 
     private string $patternsPath;
 
@@ -21,7 +21,6 @@ class BraidFileService implements PatternCollector
         private Filesystem $files,
         private PatternsRepository $patternsRepo
     ) {
-        $this->patternsNamespace = Config::get('braid.patterns.namespace');
         $this->patternsPath = $this->namespaceToPath($this->patternsNamespace);
     }
 
@@ -52,6 +51,35 @@ class BraidFileService implements PatternCollector
                 );
             }
         );
+    }
+
+    public function getRoute(
+        string $id,
+        ?string $context = '',
+        bool $full = false
+    ) {
+        $full = ($full ? '.full' : '');
+
+        if ($context) {
+            return route('braid.pattern.context' . $full, [
+                'braidPattern' => $id,
+                'contextId' => $context
+            ]);
+        }
+
+        return route('braid.pattern' . $full, [
+            'braidPattern' => $id
+        ]);
+    }
+
+    /**
+     * Return the current namespace for patterns.
+     *
+     * @return string
+     */
+    public function getPatternsNamespace(): string
+    {
+        return $this->patternsNamespace;
     }
 
     private function addModelData(array $patterns)
@@ -157,25 +185,6 @@ class BraidFileService implements PatternCollector
     private function getDirectoryHash(string $path, int $level = 0): string
     {
         return crc32($level . $path);
-    }
-
-    public function getRoute(
-        string $id,
-        ?string $context = '',
-        bool $full = false
-    ) {
-        $full = ($full ? '.full' : '');
-
-        if ($context) {
-            return route('braid.pattern.context' . $full, [
-                'braidPattern' => $id,
-                'contextId' => $context
-            ]);
-        }
-
-        return route('braid.pattern' . $full, [
-            'braidPattern' => $id
-        ]);
     }
 
     private function namespaceToPath(string $namespace, $prefix = null)

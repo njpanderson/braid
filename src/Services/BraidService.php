@@ -29,7 +29,7 @@ class BraidService implements PatternCollector
         private PatternsRepository $patternsRepo,
         private BraidFileService $files
     ) {
-        $this->patternsNamespace = Config::get('braid.patterns.namespace');
+        $this->patternsNamespace = $files->getPatternsNamespace();
     }
 
     /**

@@ -1,7 +1,7 @@
 @extends('braid::layouts.pattern')
 
 @section('pattern')
-    <div class="p-2">
+    <div style="padding: 0.5rem">
         @if (isset($view))
             {!! $view !!}
         @elseif (isset($componentView))

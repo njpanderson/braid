@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Contracts\Foundation\Application;
 
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
 use njpanderson\Braid\Services\BraidService;
@@ -51,7 +49,6 @@ final class BraidServiceProvider extends ServiceProvider
         Blade::componentNamespace('njpanderson\\Braid\\View\\Components', 'braid');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'braid');
-
 
         Gate::define('view-braid-patternlib', function() {
             return false;
@@ -129,6 +126,7 @@ final class BraidServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Console\InstallCommand::class,
+                Console\MakePatternCommand::class
             ]);
         }
     }

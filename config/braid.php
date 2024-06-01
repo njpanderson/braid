@@ -9,16 +9,12 @@ return [
     // Base path for braid's front-end. Customise this as you wish.
     'path' => env('BRAID_PATH', 'braid'),
 
-    // The namespace under which patterns are stored
-    'patterns' => [
-        'namespace' => 'Tests\\Patterns',
-
-        'statuses' => [
-            [ 'label' => 'Draft', 'color' => '#C9C9C9' ],
-            [ 'label' => 'In Progress', 'color' => '#4083C9' ],
-            [ 'label' => 'Complete', 'color' => '#40C967' ],
-            [ 'label' => 'On Hold', 'color' => '#C440C9' ],
-        ]
+    // Pattern statuses, when using storage
+    'statuses' => [
+        [ 'label' => 'Draft', 'color' => '#C9C9C9' ],
+        [ 'label' => 'In Progress', 'color' => '#4083C9' ],
+        [ 'label' => 'Complete', 'color' => '#40C967' ],
+        [ 'label' => 'On Hold', 'color' => '#C440C9' ],
     ],
 
     'theme' => [

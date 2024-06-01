@@ -20,11 +20,6 @@
             'value' => $contextId ? $contextId : null,
             'clip' => true
         ], [
-            'key' => 'Component',
-            'icon' => 'o-code-bracket-square',
-            'value' => $pattern->getComponentClass(),
-            'clip' => true
-        ], [
             'key' => 'View',
             'icon' => 'o-photo',
             'value' => $pattern->getView()->fullName,

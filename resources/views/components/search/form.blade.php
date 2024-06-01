@@ -55,7 +55,7 @@
             <div class="mb-4 last:mb-0">
                 <h2 class="p-1 px-1.5 font-semibold text-md">Status</h2>
 
-                @foreach(config('braid.patterns.statuses') as $index => $status)
+                @foreach(config('braid.statuses') as $index => $status)
                     <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-accent-300 hover:bg-primary-200 dark:has-[:checked]:bg-accent-400 dark:hover:bg-primary-600 group cursor-pointer transition-colors text-sm">
                         <input
                             type="radio"

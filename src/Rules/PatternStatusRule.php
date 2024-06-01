@@ -14,7 +14,7 @@ class PatternStatusRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $statuses = config('braid.patterns.statuses');
+        $statuses = config('braid.statuses');
 
         if (
             !empty($value) &&
