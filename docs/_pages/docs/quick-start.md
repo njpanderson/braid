@@ -23,6 +23,14 @@ First, use Composer to install Braid within your existing Laravel project:
 $ composer require njpanderson/braid
 ~~~
 
+Once the Braid package files are installed, run the following artisan command to install the core files:
+
+~~~ shell
+$ php artisan braid:install
+~~~
+
+This will install the service provider, front-end assets and a configuration file.
+
 ## Deciding which templates to show
 Braid will automatically map pattern definitions to view files in the same path. For instance, a pattern at `\Test\Patterns\Components\Button` will show the view at `components/button.blade.php`.
 
