@@ -52,11 +52,12 @@
                 @else
                     {{-- Files --}}
                     <span class="flex font-medium">
-                        @include('braid::partials.menubutton', [
-                            'icon' => $item['icon'],
-                            'patternId' => $item['id'],
-                            'label' => $item['label']
-                        ])
+                        <x-braid::menu.button
+                            :icon="$item['icon']"
+                            :patternId="$item['id']"
+                        >
+                            {{ $item['label'] }}
+                        </x-braid::menu.button>
                     </span>
 
                     @if (count($item['contexts']) > 1)
@@ -65,10 +66,11 @@
                                 @if (!$context['default'])
                                     <li class="my-1 pl-6">
                                         <span class="flex gap-1 items-center">
-                                            @include('braid::partials.menubutton', [
-                                                'patternId' => $context['id'],
-                                                'label' => $context['label']
-                                            ])
+                                            <x-braid::menu.button
+                                                :patternId="$context['id']"
+                                            >
+                                                {{ $context['label'] }}
+                                            </x-braid::menu.button>
                                         </span>
                                     </li>
                                 @endif

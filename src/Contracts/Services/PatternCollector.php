@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 interface PatternCollector
 {
     public function collectPatterns(
-        ?string $root = null
+        ?string $root = null,
+        ?bool $addModelData = true
     ): Collection;
 }

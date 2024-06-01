@@ -15,7 +15,7 @@ class BraidController
 
     public function index()
     {
-        $patternFiles = $this->service->collectPatterns();
+        $patternFiles = $this->service->collectPatterns(null, false);
 
         return view('braid::index', [
             'patternFiles' => $patternFiles

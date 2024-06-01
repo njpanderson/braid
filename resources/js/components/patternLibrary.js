@@ -7,11 +7,7 @@ import eventBus from '@lib/event-bus';
 import debug from '@lib/debug';
 import events from '@lib/events';
 import DraggableGrid from '@/utils/DraggableGrid';
-import EventBusEvent from '@/lib/event-bus/EventBusEvent';
 import HistoryManager from '@/utils/HistoryManager';
-
-// URL query params
-const queryParams = (new URL(location)).searchParams;
 
 export default () => ({
     store: Alpine.store('braid'),
@@ -24,7 +20,7 @@ export default () => ({
     },
 
     get activePattern() {
-        return this.store.activePattern ? this.patternMap[this.store.activePattern] : null;
+        return this.store.activePattern ? this.patternMap[this.store.activePattern] : {};
     },
 
     get loadedPattern() {
@@ -34,10 +30,11 @@ export default () => ({
     init() {
         this.patterns = {};
         this.patternMap = {
+            // Default 'welcome' page, matches index in routes
             '__braid.welcome': {
                 label: 'Welcome',
                 url: `${location.protocol}//${location.host}/${BRAID.config.path}/`,
-                frameUrl: `${location.protocol}//${location.host}/${BRAID.config.path}/welcome/full`
+                frameUrl: `${location.protocol}//${location.host}/${BRAID.config.path}/full`
             }
         };
 
@@ -55,8 +52,8 @@ export default () => ({
         // Get and store menu data
         this.getMenuData()
             .then(() => {
-                // Attempt load again, in case there's a pattern in query
-                this.loadfirstFramePage(window.location);
+                // Attempt load the initial location
+                this.loadFirstPattern(window.location);
             });
 
         document.querySelectorAll('[data-draggable]').forEach((element) => {
@@ -79,7 +76,6 @@ export default () => ({
 
         this.initBinds();
         this.storeCanvasWidth();
-        this.loadfirstFramePage(window.location);
     },
 
     initStore() {
@@ -93,7 +89,6 @@ export default () => ({
     },
 
     initBinds() {
-        console.warn('initBinds');
         this.$watch('activePattern', () => {
             if (!this.$refs.patternCanvasFrame)
                 return;
@@ -232,15 +227,14 @@ export default () => ({
         }
     },
 
-    loadfirstFramePage(location) {
+    loadFirstPattern(location) {
         let id;
-        console.log('load first frame page...', location);
 
-        if ((id = this.getPatternIdByPath(location))) {
+        if (id = this.getPatternIdByPath(location, true)) {
             return this.switchPattern(id, false);
         }
 
-        this.switchPattern('__braid.welcome');
+        this.switchPattern('__braid.welcome', false);
     },
 
     createPatternMap(data) {
@@ -279,8 +273,6 @@ export default () => ({
 
         if (this.patternMap[id]) {
             this.store.activePattern = id;
-
-            console.log('switching to pattern', id);
 
             if (this.activePattern.label) {
                 document.title = `${BRAID.config.title} — ${this.activePattern.label}`;
@@ -475,14 +467,22 @@ export default () => ({
         return pattern.label;
     },
 
+    /**
+     * Searches for a pattern ID within the current pattern map.
+     *
+     * @param {Location} location - URL of the pattern.
+     * @returns {string} pattern ID.
+     */
     getPatternIdByPath(location) {
         const url = `${window.location.protocol}//${window.location.host}${
             location.pathname
         }`;
 
+        // Attempt to find in map
         for (const id in this.patternMap) {
-            if (this.patternMap[id].url === url)
+            if (this.patternMap[id].url === url) {
                 return id;
+            }
         }
 
         return null;

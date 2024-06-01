@@ -6,7 +6,14 @@ use njpanderson\Braid\Http\Controllers\BraidController;
 use njpanderson\Braid\Http\Controllers\PatternController;
 use njpanderson\Braid\Http\Controllers\PatternToolsController;
 
-Route::get('/', [BraidController::class, 'index'])->name('braid.index');
+// Route::get('/', [BraidController::class, 'index'])->name('braid.index');
+
+Route::prefix('/')->group(function() {
+    Route::get('', [BraidController::class, 'index'])->name('braid.index');
+    Route::get('full', [BraidController::class, 'welcome'])->name('braid.index.full');
+});
+
+
 Route::get('/menu', [BraidController::class, 'menu'])->name('braid.menu');
 
 Route::get('/patterntools', [PatternToolsController::class, 'list'])
@@ -16,11 +23,6 @@ Route::get('/patterntools/tool/{braidTool}/{braidPattern}/{contextId?}', [
     PatternToolsController::class, 'tool'
 ])
     ->name('braid.patterntools');
-
-Route::prefix('/welcome')->group(function() {
-    Route::get('/', [BraidController::class, 'index'])->name('braid.welcome');
-    Route::get('/full', [BraidController::class, 'welcome'])->name('braid.welcome.full');
-});
 
 Route::prefix('/pattern')->group(function() {
     Route::get('/{braidPattern}/{contextId}/full', [BraidController::class, 'pattern'])

@@ -27,11 +27,12 @@ class BraidFileService implements PatternCollector
 
     public function collectPatterns(
         ?string $root = null,
+        ?bool $addModelData = true
     ): Collection {
         return Cache::remember(
             'braid-pattern-files',
             5,
-            function() use ($root) {
+            function() use ($root, $addModelData) {
                 $root = $root ?? $this->patternsPath;
 
                 if (!$this->files->exists($root))
@@ -40,7 +41,13 @@ class BraidFileService implements PatternCollector
                         'items' => []
                     ]);
 
-                return $this->addModelData(
+                if ($addModelData) {
+                    return $this->addModelData(
+                        $this->traversePatterns($root)
+                    );
+                }
+
+                return collect(
                     $this->traversePatterns($root)
                 );
             }

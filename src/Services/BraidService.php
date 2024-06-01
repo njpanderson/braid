@@ -130,9 +130,10 @@ class BraidService implements PatternCollector
     }
 
     public function collectPatterns(
-        ?string $root = null
+        ?string $root = null,
+        ?bool $addModelData = true
     ): Collection {
-        return $this->files->collectPatterns($root);
+        return $this->files->collectPatterns($root, $addModelData);
     }
 
     public function getPatternTools()
