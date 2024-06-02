@@ -32,8 +32,8 @@ return [
         ]
     ],
 
-    // How much visual margin to give the pattern display
-    'pattern_margin' => '0.5rem',
+    // How much visual margin (in pixelss) to give the pattern display
+    'pattern_margin' => 5,
 
     'middleware' => [
         'web',

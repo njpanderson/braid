@@ -3,7 +3,7 @@
 <div
     id="braid-ruler"
     x-ref="root"
-    x-data="ruler(3)"
+    x-data="ruler(3 + {{ (int) config('braid.pattern_margin') }})"
     class="w-full overflow-hidden bg-neutral-100 dark:bg-neutral-600"
     x-show="activePattern.id && store.ruler.open"
 >

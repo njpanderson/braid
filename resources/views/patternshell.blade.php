@@ -1,7 +1,7 @@
 @extends('braid::layouts.pattern')
 
 @section('pattern')
-    <div style="padding: {{ config('braid.pattern_margin') }}">
+    <div style="padding: {{ (int) config('braid.pattern_margin') }}px">
         @if (isset($view))
             {!! $view !!}
         @elseif (isset($componentView))

@@ -138,7 +138,7 @@ export default (offset) => ({
         const rect = this.$refs.ruler.getBoundingClientRect();
 
         // Calculate x based on ruler offset
-        x = x - (rect.x + this.store.ruler.offset);
+        x = x - (rect.x);
 
         // Pin to min/max
         if (x < 0)
