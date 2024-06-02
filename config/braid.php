@@ -3,8 +3,11 @@
 use njpanderson\Braid\Http\Middleware\Authorize;
 
 return [
-    // Will show above the pattern list
+    // Sets the main page title
     'title' => 'Braid',
+
+    // Will replace the braid logo, if set
+    'logo' => '',
 
     // Base path for braid's front-end. Customise this as you wish.
     'path' => env('BRAID_PATH', 'braid'),
