@@ -1,5 +1,5 @@
 ```twig
-{# /resources/views/components/card.blade.php #}
+{% raw %}{{-- /resources/views/components/card.blade.php --}}{% endraw %}
 {% raw %}@props(['title', 'image', 'link', 'link-text' ])
 
 <div
@@ -9,7 +9,7 @@
     {{ $attributes }}
 >
     @if (isset($image))
-        <picture class="w-full hidden sm:block">
+        <picture class="w-full">
             <source srcset="{{ $image }}"/>
             <img class="w-full h-[150px] object-cover opacity-80 group-hover:opacity-100" src="{{ $image }}"/>
         </picture>

@@ -83,4 +83,4 @@ Automatic view resolution will mean you don't need to specify view files manuall
     protected string $viewName = '<your.view.name>';
 ```
 
-{% include next.html link="/braid/docs/context-data/" label="Context data" %}
+{% include next.html link="/braid/docs/contexts/context-data/" label="Context data" %}

@@ -30,16 +30,16 @@ docs:
   - title: Contexts
     children:
       - title: "Context data"
-        url: /docs/context-data/
+        url: /docs/contexts/context-data/
       - title: "Using views"
-        url: /docs/context-data/views/
+        url: /docs/contexts/using-views/
 
   - title: Customising
     children:
       - title: "Service Provider"
-        url: /docs/service-provider/
+        url: /docs/customising/service-provider/
       - title: "Configuring Braid"
-        url: /docs/configuration/
+        url: /docs/customising/configuring-braid/
 
   - title: Reference
     children:

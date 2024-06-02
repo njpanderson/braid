@@ -4,6 +4,10 @@ title: Documentation
 permalink: /docs/
 ---
 
+The following documentation will get you into and using Braid confidently.
+
+If you’d like to dive right in, check the [Quick start](/braid/docs/quick-start/) page, or head on straight to the [Requirements](/braid/docs/requirements/) page to go through it step by step.
+
 ## Getting started
  - [Quick start](/braid/docs/quick-start/)
  - [Requirements](/braid/docs/requirements/)
@@ -11,5 +15,10 @@ permalink: /docs/
  - [Database storage](/braid/docs/database-storage/)
  - [Your first pattern](/braid/docs/your-first-pattern/)
 
-## Pattern types
- - [Basic](/braid/docs/pattern-types/basic/)
+## Contexts
+ - [Context data](/braid/docs/contexts/context-data/)
+ - [Using views](/braid/docs/contexts/using-views/)
+
+## Customising
+ - [Service provider](/braid/docs/customising/service-provider/)
+ - [Configuring Braid](/braid/docs/customising/configuring-braid/)

@@ -15,6 +15,39 @@ article.splash {
 	}
 }
 
+.masthead {
+	z-index: 0;
+}
+
+.page__hero {
+	&--overlay {
+		padding: 1.5rem 0;
+
+		.wrapper {
+			display: grid;
+			grid-template-columns: 1fr;
+
+			@include breakpoint($small) {
+				grid-template-columns: 1fr minmax(0, 1fr);
+			}
+		}
+	}
+
+	&-image {
+		display: none;
+		border-radius: 3px;
+		box-shadow: 0 0 2rem rgba(0, 0, 0, 0.4);
+
+		@include breakpoint($large) {
+			margin: -2rem 0;
+		}
+
+		@include breakpoint($small) {
+			display: block;
+		}
+	}
+}
+
 .page__lead {
 	text-wrap: balance;
 }
@@ -22,6 +55,7 @@ article.splash {
 .screenshot {
 	display: flex;
 	justify-content: center;
+	margin: 1.3rem 0;
 	max-width: 100%;
 
 	img {
@@ -33,7 +67,8 @@ article.splash {
 
 	&.breakout {
 		@include breakpoint($large) {
-			margin: 0 -10%;
+			margin-left: -10%;
+			margin-right: -10%;
 			max-width: 120%;
 		}
 	}

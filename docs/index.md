@@ -6,6 +6,7 @@ header:
   overlay_color: "#000"
   overlay_filter: "0.5"
   overlay_image: /assets/moroccan-flower.png
+  image: /assets/screens/overall-shot.png
   actions:
     - label: "Find on Github"
       url: "https://github.com/njpanderson/braid/"

@@ -34,7 +34,7 @@ Braid will automatically map pattern definitions to view files in the same path.
 
 This will work for any Laravel or Livewire component, include or partial.
 
-If you don't want your pattern structure to follow the view files, each pattern can be [overridden](#) with the `$viewName` class property. This is especially useful if you want to create a completely independent menu structure in Braid.
+If you don't want your pattern structure to follow the view files, each pattern can be [overridden](/braid/docs/reference/patterns/#viewname) with the `$viewName` class property. This is especially useful if you want to create a completely independent menu structure in Braid.
 
 ## Setting up your first pattern
 Once you’ve decided which partial, component or Livewire component to show in Braid, create a Pattern file in the same subfolder within your patterns namespace. For instance, given our button example with a view file in `./resources/views/components/button.blade.php`:
@@ -48,3 +48,7 @@ The following pattern definition could be created at `./tests/Patterns/Component
 Navigate to `/braid` and the following screen should show:
 
 {% include screenshot.html src="/assets/screens/component-button.png" alt="A simple button component in Braid" breakout=true %}
+
+Hopefully you’ve got Braid up and running in a usable state. Now it’s worth looking at how contexts work, which is where the really useful stuff starts to happen.
+
+{% include next.html link="/braid/docs/contexts/context-data/" label="Context data" %}
