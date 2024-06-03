@@ -49,6 +49,9 @@ kramdown:
 
 include: ["_pages"]
 
+after_footer_scripts:
+  - https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js
+
 defaults:
   # _pages
   - scope:
