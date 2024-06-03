@@ -13,20 +13,25 @@ return [
     'path' => env('BRAID_PATH', 'braid'),
 
     // Pattern statuses, when using storage
+    // color can be any valid CSS colour definition.
     'statuses' => [
-        [ 'label' => 'Draft', 'color' => '#C9C9C9' ],
-        [ 'label' => 'In Progress', 'color' => '#4083C9' ],
-        [ 'label' => 'Complete', 'color' => '#40C967' ],
-        [ 'label' => 'On Hold', 'color' => '#C440C9' ],
+        [ 'id' => 1, 'label' => 'Draft', 'color' => '#C9C9C9' ],
+        [ 'id' => 2, 'label' => 'In Progress', 'color' => '#4083C9' ],
+        [ 'id' => 3, 'label' => 'Complete', 'color' => '#40C967' ],
+        [ 'id' => 4, 'label' => 'On Hold', 'color' => '#C440C9' ],
     ],
 
+    // Overall interface theme
+    // Possible values are: lake, wheat, forest, river, plum
     'theme' => [
-        // Possible values are: lake, wheat, forest, river, plum
         'colour' => 'lake'
     ],
 
+    // Response size toolbar options
     'response_sizes' => [
+        // Disable/enable entirely
         'enabled' => true,
+        // Sizes are in pixels
         'sizes' => [
             'sm' => 640,
             'md' => 768,
@@ -38,6 +43,7 @@ return [
     // How much visual margin (in pixelss) to give the pattern display
     'pattern_margin' => 5,
 
+    // Middleware to apply to Braid's UI
     'middleware' => [
         'web',
         Authorize::class,

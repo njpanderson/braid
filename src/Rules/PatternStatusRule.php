@@ -14,11 +14,11 @@ class PatternStatusRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $statuses = config('braid.statuses');
+        $statuses = collect(config('braid.statuses'));
 
         if (
             !empty($value) &&
-            !array_key_exists($value, $statuses)
+            !$statuses->contains('id', $value)
         ) {
             $fail('The :attribute is invalid.');
         }

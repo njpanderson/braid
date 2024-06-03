@@ -57,6 +57,12 @@
                             :patternId="$item['id']"
                         >
                             {{ $item['label'] }}
+                            <x-slot:status>
+                                <span
+                                    class="shrink-0 rounded-full m-1 w-[8px] h-[8px] pointer-events-none"
+                                    :style="getPatternStatusColour('{{ $item['id'] }}')"
+                                ></span>
+                            </x-slot:status>
                         </x-braid::menu.button>
                     </span>
 

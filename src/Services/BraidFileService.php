@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use njpanderson\Braid\Contracts\Services\PatternCollector;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 
@@ -28,32 +29,22 @@ class BraidFileService implements PatternCollector
         ?string $root = null,
         ?bool $addModelData = true
     ): Collection {
-        $cacheKey = 'braid-pattern-files' . (
-            $addModelData ? '-with-model-data' : ''
-        );
+        $root = $root ?? $this->patternsPath;
 
-        return Cache::remember(
-            $cacheKey,
-            5,
-            function() use ($root, $addModelData) {
-                $root = $root ?? $this->patternsPath;
+        if (!$this->files->exists($root))
+            return collect([
+                'level' => 0,
+                'items' => []
+            ]);
 
-                if (!$this->files->exists($root))
-                    return collect([
-                        'level' => 0,
-                        'items' => []
-                    ]);
+        if ($addModelData) {
+            return $this->addModelData(
+                $this->traversePatterns($root)
+            );
+        }
 
-                if ($addModelData) {
-                    return $this->addModelData(
-                        $this->traversePatterns($root)
-                    );
-                }
-
-                return collect(
-                    $this->traversePatterns($root)
-                );
-            }
+        return collect(
+            $this->traversePatterns($root)
         );
     }
 

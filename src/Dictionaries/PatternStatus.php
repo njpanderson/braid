@@ -11,9 +11,12 @@ class PatternStatus
 	) { }
 
 	public static function fromConfig(int|null $id = null) {
-		$statuses = config('braid.statuses');
+		$statuses = collect(config('braid.statuses'));
+		$status = $statuses->first(fn($status) => (
+			$status['id'] === $id
+		));
 
-		if (!isset($statuses[$id])) {
+		if (!$status) {
 			// Default to the first status
 			return new static(
 				null,
@@ -22,9 +25,9 @@ class PatternStatus
 		}
 
 		return new static(
-			$id,
-			$statuses[$id]['label'],
-			$statuses[$id]['color']
+			$status['id'],
+			$status['label'],
+			$status['color']
 		);
 	}
 

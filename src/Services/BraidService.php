@@ -148,14 +148,6 @@ class BraidService implements PatternCollector
         return $this;
     }
 
-    public function getDarkModeJS()
-    {
-        if (Braid::$darkMode === null)
-            return 'auto';
-
-        return Braid::$darkMode ? 'on' : 'off';
-    }
-
     public function getResponseSizes()
     {
         if (!config('braid.response_sizes.enabled'))

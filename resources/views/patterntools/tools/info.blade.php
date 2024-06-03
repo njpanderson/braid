@@ -31,10 +31,6 @@
                 key="Status"
                 icon="o-information-circle"
             >
-                {{-- TODO? <x-slot:key>
-                    <label for="patterntools-info-status">Status</label>
-                </x-slot:key> --}}
-
                 <x-braid::forms.fields.select
                     name="status"
                     id="patterntools-info-status"

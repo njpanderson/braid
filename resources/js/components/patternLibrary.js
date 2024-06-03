@@ -442,6 +442,32 @@ export default () => ({
         return length - 1;
     },
 
+    /**
+     * Get the status object from a pattern's model.
+     * @param {string} patternId
+     * @param {number} key
+     * @returns {object}
+     */
+    getPatternStatus(patternId) {
+        const pattern = this.patternMap[patternId] ?? null;
+
+        if (!pattern || !BRAID.config.statuses || !pattern.model || !pattern.model.status)
+            return null;
+
+        return BRAID.config.statuses.find((status) =>
+            status.id === pattern.model.status
+        );
+    },
+
+    getPatternStatusColour(patternId) {
+        const status = this.getPatternStatus(patternId);
+
+        if (!status)
+            return '';
+
+        return `background-color: ${status['color']}`;
+    },
+
     getSearchResults() {
         const term = this.store.search.term.toLowerCase(),
             filters = this.store.search.filters.terms;

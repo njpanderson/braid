@@ -20,4 +20,7 @@
     <span class="block w-full text-ellipsis whitespace-nowrap overflow-hidden text-left">
         {{ $slot }}
     </span>
+    @if (isset($status))
+        {{ $status }}
+    @endif
 </button>

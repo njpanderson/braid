@@ -4,6 +4,7 @@ namespace njpanderson\Braid\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use njpanderson\Braid\Braid;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Services\BraidService;
 
@@ -16,6 +17,8 @@ class BraidController
     public function index()
     {
         $patternFiles = $this->service->collectPatterns(null, false);
+
+        Braid::runChecks();
 
         return view('braid::index', [
             'patternFiles' => $patternFiles

@@ -47,25 +47,28 @@
 
     @if ($braid->getIsRepositoryEnabled())
         <menu
-            class="absolute left-0 right-0 border-l border-r border-b border-primary-200/40 rounded-b top-full bg-neutral-100"
+            class="absolute left-0 right-0 border-l border-r border-b border-primary-200/40 rounded-b top-full bg-neutral-100 dark:bg-neutral-700"
             x-show="store.search.filters.open"
             @click.outside="closeFilters"
             x-transition
         >
             <div class="mb-4 last:mb-0">
-                <h2 class="p-1 px-1.5 font-semibold text-md">Status</h2>
+                <h2 class="p-1.5 px-1.5 font-semibold text-md">Status</h2>
 
-                @foreach(config('braid.statuses') as $index => $status)
-                    <label class="flex items-center p-1 px-1.5 has-[:checked]:bg-accent-300 hover:bg-primary-200 dark:has-[:checked]:bg-accent-400 dark:hover:bg-primary-600 group cursor-pointer transition-colors text-sm">
+                @foreach(config('braid.statuses') as $status)
+                    <label class="group flex items-center p-1.5 px-2.5 has-[:checked]:bg-accent-300 hover:bg-primary-200 dark:has-[:checked]:bg-accent-600 dark:hover:bg-primary-600 group cursor-pointer transition-colors text-sm">
                         <input
                             type="radio"
                             name="status"
-                            value="{{ $index }}"
-                            @click="toggleFilterTerm('status', '{{ $index }}')"
+                            value="{{ $status['id'] }}"
+                            @click="toggleFilterTerm('status', '{{ $status['id'] }}')"
                             x-model="store.search.filters.terms.status"
                             class="sr-only"
                         >
-                        <span>{{ $status['label'] }}</span>
+                        <span class="flex items-center w-full">
+                            {{ $status['label'] }}
+                            <span class="block w-[8px] h-[8px] ml-auto rounded-full ring-2 ring-transparent group-has-[:checked]:ring-white" style="background-color: {{ $status['color'] }}"></span>
+                        </span>
                     </label>
                 @endforeach
             </div>

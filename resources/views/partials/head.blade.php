@@ -6,11 +6,12 @@
 <script>
 	var BRAID = {
 		config: {
-			'title': '{{ config('braid.title') }}',
-			'path': '{{ trim(config('braid.path'), '\/') }}',
-			'theme': { colour: '{{ config('braid.theme.colour') }}' },
-			'response_sizes': {!! collect(config('braid.response_sizes'))->toJson() !!}
+			title: '{{ config('braid.title') }}',
+			path: '{{ trim(config('braid.path'), '\/') }}',
+			statuses: {!! $braidHtml->getStatusesJS() !!},
+			theme: { colour: '{{ config('braid.theme.colour') }}' },
+			response_sizes: {!! collect(config('braid.response_sizes'))->toJson() !!}
 		},
-		darkMode: '{{ $braid->getDarkModeJS() }}'
+		darkMode: '{{ $braidHtml->getDarkModeJS() }}'
 	}
 </script>
