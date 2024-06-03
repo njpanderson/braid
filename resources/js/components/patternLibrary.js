@@ -20,11 +20,13 @@ export default () => ({
     },
 
     get activePattern() {
-        return this.store.activePattern ? this.patternMap[this.store.activePattern] : {};
+        return (this.store.activePattern && this.patternMap) ?
+            this.patternMap[this.store.activePattern] : {};
     },
 
     get loadedPattern() {
-        return this.store.loadedPattern ? this.patternMap[this.store.loadedPattern] : null;
+        return (this.store.loadedPattern && this.patternMap) ?
+            this.patternMap[this.store.loadedPattern] : null;
     },
 
     init() {
@@ -76,6 +78,8 @@ export default () => ({
 
         this.initBinds();
         this.storeCanvasWidth();
+
+        this.store.active = true;
     },
 
     initStore() {
@@ -90,8 +94,13 @@ export default () => ({
 
     initBinds() {
         this.$watch('activePattern', () => {
-            if (!this.$refs.patternCanvasFrame)
+            if (
+                !this.$refs.patternCanvasFrame ||
+                !this.activePattern ||
+                !this.activePattern.frameUrl
+            ) {
                 return;
+            }
 
             if (this.$refs.patternCanvasFrame.contentWindow) {
                 this.$refs.patternCanvasFrame.contentWindow.location.replace(
@@ -144,10 +153,15 @@ export default () => ({
     },
 
     onFrameUnLoaded(event) {
-        debug.log('Frame unloaded');
-
-        if (!event.detail || !event.detail.patternMapId)
+        if (
+            !this.store.loadedPattern ||
+            !event.detail ||
+            !event.detail.patternMapId
+        ) {
+            // Do nothing if there's no loaded pattern
+            // or there's no pattern map ID in the event
             return;
+        }
 
         this.store.loadedPattern = null;
 

@@ -105,11 +105,13 @@
                     x-ref="patternCanvasOuter"
                     class="relative flex-1 w-full h-full resize-x border-[3px] border-accent-100 dark:border-accent-400 hover:border-accent-200 dark:hover:border-accent-300 overflow-auto"
                 >
-                    <iframe
-                        src="about:blank"
-                        class="z-0 w-full h-full bg-white data-[disabled]:opacity-70 data-[disabled]:grayscale"
-                        x-ref="patternCanvasFrame"
-                    ></iframe>
+                    <template x-if="store.active">
+                        <iframe
+                            src="about:blank"
+                            class="z-0 w-full h-full bg-white data-[disabled]:opacity-70 data-[disabled]:grayscale"
+                            x-ref="patternCanvasFrame"
+                        ></iframe>
+                    </template>
                 </div>
             </div>
         </div>

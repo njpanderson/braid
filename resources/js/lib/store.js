@@ -3,6 +3,7 @@ import storage from 'store2';
 import constants from '@/constants';
 
 export default {
+    active: false,
     loadedPattern: null,
     activePattern: null,
     menuOpen: true,
