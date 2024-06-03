@@ -28,8 +28,12 @@ class BraidFileService implements PatternCollector
         ?string $root = null,
         ?bool $addModelData = true
     ): Collection {
+        $cacheKey = 'braid-pattern-files' . (
+            $addModelData ? '-with-model-data' : ''
+        );
+
         return Cache::remember(
-            'braid-pattern-files',
+            $cacheKey,
             5,
             function() use ($root, $addModelData) {
                 $root = $root ?? $this->patternsPath;
