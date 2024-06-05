@@ -68,51 +68,6 @@ abstract class Pattern implements Contract
     }
 
     /**
-     * Get the related component class name. The component class is used to
-     * infer the view, and may be overridden by $this->viewName
-     *
-     * @return string
-     */
-    public final function getComponentClass(): string
-    {
-        $class = str_replace(
-            $this->service->patternsNamespace,
-            '',
-            static::class
-        );
-
-        return collect(explode('\\', $class))
-            ->map(fn($part) => ucFirst($part))
-            ->join('\\');
-    }
-
-    /**
-     * Get the defined context names
-     *
-     * @return array
-     */
-    public function getContexts(): array
-    {
-        return $this->contexts;
-    }
-
-    /**
-     * Get the context data.
-     *
-     * @param string $context
-     * @return PatternContextContract|View
-     */
-    public final function getContextData(string $context): PatternContextContract|View
-    {
-        $data = $this->contextData($context);
-
-        if ($data instanceof View)
-            return $data;
-
-        return $data;
-    }
-
-    /**
      * Default contextData function in the case that the inheriting Pattern
      * class does not provide one.
      *
@@ -122,54 +77,6 @@ abstract class Pattern implements Contract
     public function contextData(string $context): PatternContextContract|View
     {
         return new PatternContext();
-    }
-
-    /**
-     * Make a single context object.
-     *
-     * @param array $attributes
-     * @param string|null|null $slot
-     * @param array $scopedSlots
-     * @return PatternContext
-     */
-    public function makeContext(
-        array $attributes = [],
-        string|null $slot = null,
-        array $scopedSlots = []
-    ): PatternContext {
-        return new PatternContext(
-            attributes: $attributes,
-            slot: $slot,
-            scopedSlots: $scopedSlots
-        );
-    }
-
-    /**
-     * Make a scoped slot.
-     *
-     * @param string|null|null $slot
-     * @param array $attributes
-     * @return ScopedSlot
-     */
-    public function makeScopedSlot(
-        string|null $slot = null,
-        array $attributes = []
-    ): ScopedSlot {
-        return new ScopedSlot(
-            slot: $slot,
-            attributes: $attributes
-        );
-    }
-
-    /**
-     * Whether the context exists on the instance.
-     *
-     * @param string $context
-     * @return boolean
-     */
-    public function hasContext(string $context): bool
-    {
-        return in_array($context, $this->contexts);
     }
 
     /**
@@ -202,35 +109,6 @@ abstract class Pattern implements Contract
     }
 
     /**
-     * Prepare the list of contexts.
-     *
-     * (Mainly ensuring there is always a "default" context.)
-     *
-     * @return void
-     */
-    private function prepareContexts()
-    {
-        if (!in_array('default', $this->contexts))
-            array_unshift($this->contexts, 'default');
-    }
-
-    /**
-     * Set the instance ID
-     *
-     * @return string
-     */
-    public function setId(): string
-    {
-        $id = static::class;
-        $id = str_replace($this->service->patternsNamespace, '', $id);
-        $id = trim($id, '\\');
-        $id = str_replace('\\', ':', $id);
-        $id = Str::lower($id);
-
-        return $id;
-    }
-
-    /**
      * Return the instance ID
      *
      * @return string
@@ -251,13 +129,135 @@ abstract class Pattern implements Contract
     }
 
     /**
+     * Get the related component class name. The component class is used to
+     * infer the view, and may be overridden by $this->viewName
+     *
+     * @return string
+     */
+    public final function getComponentClass(): string
+    {
+        $class = str_replace(
+            $this->service->patternsNamespace,
+            '',
+            static::class
+        );
+
+        return collect(explode('\\', $class))
+            ->map(fn($part) => ucFirst($part))
+            ->join('\\');
+    }
+
+    /**
+     * Get the defined context names
+     *
+     * @return array
+     */
+    public final function getContexts(): array
+    {
+        return $this->contexts;
+    }
+
+    /**
+     * Get the context data.
+     *
+     * @param string $context
+     * @return PatternContextContract|View
+     */
+    public final function getContextData(string $context): PatternContextContract|View
+    {
+        $data = $this->contextData($context);
+
+        if ($data instanceof View)
+            return $data;
+
+        return $data;
+    }
+
+    /**
+     * Make a single context object.
+     *
+     * @param array $attributes
+     * @param string|null|null $slot
+     * @param array $scopedSlots
+     * @return PatternContext
+     */
+    public final function makeContext(
+        array $attributes = [],
+        string|null $slot = null,
+        array $scopedSlots = []
+    ): PatternContext {
+        return new PatternContext(
+            attributes: $attributes,
+            slot: $slot,
+            scopedSlots: $scopedSlots
+        );
+    }
+
+    /**
+     * Make a scoped slot.
+     *
+     * @param string|null|null $slot
+     * @param array $attributes
+     * @return ScopedSlot
+     */
+    public final function makeScopedSlot(
+        string|null $slot = null,
+        array $attributes = []
+    ): ScopedSlot {
+        return new ScopedSlot(
+            slot: $slot,
+            attributes: $attributes
+        );
+    }
+
+    /**
+     * Whether the context exists on the instance.
+     *
+     * @param string $context
+     * @return boolean
+     */
+    public final function hasContext(string $context): bool
+    {
+        return in_array($context, $this->contexts);
+    }
+
+    /**
      * Get the JS pattern map ID.
      *
      * @param string|null $context
      * @return string
      */
-    public function getJsMapId(?string $context = ''): string
+    public final function getJsMapId(?string $context = ''): string
     {
         return $this->id . (!empty($context) ? '.' . $context : '');
+    }
+
+    /**
+     * Set the instance ID
+     *
+     * @return string
+     */
+    private function setId(): string
+    {
+        $id = static::class;
+        $id = str_replace($this->service->patternsNamespace, '', $id);
+        $id = trim($id, '\\');
+        $id = str_replace('\\', ':', $id);
+        $id = Str::lower($id);
+
+        return $id;
+    }
+
+    /**
+     * Prepare the list of contexts.
+     *
+     * (Mainly ensuring there is always a "default" context.)
+     *
+     * @return void
+     */
+    private function prepareContexts()
+    {
+        if (!in_array('default', $this->contexts))
+            array_unshift($this->contexts, 'default');
     }
 }
