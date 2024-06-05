@@ -22,6 +22,13 @@ option | default | description
 `path` | `BRAID_PATH` or `braid` | The root web path for braid.
 `statuses` | `Draft`, `In Progress`, `Complete`, `On Hold` | The statuses to use when pattern database storage is enabled. See [status keys](#status-keys) below.
 `theme` | `lake` | The theme to use in Braid’s interface. See [themes](#themes) below.
+`response_sizes.enabled` | `true` | Whether to display a response size switcher in the top toolbar.
+`response_sizes.sizes` | `sm`, `md`, `lg`, `xl` | The sizes are a key/value pair of names and pixel widths. You can customise this as your project requires.
+`pattern_margin` | `5` | In pixels, the margin size around patterns as they display in the UI.
+`middleware` | `web`, `Braid\...\Authorise` | Middleware to use on each request to Braid.
+`vendor_path` | `vendor/braid` | Path to the public vendor folder.
+`exceptions` | `BRAID_EXCEPTIONS` or `true` | Braid will attempt to show more useful contextually relevant exceptions if this setting is `true`. Set to `false` if you need to see the raw Laravel-based exceptions instead.
+`database.connection` | `DB_CONNECTION` or `mysql` | The database connection to use when querying the pattern storage.
 
 ### Status keys
 Statuses are stored as an array of associative array data, and each status item must have one of the following keys:
