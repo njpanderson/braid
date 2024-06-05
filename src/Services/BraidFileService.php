@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use njpanderson\Braid\Contracts\Services\PatternCollector;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository;
+use njpanderson\Braid\Exceptions\PatternMissingIdException;
 
 class BraidFileService implements PatternCollector
 {
@@ -133,12 +134,15 @@ class BraidFileService implements PatternCollector
                 $this->files->files($root)
             )->map(function($file) {
                 $contexts = [];
-                $patternClass = $this->pathToNamespace($file->getRealPath());
+                $patternClassName = $this->pathToNamespace($file->getRealPath());
 
                 /** @var \njpanderson\Braid\Contracts\PatternDefinition */
-                $patternClass = new $patternClass();
+                $patternClass = new $patternClassName();
 
                 $id = $patternClass->getId();
+
+                if (empty($id))
+                    throw new PatternMissingIdException($patternClassName);
 
                 if ($patternClass) {
                     $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
