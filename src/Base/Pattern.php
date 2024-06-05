@@ -23,7 +23,7 @@ abstract class Pattern implements Contract
      *
      * @var string
      */
-    protected string $id = '';
+    private string $id = '';
 
     /**
      * Pattern contexts
@@ -95,17 +95,13 @@ abstract class Pattern implements Contract
     }
 
     /**
-     * Get the component view associated with the pattern.
+     * Return the pattern's icon.
      *
-     * @return stdClass|null
+     * @return string
      */
-    public function getView(): stdClass|null
+    public function getIcon(): string
     {
-        if (!empty($this->viewName))
-            return $this->service->formatView($this->viewName);
-
-        $componentView = $this->service->getComponentView($this->getComponentClass());
-        return $componentView ?? null;
+        return $this->icon ?? 'document';
     }
 
     /**
@@ -113,19 +109,23 @@ abstract class Pattern implements Contract
      *
      * @return string
      */
-    public function getId(): string
+    public final function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * Return the instance icon.
+     * Get the component view associated with the pattern.
      *
-     * @return string
+     * @return stdClass|null
      */
-    public function getIcon(): string
+    public final function getView(): stdClass|null
     {
-        return $this->icon ?? 'document';
+        if (!empty($this->viewName))
+            return $this->service->formatView($this->viewName);
+
+        $componentView = $this->service->getComponentView($this->getComponentClass());
+        return $componentView ?? null;
     }
 
     /**
