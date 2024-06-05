@@ -13,16 +13,16 @@
     <div class="flex w-full justify-between items-center gap-x-2">
         <span class="block w-[2px] bg-neutral-50 dark:bg-neutral-500 self-stretch rounded" x-show="!store.menuOpen"></span>
 
-        <h1 class="flex gap-1 mr-auto whitespace-nowrap text-ellipsis" x-show="activePattern.id">
-            @svg('heroicon-o-document', 'w-6 h-6')
-            <span x-text="activePattern.label"></span>
+        <h1 class="flex gap-1 mr-auto overflow-hidden" x-show="activePattern.id">
+            @svg('heroicon-o-document', 'w-6 h-6 shrink-0')
+            <span x-text="activePattern.label" class="whitespace-nowrap text-ellipsis overflow-hidden"></span>
             <span x-show="activePattern.contextLabel">
                 <b>&nbsp;/&nbsp;</b>
-                <span x-text="activePattern.contextLabel"></span>
+                <span x-text="activePattern.contextLabel" class="whitespace-nowrap text-ellipsis overflow-hidden"></span>
             </span>
         </h1>
 
-        <div class="flex mx-auto items-center" x-show="activePattern.id && config.response_sizes.enabled">
+        <div class="hidden lg:flex mx-auto items-center" x-show="activePattern.id && config.response_sizes.enabled">
             <x-heroicon-o-computer-desktop class="w-4 mr-2"/>
 
             <ul class="flex items-center overflow-hidden">
