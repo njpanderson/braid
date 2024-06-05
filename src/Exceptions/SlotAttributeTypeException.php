@@ -6,6 +6,8 @@ use njpanderson\Braid\Base\BraidException;
 
 class SlotAttributeTypeException extends BraidException
 {
+    protected $hintView = 'braid::exceptions.slotattributetype';
+
     public function __construct(
         public string $attrName,
         public $attrValue,

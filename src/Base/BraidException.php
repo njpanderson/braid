@@ -2,13 +2,15 @@
 
 namespace njpanderson\Braid\Base;
 
-use Illuminate\Support\Facades\Route;
-
 use \Exception;
+
+use Illuminate\View\View;
 
 abstract class BraidException extends Exception
 {
     protected $patternClassName = '';
+
+    protected $hintView = 'braid::exceptions.error';
 
     public function render() {
         if (!config('braid.exceptions'))
@@ -17,6 +19,13 @@ abstract class BraidException extends Exception
         return view('braid::error', [
             'error' => $this,
             'showDevErrorSuggestions' => true
+        ]);
+    }
+
+    public function renderHint(): string|View
+    {
+        return view($this->hintView, [
+            'error' => $this
         ]);
     }
 }

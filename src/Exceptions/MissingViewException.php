@@ -6,6 +6,8 @@ use njpanderson\Braid\Base\BraidException;
 
 class MissingViewException extends BraidException
 {
+    protected $hintView = 'braid::exceptions.missingview';
+
     public function __construct(
         public string $viewName
     ) {

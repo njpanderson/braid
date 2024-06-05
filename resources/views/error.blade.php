@@ -7,7 +7,7 @@
 
             @if (!empty($braid->getPatternClassFromRoute()))
                 <p>
-                    There was an error in the Braid pattern
+                    There was an error while fetching the Braid pattern
                     <span class="bg-blue-600 text-white inline-block px-2 rounded-full">{{ $braid->getPatternClassFromRoute() }}</span>.
                 </p>
             @else
@@ -16,27 +16,7 @@
                 </p>
             @endif
 
-            @if ($error instanceof njpanderson\Braid\Exceptions\MissingViewException)
-                <p>The view <code>{{ $error->viewName }}</code> for this pattern could not be found.</p>
-
-                <x-braid::elements.note>
-                    <p><b>Note:</b> if the pattern’s view is in a non-standard location, you can customise it with the following code in your pattern class:</p>
-                    <pre class="">/**
- * Name of the view, overrides view resolution.
- *
- * @var string
- */
-protected string $viewName = 'name.of.view';</pre>
-                </x-braid::elements.note>
-            @elseif ($error instanceof njpanderson\Braid\Exceptions\SlotAttributeTypeException)
-                <p class="my-2">{{ $error->getMessage() }}</p>
-
-                <x-braid::elements.note>
-                    <p>The slot attribute <b>{{ $error->attrName }}</b> may be of an unexpected type. Braid supplied <a href="https://njpanderson.github.io/braid/docs/contexts/context-data/#defining-context-data" target="_blank">Attributes</a> require data that can resolve to a string.</p>
-                </x-braid::elements.note>
-            @else
-                <p class="my-2">{{ $error->getMessage() }}</p>
-            @endif
+            {{ $error->renderHint() }}
 
             @if ($showDevErrorSuggestions ?? false)
                 <p class="text-sm italic">(Not enough detail? You can show full errors with the Braid config <code>exceptions</code> value.)</p>
