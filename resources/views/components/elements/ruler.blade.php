@@ -1,5 +1,3 @@
-{{-- TODO: Make this adjustable? --}}
-{{-- TODO: Add mark lines --}}
 <div
     id="braid-ruler"
     x-ref="root"
@@ -17,7 +15,6 @@
         @endfor
     </ul>
 
-    {{-- TODO: Come back to this and allow marks to be added by clicking on the ruler --}}
     <template x-for="mark in getMarks()" :key="mark.uuid">
         <div
             class="absolute w-[1px] top-[56px] bottom-0 has-[:hover]:bg-current pointer-events-none z-50"

@@ -11,7 +11,6 @@
                     :attributes="$context->getAttributes()"
                 >
                     @foreach($context->getScopedSlots() as $slotName => $slot)
-                        {{-- TODO: This works! But it needs to use the slot's attributes, not the whole Pattern context --}}
                         @slot($slotName, null, $slot->getAttributesArray())
                             {!! $slot->getSlot() !!}
                         @endslot

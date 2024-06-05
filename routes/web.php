@@ -35,9 +35,5 @@ Route::prefix('/pattern')->group(function() {
         ->name('braid.pattern');
 });
 
-// TODO: This should load index unless there's a param saying otherwise (maybe ?full?)
-// Route::get('/pattern/{braidPattern}/{contextId?}', [BraidController::class, 'pattern'])
-    // ->name('braid.pattern');
-
 Route::post('/pattern/{braidPattern}/update', [PatternController::class, 'update'])
     ->name('braid.pattern.update');
