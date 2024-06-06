@@ -2,6 +2,7 @@
 layout: single
 title: Configuring Braid
 permalink: /docs/customising/configuring-braid/
+toc: true
 ---
 
 As well as the [Service Provider](/docs/customising/service-provider/), Braid can be configured with the `braid.php` file in your application’s `config` directory.

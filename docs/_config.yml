@@ -61,6 +61,7 @@ defaults:
       layout: single
       sidebar:
         nav: "docs"
+      toc_sticky: true
       # author_profile: false
 
 # Exclude from processing.
