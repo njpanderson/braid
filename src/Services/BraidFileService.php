@@ -3,12 +3,10 @@
 namespace njpanderson\Braid\Services;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
+
 use njpanderson\Braid\Contracts\Services\PatternCollector;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Exceptions\PatternMissingIdException;

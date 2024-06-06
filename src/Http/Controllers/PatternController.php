@@ -5,7 +5,6 @@ namespace njpanderson\Braid\Http\Controllers;
 use njpanderson\Braid\Http\Requests\UpdatePatternRequest;
 use njpanderson\Braid\Base\Pattern;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository;
-use njpanderson\Braid\Models\Pattern as ModelsPattern;
 use njpanderson\Braid\Services\BraidService;
 
 class PatternController

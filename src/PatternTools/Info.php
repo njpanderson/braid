@@ -3,12 +3,11 @@
 namespace njpanderson\Braid\PatternTools;
 
 use Illuminate\Contracts\View\View;
-use njpanderson\Braid\Base\Pattern;
+
 use njpanderson\Braid\Base\PatternTool;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Dictionaries\PatternStatus;
-use njpanderson\Braid\Services\BraidService;
 
 class Info extends PatternTool
 {

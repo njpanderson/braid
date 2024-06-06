@@ -1,14 +1,14 @@
 @props([
-	'method',
-	'action'
+    'method',
+    'action'
 ])
 
 <form
-	x-data="inlineForm"
-	method="post"
-	action="{{ $action ?? '/' }}"
-	@change.throttle="onFieldChange"
-	{{ $attributes }}
+    x-data="inlineForm"
+    method="post"
+    action="{{ $action ?? '/' }}"
+    @change.throttle="onFieldChange"
+    {{ $attributes }}
 >
-	{{ $slot }}
+    {{ $slot }}
 </form>

@@ -13,7 +13,6 @@ import inlineForm from '@components/inlineForm';
 import search from '@components/search';
 
 window.Alpine = Alpine;
-// window.axios = axios;
 
 axios.defaults.baseURL = `/${BRAID.config.path}`;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

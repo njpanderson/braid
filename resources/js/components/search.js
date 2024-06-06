@@ -29,7 +29,7 @@ export default () => ({
         eventBus.fire('search:filters-state-change', state);
     },
 
-    onTermsUpdate(terms) {
+    onTermsUpdate() {
         // Close filter
         this.store.search.filters.open = false;
 

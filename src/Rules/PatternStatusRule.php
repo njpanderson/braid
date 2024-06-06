@@ -20,7 +20,7 @@ class PatternStatusRule implements ValidationRule
             !empty($value) &&
             !$statuses->contains('id', $value)
         ) {
-            $fail('The :attribute is invalid.');
+            $fail(__('The :attribute is invalid.'));
         }
     }
 }

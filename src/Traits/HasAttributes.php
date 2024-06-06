@@ -2,7 +2,6 @@
 
 namespace njpanderson\Braid\Traits;
 
-use Exception;
 use Illuminate\Support\Collection;
 
 use Illuminate\View\ComponentAttributeBag;

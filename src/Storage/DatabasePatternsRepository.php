@@ -2,7 +2,6 @@
 
 namespace njpanderson\Braid\Storage;
 
-use Dotenv\Store\File\Paths;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository as Contract;

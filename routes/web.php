@@ -6,13 +6,10 @@ use njpanderson\Braid\Http\Controllers\BraidController;
 use njpanderson\Braid\Http\Controllers\PatternController;
 use njpanderson\Braid\Http\Controllers\PatternToolsController;
 
-// Route::get('/', [BraidController::class, 'index'])->name('braid.index');
-
 Route::prefix('/')->group(function() {
     Route::get('', [BraidController::class, 'index'])->name('braid.index');
     Route::get('full', [BraidController::class, 'welcome'])->name('braid.index.full');
 });
-
 
 Route::get('/menu', [BraidController::class, 'menu'])->name('braid.menu');
 

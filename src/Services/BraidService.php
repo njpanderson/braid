@@ -4,14 +4,10 @@ namespace njpanderson\Braid\Services;
 
 use stdClass;
 use Illuminate\View\View;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 
-use njpanderson\Braid\Braid;
 use njpanderson\Braid\Contracts\PatternContext;
 use njpanderson\Braid\Contracts\PatternDefinition;
 use njpanderson\Braid\Contracts\Storage\PatternsRepository;
