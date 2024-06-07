@@ -1,5 +1,11 @@
 # Braid
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/screens/overall-shot-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/screens/overall-shot.png">
+  <img alt="Screenshot of Braid pattern library with a component loaded" src="docs/assets/screens/overall-shot.png">
+</picture>
+
 ## What is Braid?
 Braid is a pattern library tool for Laravel (+ Livewire) projects.
 
