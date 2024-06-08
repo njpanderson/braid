@@ -21,13 +21,17 @@ use Illuminate\Http\Request;
 
 protected function braidGate(Request $request): bool
 {
-    return in_array($request->user()->email, [
-        'admin@example.com'
-    ]);
+    return (
+        app()->environment('dev') ||
+        app()->hasDebugModeEnabled() ||
+        in_array($request->user()->email, [
+            'admin@example.com'
+        ]);
+    )
 }
 ```
 
-Braid expects the return value of the `authorizeWith` callback to be a boolean `true` or `false`, the value of which will determine whether or not the visitor has access.
+Braid expects the return value of the `braidGate` method to be a boolean `true` or `false`, the value of which will determine whether or not the visitor has access.
 
 ## Dark mode
 By default, Braid will automatically detect your system’s colour theme status and act accordingly. Users may also force permanent light or dark mode within the toolbar.
