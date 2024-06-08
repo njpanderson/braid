@@ -13,7 +13,7 @@ If you’d like to dive right in, check the [Quick start](/braid/docs/quick-star
  - [Requirements](/braid/docs/requirements/)
  - [Installation](/braid/docs/installation/)
  - [Database storage](/braid/docs/database-storage/)
- - [Your first pattern](/braid/docs/creating-patterns/)
+ - [Creating patterns](/braid/docs/creating-patterns/)
 
 ## Contexts
  - [Context data](/braid/docs/contexts/context-data/)
