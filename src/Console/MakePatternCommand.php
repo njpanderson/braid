@@ -2,18 +2,21 @@
 
 namespace njpanderson\Braid\Console;
 
-use Exception;
+use Illuminate\Support\Str;
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-use Illuminate\Foundation\Console\TestMakeCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class MakePatternCommand extends TestMakeCommand
+class MakePatternCommand extends GeneratorCommand implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'braid:make:pattern {name}
+    protected $signature = 'braid:make:pattern
+        {name : The pattern’s class namespace, in PascalCase, omitting your pattern root}
         {--type=basic : Pattern type (basic, component, livewire)}';
 
     /**
@@ -39,8 +42,50 @@ class MakePatternCommand extends TestMakeCommand
         }
     }
 
-    public function getDefaultNamespace($rootNamespace)
+    /**
+     * Prompt for missing input arguments using the returned questions.
+     *
+     * @return array<string, string>
+     */
+    protected function promptForMissingArgumentsUsing(): array
     {
-        return $rootNamespace . '\\Patterns';
+        return [
+            'name' => 'Where should the pattern be created? E.g. Components/MyComponent',
+        ];
     }
+
+    /**
+     * Get the destination class path.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function getPath($name)
+    {
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+
+        return base_path('tests').str_replace('\\', '/', $name).'.php';
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Patterns';
+    }
+
+    /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     */
+    protected function rootNamespace()
+    {
+        return 'Tests';
+    }
+
 }
