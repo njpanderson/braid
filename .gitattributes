@@ -14,4 +14,4 @@ public/build/assets/* binary
 .gitignore export-ignore
 CHANGELOG.md export-ignore
 package-lock.json export-ignore
-pnpm-lock.json export-ignore
+pnpm-lock.yaml export-ignore
