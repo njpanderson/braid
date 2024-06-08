@@ -22,8 +22,8 @@ docs:
         url: /docs/installation/
       - title: "Database storage"
         url: /docs/database-storage/
-      - title: "Your first pattern"
-        url: /docs/your-first-pattern/
+      - title: "Creating patterns"
+        url: /docs/creating-patterns/
       # - title: "Upgrading"
       #   url: /docs/upgrading/
 

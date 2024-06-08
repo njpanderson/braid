@@ -39,7 +39,7 @@ Patterns will show a label derived from their class name. You can override it wi
 
 ### `viewName`
 
-The view name dictates which component view should be loaded when the pattern is accessed. By default, this is inferred from the [namespace of your pattern](/braid/docs/your-first-pattern/). Use this property to change the view location if needed:
+The view name dictates which component view should be loaded when the pattern is accessed. By default, this is inferred from the [namespace of your pattern](/braid/docs/creating-patterns/). Use this property to change the view location if needed:
 
 ```php
     /**

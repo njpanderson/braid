@@ -23,4 +23,4 @@ Braid will create the table data within your database, allowing it to store furt
 **Note**: Stored notes and status updates are specific to the environment on which Braid is being shown. This means they are also shared between users at the same location.
 {: .notice--info}
 
-{% include next.html link="/braid/docs/your-first-pattern/" label="Your first pattern" %}
+{% include next.html link="/braid/docs/creating-patterns/" label="Creating patterns" %}
