@@ -7,7 +7,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
-class DefinitionList extends Component {
+class Definitionlist extends Component {
     public Collection $items;
     public string $itemClasses;
 
