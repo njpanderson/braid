@@ -13,14 +13,16 @@ use njpanderson\Braid\Exceptions\PatternMissingIdException;
 
 class BraidFileService implements PatternCollector
 {
-    private string $patternsNamespace = 'Tests\\Patterns';
+    private string $rootNamespace = 'Tests';
 
+    private string $patternsNamespace;
     private string $patternsPath;
 
     public function __construct(
         private Filesystem $files,
         private PatternsRepository $patternsRepo
     ) {
+        $this->patternsNamespace = $this->rootNamespace . '\\Patterns';
         $this->patternsPath = $this->namespaceToPath($this->patternsNamespace);
     }
 
@@ -186,8 +188,8 @@ class BraidFileService implements PatternCollector
 
     private function namespaceToPath(string $namespace, $prefix = null)
     {
-        $prefix = $prefix ?? base_path() . '/';
-        return $prefix . str_replace('\\', '/', $namespace);
+        $prefix = $prefix ?? base_path('tests');
+        return $prefix . str_replace('\\', '/', Str::replaceFirst($this->rootNamespace, '', $namespace));
     }
 
     private function pathToNamespace(string $path)
@@ -195,8 +197,11 @@ class BraidFileService implements PatternCollector
         $path = str_replace(base_path(), '', $path);
         $path = preg_replace('/\.php$/', '', $path);
         $path = trim($path, '/');
-        $path = str_replace('/', '\\', $path);
 
-        return $path;
+        $namespace = Str::of($path)->explode('/')->map(fn($part) => (
+            Str::studly($part)
+        ))->join('\\');
+
+        return $namespace;
     }
 }
