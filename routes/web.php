@@ -13,13 +13,11 @@ Route::prefix('/')->group(function() {
 
 Route::get('/menu', [BraidController::class, 'menu'])->name('braid.menu');
 
-Route::get('/patterntools', [PatternToolsController::class, 'list'])
-    ->name('braid.patterntools');
+Route::get('/patterntools', [PatternToolsController::class, 'list']);
 
 Route::get('/patterntools/tool/{braidTool}/{braidPattern}/{contextId?}', [
     PatternToolsController::class, 'tool'
-])
-    ->name('braid.patterntools');
+]);
 
 Route::prefix('/pattern')->group(function() {
     Route::get('/{braidPattern}/{contextId}/full', [BraidController::class, 'pattern'])
