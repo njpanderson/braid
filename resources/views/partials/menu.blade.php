@@ -47,7 +47,8 @@
                     </button>
 
                     @include('braid::partials.menu', [
-                        'dir' => $item
+                        'dir' => $item,
+                        'depth' => ($depth + 1)
                     ])
                 @else
                     {{-- Files --}}
@@ -87,6 +88,8 @@
             </li>
         @endforeach
     </ul>
-@else
+@elseif($depth === 0)
     <p class="p-2">No patterns found in the namespace <b>{{ config('braid.patterns.namespace') }}</b>.</p>
+@else
+    <p class="p-2 text-sm text-slate-500">(Empty)</p>
 @endif

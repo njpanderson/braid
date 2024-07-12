@@ -74,7 +74,8 @@
             >
                 <template x-if="!store.search.open">
                     @include('braid::partials.menu', [
-                        'dir' => $patternFiles
+                        'dir' => $patternFiles,
+                        'depth' => 0
                     ])
                 </template>
 
