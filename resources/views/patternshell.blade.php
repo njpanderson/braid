@@ -1,5 +1,9 @@
 @extends('braid::layouts.pattern')
 
+@php
+\njpanderson\Braid\Braid::active();
+@endphp
+
 @section('pattern')
     <div style="padding: {{ (int) config('braid.pattern_margin') }}px">
         @if (isset($view))

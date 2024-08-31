@@ -190,7 +190,7 @@ $this->makeContext(
 argument | type | description
 -- | -- | --
 `$attributes` | `array` | An array of key/value pairs defining attributes and their values. In the case of Laravel or Livewire components, these attributes are sent as html-like attributes to the component as it is called. In Laravel [subviews](https://laravel.com/docs/11.x/blade#including-subviews), it is sent as the array data to that view.
-`$slot` | `string` | Slot data to send Laravel or Livewire components.
+`$slot` | `string` or `View` (since v0.0.55) or `null` | Slot data to send Laravel or Livewire components.
 `$scopedSlots` | `ScopedSlot|string[]` | An array of scoped slot definitions or strings (in the case that a slot needs no attributes). See [makeScopedSlot](#makescopedslot).
 
 ### `makeScopedSlot`
@@ -210,5 +210,5 @@ $this->makeScopedSlot(
 
 argument | type | description
 -- | -- | --
-`$slot` | `string` | Scoped slot data to send Laravel or Livewire components.
+`$slot` | `string` or `View` (since v0.0.55) or `null` | Scoped slot data to send Laravel or Livewire components.
 `$attributes` | `array` | An array of key/value pairs defining attributes and their values.

@@ -12,6 +12,13 @@ class Braid
 
     public static $authCallback;
 
+    public static bool $active = false;
+
+    public static function active()
+    {
+        self::$active = true;
+    }
+
     public static function runChecks()
     {
         static::checkConfig();

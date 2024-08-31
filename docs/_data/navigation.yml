@@ -45,3 +45,5 @@ docs:
     children:
       - title: "Patterns"
         url: /docs/reference/patterns/
+      - title: "Templates"
+        url: /docs/reference/templates/

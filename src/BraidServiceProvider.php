@@ -48,6 +48,10 @@ final class BraidServiceProvider extends ServiceProvider
 
         Blade::componentNamespace('njpanderson\\Braid\\View\\Components', 'braid');
 
+        Blade::if('braid', function() {
+            return Braid::$active;
+        });
+
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'braid');
 
         Gate::define('view-braid-patternlib', function() {
