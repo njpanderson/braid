@@ -72,7 +72,7 @@ abstract class Pattern implements Contract
      * class does not provide one.
      *
      * @param string $context
-     * @return array|View
+     * @return array|\Illuminate\Contracts\View\View
      */
     public function contextData(string $context): PatternContextContract|View
     {
@@ -177,13 +177,13 @@ abstract class Pattern implements Contract
      * Make a single context object.
      *
      * @param array $attributes
-     * @param string|null|null $slot
+     * @param string|View|null $slot
      * @param array $scopedSlots
      * @return PatternContext
      */
     public final function makeContext(
         array $attributes = [],
-        string|null $slot = null,
+        string|View|null $slot = null,
         array $scopedSlots = []
     ): PatternContext {
         return new PatternContext(
@@ -196,12 +196,12 @@ abstract class Pattern implements Contract
     /**
      * Make a scoped slot.
      *
-     * @param string|null|null $slot
+     * @param string|\Illuminate\Contracts\View\View|null $slot
      * @param array $attributes
      * @return ScopedSlot
      */
     public final function makeScopedSlot(
-        string|null $slot = null,
+        string|View|null $slot = null,
         array $attributes = []
     ): ScopedSlot {
         return new ScopedSlot(
