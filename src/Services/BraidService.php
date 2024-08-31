@@ -172,8 +172,16 @@ class BraidService implements PatternCollector
 
     private function getViewFromComponentName(string $componentClass)
     {
-        $view = Str::trim(Str::lower($componentClass), '\\');
-        $view = str_replace('\\', '.', $view);
+        // Trim any excess slashes
+        $view = Str::trim($componentClass, '\\');
+
+        // Convert path parts into kebab case
+        $view = array_map(function ($item) {
+            return Str::kebab($item);
+        }, explode('\\', $view));
+
+        // Rejoin with dots (as per view resolving)
+        $view = implode('.', $view);
 
         return $view;
     }
