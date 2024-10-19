@@ -20,3 +20,5 @@ $ composer require njpanderson/braid
 
 ## Documentation
 See the [Braid documentation](https://njpanderson.github.io/braid/) for more information.
+
+To contribute to documentation, run docker from the project root with `docker compose up` (or `docker-compose up`). This should start Jekyll and a server which can display the current documentation in a browser.

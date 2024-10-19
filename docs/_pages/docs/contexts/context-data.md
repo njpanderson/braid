@@ -65,6 +65,9 @@ To define more contexts in your pattern definition, we can add to an array named
     ];
 ```
 
+Context labels are normally generated from the name. You can customise the label by providing a key and value pair instead of just the value (e.g. `$contexts = [ 'no-image' => 'No Image!', ...]`). The key will be used to generate the URL and identifier, the value will be used verbatim for the label.
+{: .notice--info}
+
 This will show up within Braid as a list of links beneath the main pattern:
 
 {% include screenshot.html src="/assets/screens/braid-contexts-in-menu.png" alt="Context options underneath a pattern" style="max-width: 50%" %}
