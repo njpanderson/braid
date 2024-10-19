@@ -145,16 +145,31 @@ class BraidFileService implements PatternCollector
                     throw new PatternMissingIdException($patternClassName);
 
                 if ($patternClass) {
-                    $contexts = collect($patternClass->getContexts())->map(fn($context) => ([
-                        'url' => $this->getRoute($id, $context),
-                        'frameUrl' => $this->getRoute($id, $context, true),
-                        'type' => 'context',
-                        'contextId' => $context,
-                        'patternId' => $id,
-                        'id' => $id . '.' . $context,
-                        'default' => ($context === 'default'),
-                        'label' => Str::ucfirst($context)
-                    ]));
+                    $contexts = collect($patternClass->getContexts())
+                        ->map(function($label, $contextId) use ($id) {
+                            if (is_numeric($contextId)) {
+                                // Pattern context implements id/label schema
+                                // Use the "label" (i.e. key) as the ID
+                                $contextId = Str::lower($label);
+
+                                // Adopt the label from the value
+                                $label = Str::ucfirst($label);
+                            }
+
+                            // dump('label:' . $label . ', id: ' . $contextId);
+
+                            return [
+                                'url' => $this->getRoute($id, $contextId),
+                                'frameUrl' => $this->getRoute($id, $contextId, true),
+                                'type' => 'context',
+                                'contextId' => $contextId,
+                                'patternId' => $id,
+                                'id' => $id . '.' . $contextId,
+                                'default' => ($contextId === 'default'),
+                                'label' => $label
+                            ];
+                        })
+                        ->values();
                 }
 
                 return [

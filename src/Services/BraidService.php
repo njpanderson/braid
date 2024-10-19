@@ -14,6 +14,7 @@ use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Contracts\PatternTool;
 use njpanderson\Braid\Contracts\Services\PatternCollector;
 use njpanderson\Braid\Exceptions\UnknownPatternClassException;
+use njpanderson\Braid\Dictionaries\PatternContext as PatternContextDictionary;
 
 class BraidService implements PatternCollector
 {
@@ -70,7 +71,7 @@ class BraidService implements PatternCollector
     public function getPatternClass(string $patternRouteId): string
     {
         $classPath = collect(explode(':', $patternRouteId))
-                ->map(fn($part) => ucFirst($part))
+                ->map(fn($part) => Str::studly($part))
                 ->join('\\');
 
         $classPath = $this->patternsNamespace . '\\' . $classPath;
@@ -114,7 +115,7 @@ class BraidService implements PatternCollector
     public function getContext(
         PatternDefinition $pattern,
         string $context = '',
-        ?array $default = []
+        ?array $default = null
     ): PatternContext|View {
         if (empty($context))
             $context = 'default';
@@ -122,7 +123,7 @@ class BraidService implements PatternCollector
         if ($pattern->hasContext($context))
             return $pattern->getContextData($context);
 
-        return $default;
+        return $default ?? new PatternContextDictionary();
     }
 
     public function collectPatterns(

@@ -14,7 +14,7 @@ use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Services\BraidTemplateService;
 use njpanderson\Braid\Storage\DatabasePatternsRepository;
 
-final class BraidServiceProvider extends ServiceProvider
+class BraidServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any package services.

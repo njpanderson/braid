@@ -7,6 +7,11 @@
             "njpanderson\\Braid\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "njpanderson\\Braid\\Tests\\": "tests"
+        }
+    },
     "authors": [
         {
             "name": "Neil Anderson",
@@ -26,7 +31,12 @@
         "livewire/livewire": "Required if working with Livewire components"
     },
     "require-dev": {
-        "livewire/livewire": "^3.4"
+        "livewire/livewire": "^3.4",
+        "phpunit/phpunit": "^11.4",
+        "orchestra/testbench": "^9.5"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {

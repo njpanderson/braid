@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 use njpanderson\Braid\Contracts\PatternDefinition as Contract;
 use njpanderson\Braid\Contracts\PatternContext as PatternContextContract;
-use njpanderson\Braid\Contracts\Storage\PatternsRepository;
 use njpanderson\Braid\Dictionaries\PatternContext;
 use njpanderson\Braid\Dictionaries\ScopedSlot;
 use njpanderson\Braid\Services\BraidService;
@@ -218,7 +217,17 @@ abstract class Pattern implements Contract
      */
     public final function hasContext(string $context): bool
     {
-        return in_array($context, $this->contexts);
+        foreach ($this->contexts as $key => $value) {
+            if (is_string($key) && $key === $context) {
+                return true;
+            }
+
+            if (is_string($value) && $value === $context) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -242,8 +251,13 @@ abstract class Pattern implements Contract
         $id = static::class;
         $id = str_replace($this->service->patternsNamespace, '', $id);
         $id = trim($id, '\\');
-        $id = str_replace('\\', ':', $id);
-        $id = Str::lower($id);
+        $id = explode('\\', $id);
+
+        foreach ($id as &$part) {
+            $part = Str::kebab($part);
+        }
+
+        $id = implode(':', $id);
 
         return $id;
     }

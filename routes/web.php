@@ -17,18 +17,17 @@ Route::get('/patterntools', [PatternToolsController::class, 'list']);
 
 Route::get('/patterntools/tool/{braidTool}/{braidPattern}/{contextId?}', [
     PatternToolsController::class, 'tool'
-]);
+])->where(['braidPattern' => '[-a-z:]+']);
 
-Route::prefix('/pattern')->group(function() {
-    Route::get('/{braidPattern}/{contextId}/full', [BraidController::class, 'pattern'])
+Route::prefix('/pattern/{braidPattern}')->group(function() {
+    Route::get('/{contextId}/full', [BraidController::class, 'pattern'])
         ->name('braid.pattern.context.full');
-    Route::get('/{braidPattern}/full', [BraidController::class, 'pattern'])
+    Route::get('/full', [BraidController::class, 'pattern'])
         ->name('braid.pattern.full');
-    Route::get('/{braidPattern}/{contextId}', [BraidController::class, 'index'])
+    Route::get('/{contextId}', [BraidController::class, 'index'])
         ->name('braid.pattern.context');
-    Route::get('/{braidPattern}', [BraidController::class, 'index'])
+    Route::get('/', [BraidController::class, 'index'])
         ->name('braid.pattern');
-});
-
-Route::post('/pattern/{braidPattern}/update', [PatternController::class, 'update'])
-    ->name('braid.pattern.update');
+    Route::post('/update', [PatternController::class, 'update'])
+        ->name('braid.pattern.update');
+})->where(['braidPattern' => '[-a-z:]+']);
