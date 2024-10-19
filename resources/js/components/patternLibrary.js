@@ -102,11 +102,13 @@ export default () => ({
                 return;
             }
 
-            if (this.$refs.patternCanvasFrame.contentWindow) {
-                this.$refs.patternCanvasFrame.contentWindow.location.replace(
-                    this.activePattern.frameUrl
-                );
-            }
+            this.$nextTick(() => {
+                if (this.$refs.patternCanvasFrame.contentWindow) {
+                    this.$refs.patternCanvasFrame.contentWindow.location.replace(
+                        this.activePattern.frameUrl
+                    );
+                }
+            });
         });
 
         // Listen to dark mode store changes (from interface)
