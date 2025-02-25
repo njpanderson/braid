@@ -11,7 +11,7 @@ class DatabasePatternsRepository implements Contract
 {
     private $connection = null;
 
-    private $enabled = false;
+    private ?bool $enabled = null;
 
     /**
      * Create a new Pattern repository
@@ -23,14 +23,15 @@ class DatabasePatternsRepository implements Contract
     ) {
         if ($connection !== null) {
             $this->connection = $connection;
-
-            if (Schema::hasTable('braid_patterns'))
-                $this->enabled = true;
         }
     }
 
     public function getIsEnabled(): bool
     {
+        if ($this->enabled === null) {
+            $this->enabled = (Schema::hasTable('braid_patterns'));
+        }
+
         return $this->enabled;
     }
 
@@ -42,7 +43,7 @@ class DatabasePatternsRepository implements Contract
      * @return mixed The result of the callback.
      */
     public function ifEnabled(callable $fn, mixed $default = null) {
-        if (!$this->enabled)
+        if (!$this->getIsEnabled())
             return $default;
 
         return $fn($this);
@@ -50,7 +51,7 @@ class DatabasePatternsRepository implements Contract
 
     public function findByPatternId(string $patternId): Pattern|null
     {
-        if (!$this->enabled)
+        if (!$this->getIsEnabled())
             return null;
 
         return Pattern::on($this->connection)
@@ -66,7 +67,7 @@ class DatabasePatternsRepository implements Contract
      */
     public function getByStatus($status): Collection
     {
-        if (!$this->enabled)
+        if (!$this->getIsEnabled())
             return new Collection();
 
         return Pattern::on($this->connection)
@@ -82,7 +83,7 @@ class DatabasePatternsRepository implements Contract
      */
     public function getByIds(array $ids): Collection
     {
-        if (!$this->enabled)
+        if (!$this->getIsEnabled())
             return new Collection();
 
         return Pattern::on($this->connection)
@@ -98,7 +99,7 @@ class DatabasePatternsRepository implements Contract
      */
     public function create(array $data): Pattern|null
     {
-        if (!$this->enabled)
+        if (!$this->getIsEnabled())
             return null;
 
         return Pattern::create($data);
@@ -113,7 +114,7 @@ class DatabasePatternsRepository implements Contract
      */
     public function update(int $id, array $updates)
     {
-        if (!$this->enabled)
+        if (!$this->getIsEnabled())
             return;
 
         Pattern::on($this->connection)
