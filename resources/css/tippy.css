@@ -1,0 +1,25 @@
+@layer components {
+    .tippy-box[data-theme~='braid'] {
+        --color-background: var(--color-accent-400);
+        background-color: var(--color-background);
+        color: theme('colors.white');
+        text-align: center;
+        text-wrap: balance;
+
+        &[data-placement^='top'] > .tippy-arrow::before {
+            border-top-color: var(--color-background);
+        }
+
+        &[data-placement^='bottom'] > .tippy-arrow::before {
+            border-bottom-color: var(--color-background);
+        }
+
+        &[data-placement^='left'] > .tippy-arrow::before {
+            border-left-color: var(--color-background);
+        }
+
+        &[data-placement^='right'] > .tippy-arrow::before {
+            border-right-color: var(--color-background);
+        }
+    }
+}

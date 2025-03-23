@@ -13,7 +13,7 @@
     @section('head')
     @show
 
-    @vite('resources/css/braid.scss')
+    @vite('resources/css/braid.css')
 </head>
 <body class="min-h-[100vh] theme-{{ config('braid.theme.colour') }} font-lato">
     <main class="min-h-[100vh]">

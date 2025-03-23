@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+@source "../views";
+@source "../../src/View";
+
+@import './themes.css';
+@import './fonts.css';
+@import './tippy.css';
+
+@import './components.css';
+@import './shiki.css';
+@import './ruler.css';
+@import './expanding-textarea.css';

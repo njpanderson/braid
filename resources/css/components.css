@@ -17,8 +17,4 @@
     .braid-tools {
         grid-area: tools;
     }
-
-    .pl-prose {
-        @apply prose prose-slate p-2;
-    }
 }

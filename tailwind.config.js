@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
 	content: [
 		"./resources/views/**/*.blade.php",
 		"./resources/js/**/*.js"
@@ -13,16 +13,6 @@ export default {
 				accent: getColours('accent'),
 				neutral: getColours('neutral'),
 			},
-			typography: (theme) => ({
-				DEFAULT: {
-					css: {
-						// color: theme('colors.gray.700'),
-						h1: {
-							'font-weight': 600
-						}
-					},
-				},
-			}),
 			fontFamily: {
 				'lato': 'Lato, sans-serif'
 			},
@@ -31,10 +21,9 @@ export default {
 			}
 		},
 	},
-	plugins: [
-		require('@tailwindcss/typography')
-	],
 }
+
+export default config;
 
 function getColours(name) {
 	let colours = {};

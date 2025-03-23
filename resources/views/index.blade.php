@@ -32,7 +32,7 @@
         >
             <header class="flex items-start min-h-[50px]">
                 <h1
-                    class="overflow-auto p-2 text-2xl font-bold self-start text-primary-900 dark:text-primary-200"
+                    class="overflow-auto p-2 text-3xl font-bold self-start text-primary-900 dark:text-primary-200"
                 >
                     <button
                         @click="switchPattern('__braid.welcome')"
