@@ -17,6 +17,7 @@
                 type="button"
                 class="flex shrink-0 items-center justify-center w-[25px] group"
                 @click="toggleFilters()"
+                x-cloak
             >
                 <span x-show="hasTerms">
                     <x-heroicon-s-funnel class="w-4 h-4 fill-accent-600"/>
@@ -31,6 +32,7 @@
             type="submit"
             class="flex shrink-0 items-center justify-center w-[25px] group"
             x-show="!store.search.open"
+            x-cloak
         >
             <x-heroicon-s-magnifying-glass class="w-4 h-4 group-hover:stroke-accent-300"/>
         </button>
@@ -39,6 +41,7 @@
             type="button"
             class="flex shrink-0 items-center justify-center w-[25px] group"
             x-show="store.search.open"
+            x-cloak
             @click="onSearchClose"
         >
             <x-heroicon-s-x-mark class="w-4 h-4 group-hover:stroke-accent-300"/>
@@ -51,6 +54,7 @@
             x-show="store.search.filters.open"
             @click.outside="closeFilters"
             x-transition
+            x-cloak
         >
             <div class="mb-4 last:mb-0">
                 <h2 class="p-1.5 px-1.5 font-semibold text-md">Status</h2>

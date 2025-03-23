@@ -12,3 +12,7 @@
 @import './shiki.css';
 @import './ruler.css';
 @import './expanding-textarea.css';
+
+[x-cloak] {
+	display: none !important;
+}
