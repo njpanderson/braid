@@ -1,3 +1,5 @@
+@inject('files', 'njpanderson\Braid\Services\BraidFileService')
+
 @if ($dir['items'])
     <ul
         @class([
@@ -89,7 +91,7 @@
         @endforeach
     </ul>
 @elseif($depth === 0)
-    <p class="p-2">No patterns found in the namespace <b>{{ config('braid.patterns.namespace') }}</b>.</p>
+    <p class="p-2">No patterns found in the namespace <b>{{ $files->getPatternsNamespace() }}</b>.</p>
 @else
     <p class="p-2 text-sm text-slate-500" x-show="open">(Empty)</p>
 @endif
