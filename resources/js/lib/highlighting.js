@@ -1,12 +1,13 @@
 // `shiki/core` entry does not include any themes or languages or the wasm binary.
-import { createHighlighter } from 'shiki';
+import { createHighlighterCore } from 'shiki/core';
+import { createOnigurumaEngine } from 'shiki/engine/oniguruma';
 
 // directly import the theme and language modules, only the ones you imported will be bundled.
-import solarizedDark from 'shiki/themes/solarized-dark.mjs';
-import solarizedLight from 'shiki/themes/solarized-light.mjs';
+import solarizedDark from 'shiki/themes/solarized-dark';
+import solarizedLight from 'shiki/themes/solarized-light';
 
 export default async function highlightCode(code, lang = 'blade') {
-    const highlighter = await createHighlighter({
+    const highlighter = await createHighlighterCore({
         themes: [
             solarizedDark,
             solarizedLight
@@ -14,7 +15,7 @@ export default async function highlightCode(code, lang = 'blade') {
         langs: [
             import('shiki/langs/blade.mjs')
         ],
-        loadWasm: import('shiki/wasm')
+        engine: createOnigurumaEngine(import('shiki/wasm'))
     });
 
     return highlighter.codeToHtml(code, {
