@@ -93,8 +93,9 @@ export default () => ({
     },
 
     initBinds() {
-        this.$watch('activePattern', () => {
+        this.$watch('activePattern', (current, old) => {
             if (
+                current.id === old.id ||
                 !this.$refs.patternCanvasFrame ||
                 !this.activePattern ||
                 !this.activePattern.frameUrl
@@ -229,8 +230,11 @@ export default () => ({
      * @param {EventBusEvent} event
      */
     onPatternInfoChange(event) {
+        // All changes make the menu stale
+        this.store.menu.stale = true;
+
+        // And certain less noisy changes can cause an immediate refresh
         if (event.detail.field === 'fields.status') {
-            // On valid fields, get new menu data
             this.getMenuData();
         }
     },
@@ -399,13 +403,16 @@ export default () => ({
      * Retrieve menu data from server.
      * @returns {Promise} a Promise, containing the menu data
      */
-    getMenuData() {
+    async getMenuData() {
         return axios.get('/menu')
             .then((response) => {
                 this.patterns = response.data.patterns;
 
                 // Create a map of patterns for quick access
                 this.createPatternMap(this.patterns);
+
+                // The menu is fresh
+                this.store.menu.stale = false;
 
                 // Set up default menu storage
                 storage.transact(constants.storageKeys.menu, (menu) => {
@@ -470,36 +477,57 @@ export default () => ({
         return `background-color: ${status['color']}`;
     },
 
-    getSearchResults() {
-        const term = this.store.search.term.toLowerCase(),
-            filters = this.store.search.filters.terms;
+    async getSearchResults() {
+        if (this.store.menu.stale) {
+            // If the menu has been made stale, do a JIT fetch of menu data
+            await this.getMenuData();
+        }
 
-        return Object.keys(this.patternMap)
-            .filter((key) => {
-                return (
-                    // Correct types
-                    (
-                        this.patternMap[key].type === 'file' ||
-                        (this.patternMap[key].type === 'context' && !this.patternMap[key].default)
-                    ) &&
-                    // Label exists
-                    this.patternMap[key].label !== undefined &&
-                    (
-                        // Search term against index data
-                        this.patternMap[key].index.includes(term) &&
+        return new Promise((resolve) => {
+            const term = this.store.search.term.toLowerCase(),
+                filters = this.store.search.filters.terms;
 
-                        // Status
-                        (!filters.status || (
-                            filters.status &&
-                            this.patternMap[key].model &&
-                            this.patternMap[key].model.status == filters.status
-                        ))
-                    )
-                );
-            })
-            .map((key) => {
-                return {...this.patternMap[key]};
-            });
+            if (!this.store.search.open) {
+                // Search isn't open, just return an empty array
+                return [];
+            }
+
+            resolve(
+                Object.keys(this.patternMap)
+                    .filter((key) => {
+                        return (
+                            // Correct types
+                            (
+                                this.patternMap[key].type === 'file' ||
+                                (this.patternMap[key].type === 'context' && !this.patternMap[key].default)
+                            ) &&
+                            // Label exists
+                            this.patternMap[key].label !== undefined &&
+                            (
+                                // Search term against index data
+                                this.patternMap[key].index.includes(term) &&
+
+                                // Status
+                                (!filters.status || (
+                                    filters.status &&
+                                    this.patternMap[key].model &&
+                                    this.patternMap[key].model.status == filters.status
+                                )) &&
+
+                                // Notes
+                                (!filters.notes || (
+                                    filters.notes &&
+                                    this.patternMap[key].model &&
+                                    this.patternMap[key].model.notes
+                                ))
+                            )
+                        );
+                    })
+                    .map((key) => {
+                        return {...this.patternMap[key]};
+                    })
+            );
+        });
     },
 
     getSearchLabel(pattern) {

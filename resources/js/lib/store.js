@@ -6,14 +6,18 @@ export default {
     active: false,
     loadedPattern: null,
     activePattern: null,
-    menuOpen: true,
+    menu: {
+        open: true,
+        stale: true
+    },
     menuScrolled: false,
     search: {
         term: '',
         filters: {
             open: false,
             terms: {
-                status: null
+                status: null,
+                notes: false
             }
         },
         open: false

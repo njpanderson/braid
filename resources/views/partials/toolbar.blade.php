@@ -4,14 +4,14 @@
 >
     <x-braid::toolbutton
         icon="arrow-right-start-on-rectangle"
-        x-show="!store.menuOpen"
-        @click="store.menuOpen = !store.menuOpen"
+        x-show="!store.menu.open"
+        @click="store.menu.open = !store.menu.open"
         data-tooltip="Open menu"
         label-hidden
     >Open menu</x-braid::toolbutton>
 
     <div class="flex w-full justify-between items-center gap-x-2" x-cloak>
-        <span class="block w-[2px] bg-neutral-50 dark:bg-neutral-500 self-stretch rounded" x-show="!store.menuOpen"></span>
+        <span class="block w-[2px] bg-neutral-50 dark:bg-neutral-500 self-stretch rounded" x-show="!store.menu.open"></span>
 
         <h1 class="flex gap-1 mr-auto overflow-hidden" x-show="activePattern.id">
             @svg('heroicon-o-document', 'w-6 h-6 shrink-0')

@@ -13,6 +13,7 @@
         >
 
         @if ($braid->getIsRepositoryEnabled())
+            {{-- Open search filters --}}
             <button
                 type="button"
                 class="flex shrink-0 items-center justify-center w-[25px] group"
@@ -28,6 +29,7 @@
             </button>
         @endif
 
+        {{-- Perform (open) a search --}}
         <button
             type="submit"
             class="flex shrink-0 items-center justify-center w-[25px] group"
@@ -37,6 +39,7 @@
             <x-heroicon-s-magnifying-glass class="w-4 h-4 group-hover:stroke-accent-300"/>
         </button>
 
+        {{-- Close search --}}
         <button
             type="button"
             class="flex shrink-0 items-center justify-center w-[25px] group"
@@ -56,7 +59,7 @@
             x-transition
             x-cloak
         >
-            <div class="mb-4 last:mb-0">
+            <div class="mb-2 last:mb-0">
                 <h2 class="p-1.5 px-1.5 font-semibold text-md">Status</h2>
 
                 @foreach(config('braid.statuses') as $status)
@@ -75,6 +78,19 @@
                         </span>
                     </label>
                 @endforeach
+            </div>
+
+            <div class="mb-2 last:mb-0">
+                <h2 class="p-1.5 px-1.5 font-semibold text-md">Notes</h2>
+                <label class="flex p-1.5 px-2.5 gap-2">
+                    <input
+                        type="checkbox"
+                        name="notes"
+                        @click="toggleFilterTerm('notes')"
+                        x-model="store.search.filters.terms.notes"
+                    >
+                    <span>Has notes</span>
+                </label>
             </div>
         </menu>
     @endif

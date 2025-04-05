@@ -54,7 +54,14 @@ export default () => ({
         event.preventDefault();
 
         this.store.search.term = '';
-        this.store.search.filters.terms = {};
+
+        // Reset terms, ensuring any boolean values are set to "false"
+        // (otherwise Alpine won't pick up the change)
+        this.store.search.filters.terms = {
+            // Boolean values
+            notes: false
+        };
+
         this.store.search.open = false;
     },
 

@@ -1,5 +1,5 @@
 <ul class="px-2">
-    <template x-for="result in getSearchResults()" :key="result.id">
+    <template x-for="result in await getSearchResults()" :key="result.id">
         <li class="mb-1">
             <button
                 class="block w-full rounded-md px-2 py-0.5 hover:bg-accent-500 dark:hover:bg-accent-600 text-left leading-tight"
@@ -16,7 +16,7 @@
         </li>
     </template>
 
-    <template x-if="!(getSearchResults()).length">
+    <template x-if="!(await getSearchResults()).length">
         <li>(No items)</li>
     </template>
 </ul>

@@ -97,7 +97,8 @@ class BraidFileService implements PatternCollector
                     )->mapWithKeys(fn($item) => (
                         // Map into key/value structure
                         [$item['pattern_id'] => [
-                            'status' => $item->status
+                            'status' => $item->status,
+                            'notes' => !empty($item->notes)
                         ]]
                     ));
 

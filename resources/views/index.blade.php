@@ -8,8 +8,8 @@
         x-on:braidcanvasresize.window.throttle.50ms="onCanvasResize"
         class="braid-app h-[100dvh] bg-gradient-to-b from-primary-300 to-primary-400 dark:from-primary-600 dark:to-primary-700 dark:text-white"
         :class="{
-            'grid-cols-[250px_minmax(900px,_1fr)]': store.menuOpen,
-            'grid-cols-[10px_minmax(900px,_1fr)]': !store.menuOpen,
+            'grid-cols-[250px_minmax(900px,_1fr)]': store.menu.open,
+            'grid-cols-[10px_minmax(900px,_1fr)]': !store.menu.open,
             'grid-rows-[1fr_200px]': loadedPattern,
             'grid-rows-[1fr_0]': !loadedPattern,
         }"
@@ -19,15 +19,15 @@
         data-draggable-handle-size="6"
         data-draggable-cols-max="350"
         data-draggable-cols-min="200"
-        :data-draggable-template-cols="(store.menuOpen ? '<value> 1fr' : '10px 1fr')"
+        :data-draggable-template-cols="(store.menu.open ? '<value> 1fr' : '10px 1fr')"
         :data-draggable-template-rows="(!!loadedPattern ? '1fr <value>' : '1fr 0')"
     >
         <div
             id="braid-menu"
             class="braid-menu flex flex-col relative transition-opacity select-none border-r border-r-neutral-400 overflow-x-auto"
             :class="{
-                'opacity-0 pointer-events-none': !store.menuOpen,
-                'opacity-100': store.menuOpen,
+                'opacity-0 pointer-events-none': !store.menu.open,
+                'opacity-100': store.menu.open,
             }"
         >
             <header class="flex items-start min-h-[50px]">
@@ -54,7 +54,7 @@
                 <button
                     class="shrink-0 ml-auto mr-2 p-1 mt-2 hover:bg-slate-200/50 rounded"
                     data-tooltip="Close menu"
-                    @click="store.menuOpen = !store.menuOpen"
+                    @click="store.menu.open = !store.menu.open"
                 >
                     @svg('heroicon-o-arrow-left-start-on-rectangle', 'w-6 h-6')
                     <span class="sr-only">Close menu</span>
@@ -67,8 +67,8 @@
                 class="h-full w-full flex-1"
                 @scroll="onMenuScroll"
                 :class="{
-                    'overflow-y-auto': store.menuOpen,
-                    'overflow-hidden': !store.menuOpen,
+                    'overflow-y-auto': store.menu.open,
+                    'overflow-hidden': !store.menu.open,
                     'border-t-2 border-t-primary-200/40': store.menuScrolled
                 }"
             >
@@ -84,7 +84,7 @@
                 </template>
 
                 <button
-                    x-show="store.menuOpen"
+                    x-show="store.menu.open"
                     data-draggable-handle="patternLibrary"
                     data-draggable-type="cols"
                     class="absolute top-0 right-0 bottom-0 w-[6px] opacity-0 hover:opacity-100 bg-accent-300 dark:bg-accent-600 cursor-ew-resize flex items-center justify-center"
