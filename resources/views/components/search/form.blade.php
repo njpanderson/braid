@@ -3,7 +3,7 @@
     class="relative mb-2 mx-2"
     @submit="onSearchSubmit"
 >
-    <div class="flex rounded-sm border-2 border-primary-200/40 focus-within:border-accent-300 bg-neutral-50 dark:bg-neutral-700">
+    <div class="flex rounded-sm ring-2 ring-transparent focus-within:ring-accent-300 bg-neutral-50 dark:bg-neutral-700">
         <input
             type="text"
             placeholder="Find patterns"
@@ -19,12 +19,13 @@
                 class="flex shrink-0 items-center justify-center w-[25px] group"
                 @click="toggleFilters()"
                 x-cloak
+                data-tooltip="Add filters"
             >
                 <span x-show="hasTerms">
-                    <x-heroicon-s-funnel class="w-4 h-4 fill-accent-600"/>
+                    <x-heroicon-s-funnel class="size-5 fill-accent-600"/>
                 </span>
                 <span x-show="!hasTerms">
-                    <x-heroicon-o-funnel class="w-4 h-4 hover:stroke-accent-600"/>
+                    <x-heroicon-o-funnel class="size-5 text-gray-700 hover:stroke-accent-600"/>
                 </span>
             </button>
         @endif
@@ -35,8 +36,9 @@
             class="flex shrink-0 items-center justify-center w-[25px] group"
             x-show="!store.search.open"
             x-cloak
+            data-tooltip="Search"
         >
-            <x-heroicon-s-magnifying-glass class="w-4 h-4 group-hover:stroke-accent-300"/>
+            <x-heroicon-s-magnifying-glass class="size-5 text-gray-800 group-hover:stroke-accent-300"/>
         </button>
 
         {{-- Close search --}}
@@ -46,8 +48,9 @@
             x-show="store.search.open"
             x-cloak
             @click="onSearchClose"
+            data-tooltip="Close search"
         >
-            <x-heroicon-s-x-mark class="w-4 h-4 group-hover:stroke-accent-300"/>
+            <x-heroicon-s-x-mark class="size-5 text-gray-800 group-hover:stroke-accent-300"/>
         </button>
     </div>
 
