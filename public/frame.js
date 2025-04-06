@@ -21,22 +21,16 @@
     const events = [
         'braidframeloaded',
         'braidframeunloaded',
-        'braidcanvasresize'
+        'braidcanvasresize',
+        'braidframescrolled'
     ].map((eventName) => {
-        const event = new Event(eventName);
-        event.detail = {
-            patternMapId: patternMapId ?? '',
-            location
-        };
-        return event;
+        return new CustomEvent(eventName, {
+            detail: {
+                patternMapId: patternMapId ?? '',
+                location
+            }
+        });
     });
-
-    // if (
-    //     window.self === window.top &&
-    //     (!params.has('mode') || params.get('mode') !== 'full')
-    // ) {
-    //     location.replace(indexRoute);
-    // }
 
     window.parent.dispatchEvent(events[0]);
 
@@ -46,6 +40,11 @@
 
     window.addEventListener('resize', () => {
         window.parent.dispatchEvent(events[2]);
+    });
+
+    window.addEventListener('scroll', () => {
+        events[3].detail.scrollLeft = document.documentElement.scrollLeft;
+        window.parent.dispatchEvent(events[3]);
     });
 
     if (typeof window.BRAID !== 'undefined') {

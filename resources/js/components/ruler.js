@@ -19,6 +19,7 @@ export default (offset) => ({
 
         this.store.ruler.open = storage.get(constants.storageKeys.ruler.open, false);
         this.store.ruler.offset = offset;
+        this.store.ruler.scrollOffset = 0;
         this.store.ruler.dragMarker = null;
         this.store.ruler.marks = this.getFromStorage();
 
@@ -120,6 +121,15 @@ export default (offset) => ({
         this.updateStorage();
     },
 
+    onFrameScrolled(event) {
+        this.store.ruler.scrollOffset = event.detail.scrollLeft;
+    },
+
+    onPatternLoaded(event) {
+        // Reset the scroll offset
+        this.store.ruler.scrollOffset = 0;
+    },
+
     /**
      * Toggle the ruler on and off.
      */
@@ -149,6 +159,10 @@ export default (offset) => ({
             x = Math.round(x / roundTo) * roundTo;
 
         return x;
+    },
+
+    getRulerLeftStyle() {
+        return `left: ${-this.store.ruler.scrollOffset}px`;
     },
 
     /**

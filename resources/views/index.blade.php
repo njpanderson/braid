@@ -95,7 +95,7 @@
 
         <div
             id="braid-content"
-            class="braid-content flex flex-col relative h-full w-full overflow-hidden bg-white dark:bg-neutral-800"
+            class="braid-content flex flex-col relative h-full w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800"
         >
             @include('braid::partials.toolbar')
 
